@@ -4,26 +4,47 @@ import { Module } from "@/module";
 import type { SiteEntryDefinition } from "@/definitions";
 
 export class BidRequestV26Module extends Module {
-  public minimal(): BidRequestV26 {
-    const site = generateRandomArrayItem<SiteEntryDefinition>(
-      this.definitions.adcom.context.site
-    );
+  private impressionCount: number = 1;
+  private _context: string = "site";
 
-    return {
+  public imp(impressionCount: number): this {
+    this.impressionCount = impressionCount;
+    return this;
+  }
+
+  public context(context: "site"): this {
+    this._context = context;
+    return this;
+  }
+
+  public site(): this {
+    this._context = 'site';
+    return this;
+  }
+
+  public minimal(): BidRequestV26 {
+    const bidRequest: BidRequestV26 = {
       id: this.helper.generateUUID(),
-      imp: [
-        {
-          id: "1",
-          banner: {
-            w: 300,
-            h: 250,
-          },
+      imp: [...Array(this.impressionCount)].map((_, i) => ({
+        id: (i + 1).toString(),
+        banner: {
+          w: 300,
+          h: 250,
         },
-      ],
-      site: {
+      })),
+    };
+
+    if (this._context === "site") {
+      const site = generateRandomArrayItem<SiteEntryDefinition>(
+        this.definitions.adcom.context.site
+      );
+
+      bidRequest.site = {
         domain: site.domain,
         page: site.page,
-      },
-    };
+      };
+    }
+
+    return bidRequest;
   }
 }
