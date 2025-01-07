@@ -1,3 +1,3 @@
-import { Faker } from "./Faker";
+import { Faker } from "./faker";
 
 export const faker = new Faker();

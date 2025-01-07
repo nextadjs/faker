@@ -7,16 +7,29 @@ settings:
 importers:
 
   .:
+    dependencies:
+      iab-adcom:
+        specifier: ^0.1.5
+        version: 0.1.5
+      iab-openrtb:
+        specifier: ^0.3.1
+        version: 0.3.1
+      uuid:
+        specifier: ^11.0.4
+        version: 11.0.4
     devDependencies:
       '@types/node':
         specifier: ^22.10.5
         version: 22.10.5
       tsup:
         specifier: ^8.3.5
-        version: 8.3.5(postcss@8.4.49)
+        version: 8.3.5(postcss@8.4.49)(typescript@5.7.2)
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)
+      vitest-mock-extended:
+        specifier: ^2.0.2
+        version: 2.0.2(typescript@5.7.2)(vitest@2.1.8(@types/node@22.10.5))
 
 packages:
 
@@ -597,6 +610,14 @@ packages:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
 
+  iab-adcom@0.1.5:
+    resolution: {integrity: sha512-y4qeyEZrdM6BZCUUcDa3dgCC+fjHES99ufP+Odxutbvgr5IPxvsN+BRrNW3UX7XEDeLHrw2ADtNzC27zYRNlMQ==}
+    engines: {node: '>=14.0.0'}
+
+  iab-openrtb@0.3.1:
+    resolution: {integrity: sha512-GIeaxG7dvbBNm+EfX+ta9ETwpKP7gKwJkqQv6HGXLeuPX3ytHXShQxhEd+vvUJGkTbehtIidsWmGjuD6R8+EkA==}
+    engines: {node: '>=14.0.0'}
+
   is-fullwidth-code-point@3.0.0:
     resolution: {integrity: sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==}
     engines: {node: '>=8'}
@@ -811,6 +832,14 @@ packages:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
     hasBin: true
 
+  ts-essentials@10.0.4:
+    resolution: {integrity: sha512-lwYdz28+S4nicm+jFi6V58LaAIpxzhg9rLdgNC1VsdP/xiFBseGhF1M/shwCk6zMmwahBZdXcl34LVHrEang3A==}
+    peerDependencies:
+      typescript: '>=4.5.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
@@ -833,8 +862,17 @@ packages:
       typescript:
         optional: true
 
+  typescript@5.7.2:
+    resolution: {integrity: sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   undici-types@6.20.0:
     resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
+
+  uuid@11.0.4:
+    resolution: {integrity: sha512-IzL6VtTTYcAhA/oghbFJ1Dkmqev+FpQWnCBaKq/gUluLxliWvO8DPFWfIviRmYbtaavtSQe4WBL++rFjdcGWEg==}
+    hasBin: true
 
   vite-node@2.1.8:
     resolution: {integrity: sha512-uPAwSr57kYjAUux+8E2j0q0Fxpn8M9VoyfGiRI8Kfktz9NcYMCenwY5RnZxnF1WTu3TGiYipirIzacLL3VVGFg==}
@@ -871,6 +909,12 @@ packages:
         optional: true
       terser:
         optional: true
+
+  vitest-mock-extended@2.0.2:
+    resolution: {integrity: sha512-n3MBqVITKyclZ0n0y66hkT4UiiEYFQn9tteAnIxT0MPz1Z8nFcPUG3Cf0cZOyoPOj/cq6Ab1XFw2lM/qM5EDWQ==}
+    peerDependencies:
+      typescript: 3.x || 4.x || 5.x
+      vitest: '>=2.0.0'
 
   vitest@2.1.8:
     resolution: {integrity: sha512-1vBKTZskHw/aosXqQUlVWWlGUxSJR8YtiyZDJAFeW2kPAeX6S3Sool0mjspO+kXLuxVWlEDDowBAeqeAQefqLQ==}
@@ -1351,6 +1395,10 @@ snapshots:
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
+  iab-adcom@0.1.5: {}
+
+  iab-openrtb@0.3.1: {}
+
   is-fullwidth-code-point@3.0.0: {}
 
   isexe@2.0.0: {}
@@ -1538,9 +1586,13 @@ snapshots:
 
   tree-kill@1.2.2: {}
 
+  ts-essentials@10.0.4(typescript@5.7.2):
+    optionalDependencies:
+      typescript: 5.7.2
+
   ts-interface-checker@0.1.13: {}
 
-  tsup@8.3.5(postcss@8.4.49):
+  tsup@8.3.5(postcss@8.4.49)(typescript@5.7.2):
     dependencies:
       bundle-require: 5.1.0(esbuild@0.24.2)
       cac: 6.7.14
@@ -1560,13 +1612,18 @@ snapshots:
       tree-kill: 1.2.2
     optionalDependencies:
       postcss: 8.4.49
+      typescript: 5.7.2
     transitivePeerDependencies:
       - jiti
       - supports-color
       - tsx
       - yaml
 
+  typescript@5.7.2: {}
+
   undici-types@6.20.0: {}
+
+  uuid@11.0.4: {}
 
   vite-node@2.1.8(@types/node@22.10.5):
     dependencies:
@@ -1594,6 +1651,12 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.10.5
       fsevents: 2.3.3
+
+  vitest-mock-extended@2.0.2(typescript@5.7.2)(vitest@2.1.8(@types/node@22.10.5)):
+    dependencies:
+      ts-essentials: 10.0.4(typescript@5.7.2)
+      typescript: 5.7.2
+      vitest: 2.1.8(@types/node@22.10.5)
 
   vitest@2.1.8(@types/node@22.10.5):
     dependencies:

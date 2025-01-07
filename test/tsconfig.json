@@ -3,7 +3,10 @@
     "compilerOptions": {
       "moduleResolution": "bundler",
       "types": ["vitest/globals"],
-      "baseUrl": ".."
+      "baseUrl": "..",
+      "paths": {
+        "@/*": ["src/*"]
+      }
     },
     "include": ["./**/*.ts"]
   }
