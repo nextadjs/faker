@@ -82,7 +82,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result).toHaveProperty("site");
   });
 
-  it("サイトコンテキストを明示的に指定できる", () => {
+  it("サイトコンテキストを明示的に指定する", () => {
     const helper = mock<IHelper>();
     const sut = new BidRequestV26Module({
       definitions: data,
@@ -94,7 +94,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result).toHaveProperty("site");
   });
 
-  it("サイト情報が設定される", () => {
+  it("サイト情報を指定する", () => {
     const helper = mock<IHelper>();
     const sut = new BidRequestV26Module({
       definitions: {
@@ -146,7 +146,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result).toHaveProperty("site");
   });
 
-  it("サイト情報を自由に指定できる", () => {
+  it("サイト情報を自由に指定する", () => {
     const helper = mock<IHelper>();
     const sut = new BidRequestV26Module({
       definitions: data,
@@ -162,5 +162,232 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
       .minimal();
 
     expect(result.site?.publisher?.domain).toBe("publisher.test.com");
+  });
+
+  it("トップレベルのパラメーターを自由に指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut
+      .custom({
+        allimps: 1,
+      })
+      .minimal();
+
+    expect(result.allimps).toBe(1);
+  });
+
+  it("拡張情報を自由に指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut
+      .ext({
+        nextadjs: "happy",
+      })
+      .minimal();
+
+    expect(result.ext?.nextadjs).toBe("happy");
+  });
+
+  it("デバイス情報を自由に指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut
+      .device({
+        ip: "111.111.111.111",
+      })
+      .minimal();
+
+    expect(result.device?.ip).toBe("111.111.111.111");
+  });
+
+  it("ユーザー情報を自由に指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut
+      .user({
+        id: "userId",
+      })
+      .minimal();
+
+    expect(result.user?.id).toBe("userId");
+  });
+
+  it("オークションタイプを選択する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.at(1).minimal();
+
+    expect(result.at).toBe(1);
+  });
+
+  it("タイムアウトを指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.tmax(1000).minimal();
+
+    expect(result.tmax).toBe(1000);
+  });
+
+  it("ホワイトリストバイヤーシートを指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.wseat(["nextadjs"]).minimal();
+
+    expect(result.wseat).toEqual(["nextadjs"]);
+  });
+
+  it("ブロックリストバイヤーシートを指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.bseat(["blocked-buyer"]).minimal();
+
+    expect(result.bseat).toEqual(["blocked-buyer"]);
+  });
+
+  it("通貨を指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.cur(["JPY", "USD"]).minimal();
+
+    expect(result.cur).toEqual(["JPY", "USD"]);
+  });
+
+  it("ISO-639-1-alpha-2形式で許可された言語リストを指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.wlang(["ja", "en"]).minimal();
+
+    expect(result.wlang).toEqual(["ja", "en"]);
+  });
+
+  it("IETF BCP 47形式で許可された言語リストを指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.wlangb(["ja-JP", "en-US"]).minimal();
+
+    expect(result.wlangb).toEqual(["ja-JP", "en-US"]);
+  });
+
+  it("ブロックされたカテゴリーを指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.bcat(["IAB3", "IAB4"]).minimal();
+
+    expect(result.bcat).toEqual(["IAB3", "IAB4"]);
+  });
+
+  it("ブロックされたカテゴリーで使用される分類を指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.cattax(1).minimal();
+
+    expect(result.cattax).toBe(1);
+  });
+
+  it("ドメインブロックリストを指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.badv(["blocked.com", "spam.com"]).minimal();
+
+    expect(result.badv).toEqual(["blocked.com", "spam.com"]);
+  });
+
+  it("アプリケーションブロックリストを指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.bapp(["com.blocked.app", "com.spam.app"]).minimal();
+
+    expect(result.bapp).toEqual(["com.blocked.app", "com.spam.app"]);
+  });
+
+  it("ソース情報を指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+    const source = {
+      tid: "test-transaction",
+      pchain: "test-chain",
+    };
+
+    const result = sut.source(source).minimal();
+
+    expect(result.source).toEqual(source);
+  });
+
+  it("Regs情報を指定する", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+    const regs = {
+      coppa: 1 as const,
+    };
+
+    const result = sut.regs(regs).minimal();
+
+    expect(result.regs).toEqual(regs);
   });
 });
