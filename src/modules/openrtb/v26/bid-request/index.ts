@@ -1,6 +1,7 @@
 import type {
   BidRequestV26,
   DeviceV26,
+  ImpV26,
   RegsV26,
   SiteV26,
   SourceV26,
@@ -18,9 +19,10 @@ interface CustomContexts {
 
 export class BidRequestV26Module extends Module {
   private impressionCount: number = 1;
-  private _customBidRequest: Record<string, unknown> = {};
+  private _customBidRequest: Partial<BidRequestV26> = {};
   private _context: ContextType = "site";
   private _site: SiteV26 = {};
+  private _imp?: Partial<ImpV26>;
   private _device?: DeviceV26;
   private _user?: UserV26;
   private _source?: SourceV26;
@@ -39,8 +41,20 @@ export class BidRequestV26Module extends Module {
   private _badv?: string[];
   private _bapp?: string[];
 
-  public imp(impressionCount: number): this {
-    this.impressionCount = impressionCount;
+  public imp(
+    countOrCustomImp: number | Partial<ImpV26>,
+    customImp?: Partial<ImpV26>
+  ): this {
+    if (typeof countOrCustomImp === "number") {
+      this.impressionCount = countOrCustomImp;
+
+      if (customImp) {
+        this._imp = customImp;
+      }
+    } else {
+      this._imp = countOrCustomImp;
+    }
+
     return this;
   }
 
@@ -155,13 +169,16 @@ export class BidRequestV26Module extends Module {
   public minimal(): BidRequestV26 {
     const bidRequest: BidRequestV26 = {
       id: this.helper.generateUUID(),
-      imp: [...Array(this.impressionCount)].map((_, i) => ({
-        id: (i + 1).toString(),
-        banner: {
-          w: 300,
-          h: 250,
-        },
-      })),
+      imp: [...Array(this.impressionCount)].map((_, i) => {
+        return {
+          id: (i + 1).toString(),
+          banner: {
+            w: 300,
+            h: 250,
+          },
+          ...this._imp,
+        };
+      }),
       ...this._customBidRequest,
     };
 

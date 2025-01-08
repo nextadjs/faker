@@ -70,6 +70,20 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result.imp[0].id !== result.imp[1].id).toBe(true);
   });
 
+  it('インプレッションの情報を追加で指定できる', () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.imp({
+      bidfloor: 0.6,
+    }).minimal();
+
+    expect(result.imp[0].bidfloor).toBe(0.6);
+  });
+
   it("デフォルトでサイトコンテキストが指定される", () => {
     const helper = mock<IHelper>();
     const sut = new BidRequestV26Module({

@@ -6,5 +6,6 @@ export type {
   Device as DeviceV26,
   User as UserV26,
   Source as SourceV26,
-  Regs as RegsV26
+  Regs as RegsV26,
+  Imp as ImpV26
 } from "iab-openrtb/v26";
