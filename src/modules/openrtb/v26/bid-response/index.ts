@@ -4,6 +4,7 @@ import type { BidResponseV26 } from "@/types/openrtb";
 export class BidResponseV26Module extends Module {
   private seatBidCount: number = 1;
   private bidCount: number = 1;
+  private _impId?: string | string[];
 
   public seatbid(seatBidCount: number): this {
     this.seatBidCount = seatBidCount;
@@ -15,6 +16,11 @@ export class BidResponseV26Module extends Module {
     return this;
   }
 
+  public impId(impId: string | string[]): this {
+    this._impId = impId;
+    return this;
+  }
+
   public minimal(): BidResponseV26 {
     return {
       id: this.helper.generateUUID(),
@@ -23,7 +29,7 @@ export class BidResponseV26Module extends Module {
           bid: [...Array(this.bidCount)].map((_, bidIndex) => {
             return {
               id: (bidIndex + 1).toString(),
-              impid: "1",
+              impid: this.getImpId(),
               price: this.helper.generateRandomDecimal(0, 10),
               w: 300,
               h: 250,
@@ -37,5 +43,15 @@ export class BidResponseV26Module extends Module {
         };
       }),
     };
+  }
+
+  private getImpId(): string {
+    if (!this._impId) {
+      return "1";
+    } else if (typeof this._impId === "string") {
+      return this._impId;
+    } else {
+      return this.helper.selectRandomArrayItem<string>(this._impId) || "1";
+    }
   }
 }
