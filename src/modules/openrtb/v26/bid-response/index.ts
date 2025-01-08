@@ -1,5 +1,6 @@
 import { Module } from "@/module";
 import type { BidResponseV26 } from "@/types/openrtb";
+import { NoBidReasonCode } from "iab-openrtb/v26";
 
 export class BidResponseV26Module extends Module {
   private seatBidCount: number = 1;
@@ -19,6 +20,13 @@ export class BidResponseV26Module extends Module {
   public impId(impId: string | string[]): this {
     this._impId = impId;
     return this;
+  }
+
+  public nbr(noBidReasonCode: NoBidReasonCode = NoBidReasonCode.UNKNOWN_ERROR): BidResponseV26 {
+    return {
+      id:  this.helper.generateUUID(),
+      nbr: noBidReasonCode
+    }
   }
 
   public minimal(): BidResponseV26 {

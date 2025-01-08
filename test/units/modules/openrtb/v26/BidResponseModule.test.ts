@@ -132,4 +132,32 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
     const bids = result.seatbid![0].bid;
     expect(bids[0].impid).toBe('2');
   });
+
+  it('入札不参加レスポンスを生成する', () => {
+    const helper = new Helper();
+    vi.spyOn(helper, "generateUUID").mockReturnValue("1");
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.nbr();
+
+    expect(result.id).toBe("1");
+    expect(result.nbr).toEqual(0);
+  });
+
+  it('NBR理由コードを指定する', () => {
+    const helper = new Helper();
+    vi.spyOn(helper, "generateUUID").mockReturnValue("1");
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.nbr(2);
+
+    expect(result.id).toBe("1");
+    expect(result.nbr).toEqual(2);
+  });
 });

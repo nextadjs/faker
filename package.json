@@ -16,8 +16,8 @@
     "vitest-mock-extended": "^2.0.2"
   },
   "dependencies": {
-    "iab-adcom": "^0.1.5",
-    "iab-openrtb": "^0.3.1",
+    "iab-adcom": "^0.1.8",
+    "iab-openrtb": "^0.3.7",
     "uuid": "^11.0.4"
   }
 }
