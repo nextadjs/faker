@@ -145,4 +145,22 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result.imp.length).toEqual(2);
     expect(result).toHaveProperty("site");
   });
+
+  it("サイト情報を自由に指定できる", () => {
+    const helper = mock<IHelper>();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut
+      .site({
+        publisher: {
+          domain: "publisher.test.com",
+        },
+      })
+      .minimal();
+
+    expect(result.site?.publisher?.domain).toBe("publisher.test.com");
+  });
 });
