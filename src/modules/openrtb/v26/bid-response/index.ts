@@ -64,10 +64,4 @@ export class BidResponseV26Module extends Module {
       return this.helper.selectRandomArrayItem<string>(this._impId) || "1";
     }
   }
-
-  public reset(): void {
-    this.seatBidCount = 1;
-    this.bidCount = 1;
-    this._impId = undefined;
-  }
 }

@@ -288,30 +288,4 @@ export class BidRequestV26Module extends Module {
 
     return bidRequest;
   }
-
-  public reset(): void {
-    this.impressionCount = 1;
-    this._customBidRequest = {};
-    this._context = "site";
-    this._site = {};
-    this._app = {};
-    this._imp = undefined;
-    this._device = undefined;
-    this._user = undefined;
-    this._source = undefined;
-    this._regs = undefined;
-    this._ext = undefined;
-    this._test = 0;
-    this._at = 2;
-    this._tmax = undefined;
-    this._wseat = undefined;
-    this._bseat = undefined;
-    this._cur = undefined;
-    this._wlang = undefined;
-    this._wlangb = undefined;
-    this._bcat = undefined;
-    this._cattax = undefined;
-    this._badv = undefined;
-    this._bapp = undefined;
-  }
 }

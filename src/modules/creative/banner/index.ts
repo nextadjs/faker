@@ -9,6 +9,4 @@ export class BannerModule extends Module {
       )
     ).markup;
   }
-
-  public reset() {}
 }

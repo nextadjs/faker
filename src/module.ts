@@ -15,6 +15,4 @@ export abstract class Module {
     this.definitions = definitions;
     this.helper = helper;
   }
-
-  public abstract reset(): void;
 }
