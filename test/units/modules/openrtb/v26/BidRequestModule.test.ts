@@ -388,6 +388,18 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     expect(result.bcat).toEqual(["IAB3", "IAB4"]);
   });
+  
+  it("許可されたカテゴリーを指定する", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.acat(["IAB3", "IAB4"]).minimal();
+
+    expect(result.acat).toEqual(["IAB3", "IAB4"]);
+  });
 
   it("ブロックされたカテゴリーで使用される分類を指定する", () => {
     const helper = new Helper();

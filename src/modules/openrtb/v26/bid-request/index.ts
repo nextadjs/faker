@@ -36,6 +36,7 @@ export class BidRequestV26Module extends Module {
   private _wseat?: string[];
   private _bseat?: string[];
   private _cur?: string[];
+  private _acat?: string[];
   private _wlang?: string[];
   private _wlangb?: string[];
   private _bcat?: string[];
@@ -136,6 +137,11 @@ export class BidRequestV26Module extends Module {
 
   public cur(cur: string[]): this {
     this._cur = cur;
+    return this;
+  }
+
+  public acat(acat: string[]): this {
+    this._acat = acat;
     return this;
   }
 
@@ -281,6 +287,10 @@ export class BidRequestV26Module extends Module {
 
     if (this._bapp) {
       bidRequest.bapp = this._bapp;
+    }
+
+    if (this._acat) {
+      bidRequest.acat = this._acat;
     }
 
     bidRequest.test = this._test;
