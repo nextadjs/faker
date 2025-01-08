@@ -18,7 +18,9 @@ export class BidResponseV26Module extends Module {
               mtype: 1,
             },
           ],
-          seat: "nextadjs",
+          seat: this.helper.selectRandomArrayItem<string>(
+            this.definitions.openrtb.bidResponse.seat
+          ),
         },
       ],
     };

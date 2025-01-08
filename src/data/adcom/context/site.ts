@@ -49,29 +49,4 @@ export default [
     domain: "petparadise.care",
     page: "https://petparadise.care/advice",
   },
-  {
-    name: "Movie Critics",
-    domain: "moviecritic.review",
-    page: "https://moviecritic.review/upcoming",
-  },
-  {
-    name: "DIY Workshop",
-    domain: "diyworkshop.craft",
-    page: "https://diyworkshop.craft/projects",
-  },
-  {
-    name: "Science Daily",
-    domain: "sciencedaily.research",
-    page: "https://sciencedaily.research/discoveries",
-  },
-  {
-    name: "Auto World",
-    domain: "autoworld.cars",
-    page: "https://autoworld.cars/new-models",
-  },
-  {
-    name: "Real Estate Today",
-    domain: "realestate.today",
-    page: "https://realestate.today/listings",
-  },
 ];

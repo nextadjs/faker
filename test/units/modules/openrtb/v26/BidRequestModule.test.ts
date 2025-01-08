@@ -1,13 +1,12 @@
 import { BidRequestV26Module } from "@/modules/openrtb/v26/bid-request";
 import { data } from "@/data";
 import { mock } from "vitest-mock-extended";
-import type { IHelper } from "@/types/interface";
+import { Helper } from "@/helper";
 
 describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   it("トップレベルの必須パラメーターが存在する", () => {
-    const helper = mock<IHelper>({
-      generateUUID: () => "1",
-    });
+    const helper = new Helper();
+    vi.spyOn(helper, 'generateUUID').mockReturnValue('1');
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -20,7 +19,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("インプレッション配列が適切に生成されている", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -33,7 +32,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("バナー広告枠が300x250で正しく指定されている", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -47,7 +46,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("指定した数だけインプレッションが生成される", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -59,7 +58,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("各インプレッションが一意の値を持つ", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -71,7 +70,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it('インプレッションの情報を追加で指定できる', () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -85,7 +84,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("デフォルトでサイトコンテキストが指定される", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -97,7 +96,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("サイトコンテキストを明示的に指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -109,7 +108,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("サイト情報を指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: {
         ...data,
@@ -136,7 +135,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("サイトコンテキストを指定するショートカットメソッドが通常のコンテキスト指定と同じ動作をする", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -148,7 +147,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("メソッドチェーンが正しく動作する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -161,7 +160,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("サイト情報を自由に指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -179,7 +178,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("トップレベルのパラメーターを自由に指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -195,7 +194,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("拡張情報を自由に指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -211,7 +210,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("デバイス情報を自由に指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -227,7 +226,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("ユーザー情報を自由に指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -243,7 +242,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("オークションタイプを選択する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -255,7 +254,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("タイムアウトを指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -267,7 +266,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("ホワイトリストバイヤーシートを指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -279,7 +278,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("ブロックリストバイヤーシートを指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -291,7 +290,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("通貨を指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -303,7 +302,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("ISO-639-1-alpha-2形式で許可された言語リストを指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -315,7 +314,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("IETF BCP 47形式で許可された言語リストを指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -327,7 +326,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("ブロックされたカテゴリーを指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -339,7 +338,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("ブロックされたカテゴリーで使用される分類を指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -351,7 +350,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("ドメインブロックリストを指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -363,7 +362,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("アプリケーションブロックリストを指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -375,7 +374,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("ソース情報を指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -391,7 +390,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   });
 
   it("Regs情報を指定する", () => {
-    const helper = mock<IHelper>();
+    const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,

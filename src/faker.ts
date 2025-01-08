@@ -2,7 +2,6 @@ import { data } from "./data";
 import type { Definition } from "./definitions";
 import { Helper } from "./helper";
 import { BidRequestV26Module } from "./modules/openrtb/v26/bid-request";
-import type { IHelper } from "./types/interface";
 
 export class Faker {
   public readonly openrtb: {
@@ -10,7 +9,7 @@ export class Faker {
   };
 
   private definitions: Definition;
-  private helper: IHelper;
+  private helper: Helper;
 
   public constructor() {
     this.definitions = data;

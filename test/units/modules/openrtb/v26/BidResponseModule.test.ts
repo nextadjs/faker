@@ -1,14 +1,12 @@
 import { BidResponseV26Module } from "@/modules/openrtb/v26/bid-response";
 import { data } from "@/data";
 import { mock } from "vitest-mock-extended";
-import type { IHelper } from "@/types/interface";
-import type { SeatBidV26 } from "@/types/openrtb";
+import { Helper } from '@/helper';
 
 describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
   it("トップレベルの必須パラメーターが存在する", () => {
-    const helper = mock<IHelper>({
-      generateUUID: () => "1",
-    });
+    const helper = new Helper();
+    vi.spyOn(helper, 'generateUUID').mockReturnValue('1');
     const sut = new BidResponseV26Module({
       definitions: data,
       helper: helper,
@@ -21,9 +19,9 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
   });
 
   it("入札シートと入札配列が適切に生成される", () => {
-    const helper = mock<IHelper>({
-      generateRandomDecimal: () => 2.22,
-    });
+    const helper = new Helper();
+    vi.spyOn(helper, 'generateRandomDecimal').mockReturnValue(2.22);
+    vi.spyOn(helper, 'selectRandomArrayItem').mockReturnValue('nextadjs');
     const sut = new BidResponseV26Module({
       definitions: data,
       helper: helper,
@@ -42,9 +40,7 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
   });
 
   it("バナー広告が入札に含まれる", () => {
-    const helper = mock<IHelper>({
-      generateRandomDecimal: () => 2.22,
-    });
+    const helper = new Helper();
     const sut = new BidResponseV26Module({
       definitions: data,
       helper: helper,
@@ -53,10 +49,6 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
     const result = sut.minimal();
 
     const seatBid = result.seatbid![0];
-    expect(seatBid.bid.length).toBe(1);
-    expect(seatBid.bid[0].id).toBe("1");
-    expect(seatBid.bid[0].impid).toBe("1");
-    expect(seatBid.bid[0].price).toBe(2.22);
     expect(seatBid.bid[0].adm).toBe("<div>banner ad</div>");
     expect(seatBid.bid[0].mtype).toBe(1);
   });

@@ -190,7 +190,7 @@ export class BidRequestV26Module extends Module {
   }
 
   private generateSite(): SiteV26 {
-    const site = generateRandomArrayItem<SiteEntryDefinition>(
+    const site = this.helper.selectRandomArrayItem<SiteEntryDefinition>(
       this.definitions.adcom.context.site
     );
 
