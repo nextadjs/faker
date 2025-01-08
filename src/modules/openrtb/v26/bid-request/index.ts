@@ -1,5 +1,6 @@
 import type {
   AppV26,
+  BannerV26,
   BidRequestV26,
   DeviceV26,
   DOOHV26,
@@ -10,9 +11,23 @@ import type {
   UserV26,
 } from "@/types/openrtb";
 import { Module } from "@/module";
-import type { AppEntryDefinition, DoohEntryDefinition, SiteEntryDefinition } from "@/definitions";
+import type {
+  AppEntryDefinition,
+  DoohEntryDefinition,
+  SiteEntryDefinition,
+} from "@/definitions";
 
-type ContextType = "site" | "app" | 'dooh';
+type ContextType = "site" | "app" | "dooh";
+type FormatType = BannerFormat;
+
+type BannerFormat = {
+  type: "banner";
+  size: {
+    w: number;
+    h: number;
+  };
+  extension?: BannerV26;
+};
 
 interface CustomContexts {
   site: SiteV26;
@@ -46,6 +61,7 @@ export class BidRequestV26Module extends Module {
   private _cattax?: number;
   private _badv?: string[];
   private _bapp?: string[];
+  private formats: FormatType[] = [];
 
   public imp(
     countOrCustomImp: number | Partial<ImpV26>,
@@ -72,11 +88,11 @@ export class BidRequestV26Module extends Module {
 
     if (extension) {
       const contextMap: Record<keyof CustomContexts, (ext: any) => void> = {
-        site: (ext: SiteV26) => this._site = ext,
-        app: (ext: AppV26) => this._app = ext,
-        dooh: (ext: DOOHV26) => this._dooh = ext
+        site: (ext: SiteV26) => (this._site = ext),
+        app: (ext: AppV26) => (this._app = ext),
+        dooh: (ext: DOOHV26) => (this._dooh = ext),
       };
-      
+
       contextMap[context](extension);
     }
 
@@ -132,6 +148,18 @@ export class BidRequestV26Module extends Module {
 
   public tmax(tmax: number): this {
     this._tmax = tmax;
+    return this;
+  }
+
+  public banner(w: number = 300, h: number = 250): this {
+    this.formats.push({
+      type: "banner",
+      size: {
+        w: w,
+        h: h,
+      },
+    });
+
     return this;
   }
 
@@ -192,16 +220,7 @@ export class BidRequestV26Module extends Module {
   public minimal(): BidRequestV26 {
     const bidRequest: BidRequestV26 = {
       id: this.helper.generateUUID(),
-      imp: [...Array(this.impressionCount)].map((_, i) => {
-        return {
-          id: (i + 1).toString(),
-          banner: {
-            w: 300,
-            h: 250,
-          },
-          ...this._imp,
-        };
-      }),
+      imp: this.generateImps(),
       ...this._customBidRequest,
     };
 
@@ -209,11 +228,48 @@ export class BidRequestV26Module extends Module {
       bidRequest.site = this.generateSite();
     } else if (this._context === "app") {
       bidRequest.app = this.generateApp();
-    } else if (this._context === 'dooh') {
+    } else if (this._context === "dooh") {
       bidRequest.dooh = this.generateDooh();
     }
 
     return this.enrich(bidRequest);
+  }
+
+  private generateImps(): ImpV26[] {
+    return [...Array(this.impressionCount)].map((_, i) => {
+      let imp: ImpV26 = {
+        id: (i + 1).toString(),
+      };
+
+      if (!this.formats.length) {
+        imp.banner = {
+          w: 300,
+          h: 250,
+        };
+      } else {
+        const bannerFormats = this.formats.filter(
+          (format) => format.type === "banner"
+        );
+
+        if (bannerFormats.length) {
+          imp.banner = {
+            format: bannerFormats.map((bannerFormat) => ({
+              w: bannerFormat.size.w,
+              h: bannerFormat.size.h,
+            })),
+          };
+        }
+      }
+
+      if (this._imp) {
+        imp = {
+          ...imp,
+          ...this._imp,
+        };
+      }
+
+      return imp;
+    });
   }
 
   private generateSite(): SiteV26 {

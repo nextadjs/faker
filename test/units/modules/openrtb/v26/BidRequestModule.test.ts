@@ -1,6 +1,5 @@
 import { BidRequestV26Module } from "@/modules/openrtb/v26/bid-request";
 import { data } from "@/data";
-import { mock } from "vitest-mock-extended";
 import { Helper } from "@/helper";
 
 describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
@@ -29,20 +28,6 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     expect(result.imp.length).toEqual(1);
     expect(result.imp[0].id).toBe("1");
-  });
-
-  it("バナー広告枠が300x250で正しく指定されている", () => {
-    const helper = new Helper();
-    const sut = new BidRequestV26Module({
-      definitions: data,
-      helper: helper,
-    });
-
-    const result = sut.minimal();
-
-    expect(result.imp[0]).toHaveProperty("banner");
-    expect(result.imp[0].banner?.w).toEqual(300);
-    expect(result.imp[0].banner?.h).toEqual(250);
   });
 
   it("指定した数だけインプレッションが生成される", () => {
@@ -198,8 +183,8 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
               {
                 venuetypetax: 0,
                 venuetype: ["transit"],
-                domain: 'example.com'
-            }
+                domain: "example.com",
+              },
             ],
           },
         },
@@ -210,7 +195,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     const result = sut.context("dooh").minimal();
 
     expect(result.dooh?.domain).toBe("example.com");
-    expect(result.dooh?.venuetype).toEqual(['transit']);
+    expect(result.dooh?.venuetype).toEqual(["transit"]);
     expect(result.dooh?.venuetypetax).toBe(0);
   });
 
@@ -226,7 +211,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result).toHaveProperty("dooh");
   });
 
-  it('サイトコンテキスト・アプリコンテキスト・DOOHコンテキストを同時に指定した場合、最後に指定したコンテキストが優先される', () => {
+  it("サイトコンテキスト・アプリコンテキスト・DOOHコンテキストを同時に指定した場合、最後に指定したコンテキストが優先される", () => {
     const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
@@ -236,8 +221,8 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     const result = sut.dooh().app().site().minimal();
 
     expect(result).not.toHaveProperty("app");
-    expect(result).not.toHaveProperty('dooh');
-    expect(result).toHaveProperty('site');
+    expect(result).not.toHaveProperty("dooh");
+    expect(result).toHaveProperty("site");
   });
 
   it("メソッドチェーンが正しく動作する", () => {
@@ -466,7 +451,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     expect(result.bcat).toEqual(["IAB3", "IAB4"]);
   });
-  
+
   it("許可されたカテゴリーを指定する", () => {
     const helper = new Helper();
     const sut = new BidRequestV26Module({
@@ -544,5 +529,63 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     const result = sut.regs(regs).minimal();
 
     expect(result.regs).toEqual(regs);
+  });
+
+  it("バナーフォーマットを指定すると300x250のバナー入札リクエストが生成される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.banner().minimal();
+
+    expect(result.imp[0]).toHaveProperty("banner");
+    expect(result.imp[0].banner?.format![0]?.w).toBe(300);
+    expect(result.imp[0].banner?.format![0]?.h).toBe(250);
+  });
+
+  it("バナーフォーマットを指定したうえでインプレッションを複数生成すると、全てのインプレッションに指定したバナーが含まれる", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.imp(2).banner().minimal();
+
+    expect(result.imp[0]).toHaveProperty("banner");
+    expect(result.imp[1]).toHaveProperty("banner");
+  });
+
+  it("バナーフォーマットにサイズを含めると指定のサイズのバナー入札リクエストが生成される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.banner(300, 600).minimal();
+
+    expect(result.imp[0].banner?.format![0]?.w).toBe(300);
+    expect(result.imp[0].banner?.format![0]?.h).toBe(600);
+  });
+
+  it("フォーマットを指定しないとデフォルトで300x250のバナーフォーマットを含んだ入札リクエストが生成される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.minimal();
+
+    expect(result.imp[0]).toHaveProperty("banner");
+    expect(result.imp[0]?.banner?.w).toBe(300);
+    expect(result.imp[0]?.banner?.h).toBe(250);
+  });
+
+  it('バナーフォーマットのカスタムパラーメーターを指定する', () => {
+
   });
 });

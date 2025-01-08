@@ -1,7 +1,7 @@
 import type { Definition } from "@/definitions";
 import site from "./adcom/context/site";
 import seat from "./openrtb/bid-response/seat";
-import banner from "./creative/banner";
+import display from "./creative/display";
 import app from "./adcom/context/app";
 import dooh from "./adcom/context/dooh";
 
@@ -20,6 +20,6 @@ export const data: Definition = {
     },
   },
   creative: {
-    banner: banner,
+    display: display,
   },
 };

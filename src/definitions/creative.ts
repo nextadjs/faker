@@ -1,8 +1,11 @@
 export type CreativeDefinition = {
-    banner: BannerDefinition[];
+  display: DisplayDefinition[];
 };
 
-export type BannerDefinition = {
-    markup: string;
-    size: string;
+export type DisplayDefinition = {
+  markup: string;
+  size: {
+    w: number;
+    h: number;
+  };
 };

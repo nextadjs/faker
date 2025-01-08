@@ -9,5 +9,6 @@ export type {
   Regs as RegsV26,
   Imp as ImpV26,
   App as AppV26,
-  DOOH as DOOHV26
+  DOOH as DOOHV26,
+  Banner as BannerV26
 } from "iab-openrtb/v26";
