@@ -7,7 +7,6 @@ import type {
   SourceV26,
   UserV26,
 } from "@/types/openrtb";
-import { generateRandomArrayItem } from "@/utils/generator";
 import { Module } from "@/module";
 import type { SiteEntryDefinition } from "@/definitions";
 

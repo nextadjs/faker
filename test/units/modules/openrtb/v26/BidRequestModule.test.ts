@@ -6,7 +6,7 @@ import { Helper } from "@/helper";
 describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
   it("トップレベルの必須パラメーターが存在する", () => {
     const helper = new Helper();
-    vi.spyOn(helper, 'generateUUID').mockReturnValue('1');
+    vi.spyOn(helper, "generateUUID").mockReturnValue("1");
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
@@ -69,16 +69,18 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result.imp[0].id !== result.imp[1].id).toBe(true);
   });
 
-  it('インプレッションの情報を追加で指定できる', () => {
+  it("インプレッションの情報を追加で指定できる", () => {
     const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
     });
 
-    const result = sut.imp({
-      bidfloor: 0.6,
-    }).minimal();
+    const result = sut
+      .imp({
+        bidfloor: 0.6,
+      })
+      .minimal();
 
     expect(result.imp[0].bidfloor).toBe(0.6);
   });
