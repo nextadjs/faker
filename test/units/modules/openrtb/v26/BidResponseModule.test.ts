@@ -92,4 +92,17 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
     expect(bids.length).toBe(2);
     expect(bids2.length).toBe(2);
   });
+
+  it('各入札の入札IDが一意を持つ', () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.bid(2).minimal();
+
+    const bids = result.seatbid![0].bid;
+    expect(bids[0].id !== bids[1].id).toBe(true);
+  });
 });
