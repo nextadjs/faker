@@ -8,5 +8,6 @@ export type {
   Source as SourceV26,
   Regs as RegsV26,
   Imp as ImpV26,
-  App as AppV26
+  App as AppV26,
+  DOOH as DOOHV26
 } from "iab-openrtb/v26";

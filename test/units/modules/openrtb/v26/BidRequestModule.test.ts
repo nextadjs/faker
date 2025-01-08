@@ -185,16 +185,58 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result).toHaveProperty("app");
   });
 
-  it('サイトコンテキストとアプリコンテキストを同時に指定した場合、最後に指定したコンテキストが優先される', () => {
+  it("DOOH情報を指定する", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: {
+        ...data,
+        adcom: {
+          ...data.adcom,
+          context: {
+            ...data.adcom.context,
+            dooh: [
+              {
+                venuetypetax: 0,
+                venuetype: ["transit"],
+                domain: 'example.com'
+            }
+            ],
+          },
+        },
+      },
+      helper: helper,
+    });
+
+    const result = sut.context("dooh").minimal();
+
+    expect(result.dooh?.domain).toBe("example.com");
+    expect(result.dooh?.venuetype).toEqual(['transit']);
+    expect(result.dooh?.venuetypetax).toBe(0);
+  });
+
+  it("DOOHコンテキストを指定するショートカットメソッドが通常のコンテキスト指定と同じ動作をする", () => {
     const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
       helper: helper,
     });
 
-    const result = sut.app().site().minimal();
+    const result = sut.dooh().minimal();
+
+    expect(result).toHaveProperty("dooh");
+  });
+
+  it('サイトコンテキスト・アプリコンテキスト・DOOHコンテキストを同時に指定した場合、最後に指定したコンテキストが優先される', () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.dooh().app().site().minimal();
 
     expect(result).not.toHaveProperty("app");
+    expect(result).not.toHaveProperty('dooh');
     expect(result).toHaveProperty('site');
   });
 
@@ -227,6 +269,42 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
       .minimal();
 
     expect(result.site?.publisher?.domain).toBe("publisher.test.com");
+  });
+
+  it("アプリ情報を自由に指定する", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut
+      .app({
+        publisher: {
+          domain: "publisher.test.com",
+        },
+      })
+      .minimal();
+
+    expect(result.app?.publisher?.domain).toBe("publisher.test.com");
+  });
+
+  it("DOOH情報を自由に指定する", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut
+      .dooh({
+        publisher: {
+          domain: "publisher.test.com",
+        },
+      })
+      .minimal();
+
+    expect(result.dooh?.publisher?.domain).toBe("publisher.test.com");
   });
 
   it("トップレベルのパラメーターを自由に指定する", () => {

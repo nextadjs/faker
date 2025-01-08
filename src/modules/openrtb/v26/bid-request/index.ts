@@ -2,6 +2,7 @@ import type {
   AppV26,
   BidRequestV26,
   DeviceV26,
+  DOOHV26,
   ImpV26,
   RegsV26,
   SiteV26,
@@ -9,13 +10,14 @@ import type {
   UserV26,
 } from "@/types/openrtb";
 import { Module } from "@/module";
-import type { AppEntryDefinition, SiteEntryDefinition } from "@/definitions";
+import type { AppEntryDefinition, DoohEntryDefinition, SiteEntryDefinition } from "@/definitions";
 
-type ContextType = "site" | "app";
+type ContextType = "site" | "app" | 'dooh';
 
 interface CustomContexts {
   site: SiteV26;
   app: AppV26;
+  dooh: DOOHV26;
 }
 
 export class BidRequestV26Module extends Module {
@@ -24,6 +26,7 @@ export class BidRequestV26Module extends Module {
   private _context: ContextType = "site";
   private _site: SiteV26 = {};
   private _app: AppV26 = {};
+  private _dooh: DOOHV26 = {};
   private _imp?: Partial<ImpV26>;
   private _device?: DeviceV26;
   private _user?: UserV26;
@@ -68,11 +71,13 @@ export class BidRequestV26Module extends Module {
     this._context = context;
 
     if (extension) {
-      if (context === "site") {
-        this._site = extension;
-      } else if (context == "app") {
-        this._app = extension;
-      }
+      const contextMap: Record<keyof CustomContexts, (ext: any) => void> = {
+        site: (ext: SiteV26) => this._site = ext,
+        app: (ext: AppV26) => this._app = ext,
+        dooh: (ext: DOOHV26) => this._dooh = ext
+      };
+      
+      contextMap[context](extension);
     }
 
     return this;
@@ -89,6 +94,10 @@ export class BidRequestV26Module extends Module {
 
   public app(app?: AppV26): this {
     return this.context("app", app || {});
+  }
+
+  public dooh(dooh?: DOOHV26): this {
+    return this.context("dooh", dooh || {});
   }
 
   public device(device: DeviceV26): this {
@@ -200,6 +209,8 @@ export class BidRequestV26Module extends Module {
       bidRequest.site = this.generateSite();
     } else if (this._context === "app") {
       bidRequest.app = this.generateApp();
+    } else if (this._context === 'dooh') {
+      bidRequest.dooh = this.generateDooh();
     }
 
     return this.enrich(bidRequest);
@@ -225,6 +236,19 @@ export class BidRequestV26Module extends Module {
     return {
       domain: app.domain,
       ...this._app,
+    };
+  }
+
+  private generateDooh(): DOOHV26 {
+    const dooh = this.helper.selectRandomArrayItem<DoohEntryDefinition>(
+      this.definitions.adcom.context.dooh
+    );
+
+    return {
+      venuetypetax: dooh.venuetypetax,
+      venuetype: dooh.venuetype,
+      domain: dooh.domain,
+      ...this._dooh,
     };
   }
 

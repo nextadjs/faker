@@ -12,8 +12,8 @@ importers:
         specifier: ^0.1.8
         version: 0.1.8
       iab-openrtb:
-        specifier: ^0.3.7
-        version: 0.3.7
+        specifier: ^0.3.9
+        version: 0.3.9
       uuid:
         specifier: ^11.0.4
         version: 11.0.4
@@ -614,8 +614,8 @@ packages:
     resolution: {integrity: sha512-H/wE1EbTzDRag2tyS0FAPquFmCnnELw9xXwZ2D3TD8/umAkmG+r3Urk9/LBJehOskbekszSZUSFapZdwHcvz4w==}
     engines: {node: '>=14.0.0'}
 
-  iab-openrtb@0.3.7:
-    resolution: {integrity: sha512-PsXy1E2b7HHRYDRVWKsMISCuuJA92DrGcdhujm2BWJ8UFnGE3lUaHdTRKIIfv3pfSzhZsneSCKi3QiSD2uU1lA==}
+  iab-openrtb@0.3.9:
+    resolution: {integrity: sha512-77K4otBNvzWj8WjmK4YM3934TlIYl6nKa2/99mzOOT9m4ZlwngfXu5OazWaO6SSrLiLX7GHQz2a/PafI5ZmjzQ==}
     engines: {node: '>=14.0.0'}
 
   is-fullwidth-code-point@3.0.0:
@@ -1397,7 +1397,7 @@ snapshots:
 
   iab-adcom@0.1.8: {}
 
-  iab-openrtb@0.3.7: {}
+  iab-openrtb@0.3.9: {}
 
   is-fullwidth-code-point@3.0.0: {}
 
