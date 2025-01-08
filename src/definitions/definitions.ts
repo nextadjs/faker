@@ -1,9 +1,7 @@
 import type { AdCOMDefinition } from './adcom';
-import type { OpenRTBV26Definition } from './openrtbv26';
+import type { OpenRTBDefinition } from './openrtb';
 
 export type Definition = {
-    openrtb: {
-        v26: OpenRTBV26Definition;
-    }
+    openrtb: OpenRTBDefinition;
     adcom: AdCOMDefinition;
 };

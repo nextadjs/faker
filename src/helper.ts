@@ -10,4 +10,12 @@ export class Helper implements IHelper {
   public generateRandomArrayItem<T>(array: T[]): T {
     return generateRandomArrayItem<T>(array);
   }
+
+  public generateRandomDecimal(
+    min: number,
+    max: number,
+    decimals: number = 2
+  ): number {
+    return this.generateRandomDecimal(min, max, decimals);
+  }
 }

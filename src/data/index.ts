@@ -1,9 +1,13 @@
 import type { Definition } from "@/definitions";
-import site from "./openrtb/bid-request/site";
+import site from "./adcom/context/site";
+import seat from "./openrtb/bid-response/seat";
 
 export const data: Definition = {
   openrtb: {
-    v26: {}
+    v26: {},
+    bidResponse: {
+      seat: seat,
+    },
   },
   adcom: {
     context: {
@@ -11,4 +15,3 @@ export const data: Definition = {
     },
   },
 };
-
