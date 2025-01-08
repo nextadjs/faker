@@ -1,4 +1,5 @@
 import type {
+  AppV26,
   BidRequestV26,
   DeviceV26,
   ImpV26,
@@ -8,12 +9,13 @@ import type {
   UserV26,
 } from "@/types/openrtb";
 import { Module } from "@/module";
-import type { SiteEntryDefinition } from "@/definitions";
+import type { AppEntryDefinition, SiteEntryDefinition } from "@/definitions";
 
-type ContextType = "site";
+type ContextType = "site" | "app";
 
 interface CustomContexts {
   site: SiteV26;
+  app: AppV26;
 }
 
 export class BidRequestV26Module extends Module {
@@ -21,6 +23,7 @@ export class BidRequestV26Module extends Module {
   private _customBidRequest: Partial<BidRequestV26> = {};
   private _context: ContextType = "site";
   private _site: SiteV26 = {};
+  private _app: AppV26 = {};
   private _imp?: Partial<ImpV26>;
   private _device?: DeviceV26;
   private _user?: UserV26;
@@ -66,6 +69,8 @@ export class BidRequestV26Module extends Module {
     if (extension) {
       if (context === "site") {
         this._site = extension;
+      } else if (context == "app") {
+        this._app = extension;
       }
     }
 
@@ -79,6 +84,10 @@ export class BidRequestV26Module extends Module {
 
   public site(site?: SiteV26): this {
     return this.context("site", site || {});
+  }
+
+  public app(app?: AppV26): this {
+    return this.context("app", app || {});
   }
 
   public device(device: DeviceV26): this {
@@ -183,6 +192,8 @@ export class BidRequestV26Module extends Module {
 
     if (this._context === "site") {
       bidRequest.site = this.generateSite();
+    } else if (this._context === "app") {
+      bidRequest.app = this.generateApp();
     }
 
     return this.enrich(bidRequest);
@@ -197,6 +208,17 @@ export class BidRequestV26Module extends Module {
       domain: site.domain,
       page: site.page,
       ...this._site,
+    };
+  }
+
+  private generateApp(): AppV26 {
+    const app = this.helper.selectRandomArrayItem<AppEntryDefinition>(
+      this.definitions.adcom.context.app
+    );
+
+    return {
+      domain: app.domain,
+      ...this._app,
     };
   }
 
@@ -265,5 +287,31 @@ export class BidRequestV26Module extends Module {
     bidRequest.at = this._at;
 
     return bidRequest;
+  }
+
+  public reset(): void {
+    this.impressionCount = 1;
+    this._customBidRequest = {};
+    this._context = "site";
+    this._site = {};
+    this._app = {};
+    this._imp = undefined;
+    this._device = undefined;
+    this._user = undefined;
+    this._source = undefined;
+    this._regs = undefined;
+    this._ext = undefined;
+    this._test = 0;
+    this._at = 2;
+    this._tmax = undefined;
+    this._wseat = undefined;
+    this._bseat = undefined;
+    this._cur = undefined;
+    this._wlang = undefined;
+    this._wlangb = undefined;
+    this._bcat = undefined;
+    this._cattax = undefined;
+    this._badv = undefined;
+    this._bapp = undefined;
   }
 }

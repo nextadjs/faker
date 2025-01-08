@@ -7,5 +7,6 @@ export type {
   User as UserV26,
   Source as SourceV26,
   Regs as RegsV26,
-  Imp as ImpV26
+  Imp as ImpV26,
+  App as AppV26
 } from "iab-openrtb/v26";

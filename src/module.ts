@@ -1,18 +1,20 @@
 import type { Definition } from "./definitions";
-import type { IHelper } from "@/types/interface";
+import type { Helper } from "./helper";
 
 export abstract class Module {
   protected definitions: Definition;
-  protected helper: IHelper;
+  protected helper: Helper;
 
   public constructor({
     definitions,
     helper,
   }: {
     definitions: Definition;
-    helper: IHelper;
+    helper: Helper;
   }) {
     this.definitions = definitions;
     this.helper = helper;
   }
+
+  public abstract reset(): void;
 }

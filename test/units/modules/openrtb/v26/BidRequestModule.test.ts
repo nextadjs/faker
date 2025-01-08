@@ -148,6 +148,56 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result).toHaveProperty("site");
   });
 
+  it("アプリ情報を指定する", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: {
+        ...data,
+        adcom: {
+          ...data.adcom,
+          context: {
+            ...data.adcom.context,
+            app: [
+              {
+                domain: "app.test",
+              },
+            ],
+          },
+        },
+      },
+      helper: helper,
+    });
+
+    const result = sut.context("app").minimal();
+
+    expect(result.app?.domain).toBe("app.test");
+  });
+
+  it("アプリコンテキストを指定するショートカットメソッドが通常のコンテキスト指定と同じ動作をする", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.app().minimal();
+
+    expect(result).toHaveProperty("app");
+  });
+
+  it('サイトコンテキストとアプリコンテキストを同時に指定した場合、最後に指定したコンテキストが優先される', () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.app().site().minimal();
+
+    expect(result).not.toHaveProperty("app");
+    expect(result).toHaveProperty('site');
+  });
+
   it("メソッドチェーンが正しく動作する", () => {
     const helper = new Helper();
     const sut = new BidRequestV26Module({

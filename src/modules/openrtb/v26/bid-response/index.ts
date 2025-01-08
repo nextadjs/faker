@@ -22,11 +22,13 @@ export class BidResponseV26Module extends Module {
     return this;
   }
 
-  public nbr(noBidReasonCode: NoBidReasonCode = NoBidReasonCode.UNKNOWN_ERROR): BidResponseV26 {
+  public nbr(
+    noBidReasonCode: NoBidReasonCode = NoBidReasonCode.UNKNOWN_ERROR
+  ): BidResponseV26 {
     return {
-      id:  this.helper.generateUUID(),
-      nbr: noBidReasonCode
-    }
+      id: this.helper.generateUUID(),
+      nbr: noBidReasonCode,
+    };
   }
 
   public minimal(): BidResponseV26 {
@@ -61,5 +63,11 @@ export class BidResponseV26Module extends Module {
     } else {
       return this.helper.selectRandomArrayItem<string>(this._impId) || "1";
     }
+  }
+
+  public reset(): void {
+    this.seatBidCount = 1;
+    this.bidCount = 1;
+    this._impId = undefined;
   }
 }

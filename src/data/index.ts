@@ -2,6 +2,7 @@ import type { Definition } from "@/definitions";
 import site from "./adcom/context/site";
 import seat from "./openrtb/bid-response/seat";
 import banner from "./creative/banner";
+import app from "./adcom/context/app";
 
 export const data: Definition = {
   openrtb: {
@@ -13,6 +14,7 @@ export const data: Definition = {
   adcom: {
     context: {
       site: site,
+      app: app,
     },
   },
   creative: {
