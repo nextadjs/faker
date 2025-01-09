@@ -62,6 +62,12 @@ export class BidRequestV26Module extends Module {
   private _badv?: string[];
   private _bapp?: string[];
   private formats: FormatType[] = [];
+  private _id?: string;
+
+  public id(id: string): this {
+    this._id = id;
+    return this;
+  }
 
   public imp(
     countOrCustomImp: number | Partial<ImpV26>,
@@ -474,6 +480,10 @@ export class BidRequestV26Module extends Module {
 
     if (this._at) {
       bidRequest.at = this._at;
+    }
+
+    if (this._id) {
+      bidRequest.id = this._id;
     }
 
     return bidRequest;

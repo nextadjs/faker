@@ -692,4 +692,16 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result.imp[1].banner?.format![1]?.h).toBe(50);
     expect(result.imp[0].banner?.pos).toBe(2);
   });
+
+  it('入札リクエストIDを指定する', () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.id('bid-request-id').minimal();
+
+    expect(result.id).toEqual('bid-request-id');
+  });
 });
