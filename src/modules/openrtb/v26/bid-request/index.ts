@@ -48,8 +48,8 @@ export class BidRequestV26Module extends Module {
   private _source?: SourceV26;
   private _regs?: RegsV26;
   private _ext?: Record<string, unknown>;
-  private _test: 1 | 0 = 0;
-  private _at: number = 2;
+  private _test?: 1 | 0;
+  private _at?: number;
   private _tmax?: number;
   private _wseat?: string[];
   private _bseat?: string[];
@@ -468,8 +468,13 @@ export class BidRequestV26Module extends Module {
       bidRequest.acat = this._acat;
     }
 
-    bidRequest.test = this._test;
-    bidRequest.at = this._at;
+    if (this._test) {
+      bidRequest.test = this._test;
+    }
+
+    if (this._at) {
+      bidRequest.at = this._at;
+    }
 
     return bidRequest;
   }
