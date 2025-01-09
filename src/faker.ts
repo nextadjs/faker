@@ -1,24 +1,28 @@
 import { data } from "./data";
-import type { Definition } from "./definitions";
 import { Helper } from "./helper";
-import { BidRequestV26Module } from "./modules/openrtb/v26/bid-request";
+import { CreativeModuleFactory } from "./modules/creative";
+import { OpenRTBVModuleFactory } from "./modules/openrtb";
+import type { CreativeModules, ModuleConfig, OpenRTBV26Modules } from "./types";
 
 export class Faker {
+  private readonly config: ModuleConfig;
   public readonly openrtb: {
-    v26: BidRequestV26Module;
+    v26: OpenRTBV26Modules;
   };
+  public readonly creative: CreativeModules;
 
-  private definitions: Definition;
-  private helper: Helper;
-
-  public constructor() {
-    this.definitions = data;
-    this.helper = new Helper();
-    this.openrtb = {
-      v26: new BidRequestV26Module({
-        definitions: this.definitions,
-        helper: this.helper,
-      }),
+  constructor() {
+    this.config = {
+      definitions: data,
+      helper: new Helper(),
     };
+
+    this.openrtb = new OpenRTBVModuleFactory(this.config).create();
+    this.creative = new CreativeModuleFactory(this.config).create();
+  }
+
+  public reset(): void {
+    const newInstance = new Faker();
+    Object.assign(this, newInstance);
   }
 }
