@@ -36,7 +36,7 @@ interface CustomContexts {
 }
 
 export class BidRequestV26Module extends Module {
-  private impressionCount: number = 1;
+  private impressionCount: number = 0;
   private _customBidRequest: Partial<BidRequestV26> = {};
   private _context: ContextType = "site";
   private _site: SiteV26 = {};
@@ -151,14 +151,30 @@ export class BidRequestV26Module extends Module {
     return this;
   }
 
-  public banner(w: number = 300, h: number = 250): this {
-    this.formats.push({
-      type: "banner",
-      size: {
-        w: w,
-        h: h,
-      },
-    });
+  public banner(
+    widthOrExtension: number | BannerV26 = 300,
+    height: number = 250,
+    extension?: BannerV26
+  ): this {
+    if (typeof widthOrExtension === "number") {
+      this.formats.push({
+        type: "banner",
+        size: {
+          w: widthOrExtension,
+          h: height,
+        },
+        extension: extension,
+      });
+    } else {
+      this.formats.push({
+        type: "banner",
+        size: {
+          w: 300,
+          h: 250,
+        },
+        extension: widthOrExtension,
+      });
+    }
 
     return this;
   }
@@ -236,40 +252,119 @@ export class BidRequestV26Module extends Module {
   }
 
   private generateImps(): ImpV26[] {
-    return [...Array(this.impressionCount)].map((_, i) => {
-      let imp: ImpV26 = {
-        id: (i + 1).toString(),
-      };
+    if (this.impressionCount === 0) {
+      let imps: ImpV26[] = [];
 
-      if (!this.formats.length) {
-        imp.banner = {
-          w: 300,
-          h: 250,
-        };
-      } else {
-        const bannerFormats = this.formats.filter(
-          (format) => format.type === "banner"
-        );
+      if (this.hasBannerFormatsWithExtension()) {
+        imps.push(...this.generateBannerImpsWithExtension());
+      }
 
-        if (bannerFormats.length) {
-          imp.banner = {
-            format: bannerFormats.map((bannerFormat) => ({
-              w: bannerFormat.size.w,
-              h: bannerFormat.size.h,
-            })),
-          };
+      if (this.hasBannerFormatsWithoutExtension()) {
+        imps.push(this.generateBannerImpWithoutExtension());
+      }
+
+      if (!imps.length) {
+        imps.push(this.generateDefaultBannerImp());
+      }
+
+      return imps;
+    } else {
+      return [...Array(this.impressionCount)].map(() => {
+        if (this.formats.length) {
+          const format = this.helper.selectRandomArrayItem<FormatType>(
+            this.formats
+          );
+
+          if (format.type === "banner") {
+            if (format.extension) {
+              return this.generateImp({
+                banner: this.generateBannerWithExtension(format),
+              });
+            } else {
+              return this.generateImp(this.generateBannerImpWithoutExtension());
+            }
+          }
         }
-      }
 
-      if (this._imp) {
-        imp = {
-          ...imp,
-          ...this._imp,
-        };
-      }
+        return this.generateDefaultBannerImp();
+      });
+    }
+  }
 
-      return imp;
+  private getBannerFormatsWithExtension(): BannerFormat[] {
+    return this.formats.filter(
+      (format) => format.type === "banner" && format.extension
+    );
+  }
+
+  private hasBannerFormatsWithExtension(): boolean {
+    return this.formats.some(
+      (format) => format.type === "banner" && format.extension
+    );
+  }
+
+  private getBannerFormatsWithoutExtension(): BannerFormat[] {
+    return this.formats.filter(
+      (format) => format.type === "banner" && !format.extension
+    );
+  }
+
+  private hasBannerFormatsWithoutExtension(): boolean {
+    return this.formats.some(
+      (format) => format.type === "banner" && !format.extension
+    );
+  }
+
+  private generateDefaultBannerImp(): ImpV26 {
+    return this.generateImp({
+      banner: {
+        w: 300,
+        h: 250,
+      },
     });
+  }
+
+  private generateBannerImpsWithExtension(): ImpV26[] {
+    return this.getBannerFormatsWithExtension().map((bannerFormat) => {
+      return this.generateImp({
+        banner: this.generateBannerWithExtension(bannerFormat),
+      });
+    });
+  }
+
+  private generateBannerImpWithoutExtension(): ImpV26 {
+    return this.generateImp({
+      banner: {
+        format: this.getBannerFormatsWithoutExtension().map((bannerFormat) => ({
+          w: bannerFormat.size.w,
+          h: bannerFormat.size.h,
+        })),
+      },
+    });
+  }
+
+  private generateBannerWithExtension(bannerFormat: BannerFormat): BannerV26 {
+    return {
+      w: bannerFormat.size.w,
+      h: bannerFormat.size.h,
+      ...bannerFormat.extension,
+    };
+  }
+
+  private generateImp(extension: Partial<ImpV26>): ImpV26 {
+    let imp: ImpV26 = {
+      id: this.helper.generateUUID(),
+      ...extension,
+    };
+
+    if (this._imp) {
+      imp = {
+        ...imp,
+        ...this._imp,
+      };
+    }
+
+    return imp;
   }
 
   private generateSite(): SiteV26 {

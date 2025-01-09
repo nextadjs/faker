@@ -27,7 +27,6 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     const result = sut.minimal();
 
     expect(result.imp.length).toEqual(1);
-    expect(result.imp[0].id).toBe("1");
   });
 
   it("指定した数だけインプレッションが生成される", () => {
@@ -541,8 +540,9 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     const result = sut.banner().minimal();
 
     expect(result.imp[0]).toHaveProperty("banner");
-    expect(result.imp[0].banner?.format![0]?.w).toBe(300);
-    expect(result.imp[0].banner?.format![0]?.h).toBe(250);
+    const format = result.imp[0].banner?.format![0];
+    expect(format?.w).toBe(300);
+    expect(format?.h).toBe(250);
   });
 
   it("バナーフォーマットを指定したうえでインプレッションを複数生成すると、全てのインプレッションに指定したバナーが含まれる", () => {
@@ -567,8 +567,9 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     const result = sut.banner(300, 600).minimal();
 
-    expect(result.imp[0].banner?.format![0]?.w).toBe(300);
-    expect(result.imp[0].banner?.format![0]?.h).toBe(600);
+    const format = result.imp[0].banner?.format![0];
+    expect(format?.w).toBe(300);
+    expect(format?.h).toBe(600);
   });
 
   it("フォーマットを指定しないとデフォルトで300x250のバナーフォーマットを含んだ入札リクエストが生成される", () => {
@@ -585,7 +586,111 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result.imp[0]?.banner?.h).toBe(250);
   });
 
-  it('バナーフォーマットのカスタムパラーメーターを指定する', () => {
+  it("バナーフォーマットの拡張パラーメーターを指定する", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
 
+    const result = sut
+      .banner({
+        pos: 1,
+      })
+      .minimal();
+
+    expect(result.imp[0]?.banner?.pos).toBe(1);
+  });
+
+  it("バナーフォーマットのサイズと拡張パラメーターを指定する", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.banner(300, 600).minimal();
+
+    expect(result.imp[0].banner?.format![0]?.w).toBe(300);
+    expect(result.imp[0].banner?.format![0]?.h).toBe(600);
+  });
+
+  it("バナーフォーマットのサイズを複数指定したら一つのインプレッションオブジェクトに集約される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.banner(300, 600).banner(300, 50).minimal();
+
+    expect(result.imp[0].banner?.format![0]?.w).toBe(300);
+    expect(result.imp[0].banner?.format![0]?.h).toBe(600);
+    expect(result.imp[0].banner?.format![1]?.w).toBe(300);
+    expect(result.imp[0].banner?.format![1]?.h).toBe(50);
+  });
+
+  it("拡張を含んだ状態でバナーフォーマットを複数していしたらインプレッションが二つに分割される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut
+      .banner(300, 600, { pos: 2 })
+      .banner({ pos: 3 })
+      .minimal();
+
+    expect(result.imp[0].banner?.w).toBe(300);
+    expect(result.imp[0].banner?.h).toBe(600);
+    expect(result.imp[0].banner?.pos).toBe(2);
+    expect(result.imp[1].banner?.w).toBe(300);
+    expect(result.imp[1].banner?.pos).toBe(3);
+  });
+
+  it("インプレッション数を指定した状態で拡張を含むバナーフォーマットを指定すると、全てのインプレッションにおいてランダムで設定される", () => {
+    const helper = new Helper();
+    vi.spyOn(helper, "selectRandomArrayItem").mockReturnValue({
+      type: "banner",
+      size: {
+        w: 300,
+        h: 600,
+      },
+      extension: {
+        pos: 2,
+      },
+    });
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut
+      .imp(1)
+      .banner(300, 600, { pos: 2 })
+      .banner({ pos: 3 })
+      .minimal();
+
+    expect(result.imp[0].banner?.w).toBe(300);
+    expect(result.imp[0].banner?.h).toBe(600);
+    expect(result.imp[0].banner?.pos).toBe(2);
+  });
+
+  it("拡張を含んだ状態と、サイズのみを含んだ状態でバナーフォーマットを指定したらサイズのみを含んだバナーフォーマットが一つのインプレッションに集約され、拡張を含んだバナーフォーマットが複数のインプレッションに分割される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.banner(300, 600).banner(300, 50).banner({ pos: 2}).minimal();
+
+    console.log(result.imp);
+    expect(result.imp[1].banner?.format![0]?.w).toBe(300);
+    expect(result.imp[1].banner?.format![0]?.h).toBe(600);
+    expect(result.imp[1].banner?.format![1]?.w).toBe(300);
+    expect(result.imp[1].banner?.format![1]?.h).toBe(50);
+    expect(result.imp[0].banner?.pos).toBe(2);
   });
 });
