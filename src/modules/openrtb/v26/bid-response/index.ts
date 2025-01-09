@@ -38,7 +38,7 @@ export class BidResponseV26Module extends Module {
         return {
           bid: [...Array(this.bidCount)].map((_, bidIndex) => {
             return {
-              id: (bidIndex + 1).toString(),
+              id: this.helper.generateUUID(),
               impid: this.getImpId(),
               price: this.helper.generateRandomDecimal(0, 10),
               w: 300,
@@ -57,11 +57,14 @@ export class BidResponseV26Module extends Module {
 
   private getImpId(): string {
     if (!this._impId) {
-      return "1";
+      return this.helper.generateUUID();
     } else if (typeof this._impId === "string") {
       return this._impId;
     } else {
-      return this.helper.selectRandomArrayItem<string>(this._impId) || "1";
+      return (
+        this.helper.selectRandomArrayItem<string>(this._impId) ||
+        this.helper.generateUUID()
+      );
     }
   }
 }
