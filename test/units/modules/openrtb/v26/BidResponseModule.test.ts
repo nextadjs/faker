@@ -258,4 +258,64 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
       '<div style="width:728px;height:90px">banner ad</div>'
     );
   });
+
+  it('IDを指定すると指定したIDを持つ入札レスポンスが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.id("1").minimal();
+
+    expect(result.id).toBe("1");
+  });
+
+  it('入札IDを指定すると指定したIDを持つ入札レスポンスが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.bidid("1").minimal();
+
+    expect(result.bidid).toBe("1");
+  });
+
+  it('通貨を指定すると指定した通貨を持つ入札レスポンスが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.cur("JPY").minimal();
+
+    expect(result.cur).toBe("JPY");
+  });
+
+  it('カスタムデータを指定すると指定したカスタムデータを持つ入札レスポンスが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.customdata("custom").minimal();
+
+    expect(result.customdata).toBe("custom");
+  });
+
+  it('拡張パラメーターを指定すると指定した拡張パラメーターを持つ入札レスポンスが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.ext({ key: "value" }).minimal();
+
+    expect(result.ext).toEqual({ key: "value" });
+  });
 });

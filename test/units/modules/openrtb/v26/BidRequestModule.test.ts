@@ -93,7 +93,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result).toHaveProperty("site");
   });
 
-  it("サイト情報を指定する", () => {
+  it("サイト情報はデータのものを使用する", () => {
     const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: {
@@ -132,7 +132,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result).toHaveProperty("site");
   });
 
-  it("アプリ情報を指定する", () => {
+  it("アプリ情報はデータのものを指定する", () => {
     const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: {
@@ -169,7 +169,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result).toHaveProperty("app");
   });
 
-  it("DOOH情報を指定する", () => {
+  it("DOOH情報はデータのものを使用する", () => {
     const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: {

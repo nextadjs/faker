@@ -14,6 +14,36 @@ export class BidResponseV26Module extends Module {
   private bidCount: number = 1;
   private _impId?: string | string[];
   private bannerFormats: BannerFormat[] = [];
+  private _id?: string;
+  private _bidid?: string;
+  private _cur?: string;
+  private _customdata?: string;
+  private _ext?: Record<string, unknown>;
+
+  public id(id: string): this {
+    this._id = id;
+    return this;
+  }
+
+  public bidid(bidId: string): this {
+    this._bidid = bidId;
+    return this;
+  }
+
+  public cur(cur: string): this {
+    this._cur = cur;
+    return this;
+  }
+
+  public customdata(customdata: string): this {
+    this._customdata = customdata;
+    return this;
+  }
+
+  public ext(ext: Record<string, unknown>): this {
+    this._ext = ext;
+    return this;
+  }
 
   public seatbid(seatBidCount: number): this {
     this.seatBidCount = seatBidCount;
@@ -54,14 +84,14 @@ export class BidResponseV26Module extends Module {
   public nbr(
     noBidReasonCode: NoBidReasonCode = NoBidReasonCode.UNKNOWN_ERROR
   ): BidResponseV26 {
-    return {
+    return this.enrich({
       id: this.helper.generateUUID(),
       nbr: noBidReasonCode,
-    };
+    });
   }
 
   public minimal(): BidResponseV26 {
-    return {
+    return this.enrich({
       id: this.helper.generateUUID(),
       seatbid: [...Array(this.seatBidCount)].map((_, __) => {
         return {
@@ -73,7 +103,7 @@ export class BidResponseV26Module extends Module {
           ),
         };
       }),
-    };
+    });
   }
 
   private getImpId(): string {
@@ -125,5 +155,29 @@ export class BidResponseV26Module extends Module {
     });
 
     return displayCreative.size(format.w, format.h);
+  }
+
+  private enrich(bidResponse: BidResponseV26): BidResponseV26 {
+    if (this._id) {
+      bidResponse.id = this._id;
+    }
+
+    if (this._bidid) {
+      bidResponse.bidid = this._bidid;
+    }
+
+    if (this._cur) {
+      bidResponse.cur = this._cur;
+    }
+
+    if (this._customdata) {
+      bidResponse.customdata = this._customdata;
+    }
+
+    if (this._ext) {
+      bidResponse.ext = this._ext;
+    }
+
+    return bidResponse;
   }
 }
