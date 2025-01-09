@@ -9,6 +9,7 @@ import type {
   SiteV26,
   SourceV26,
   UserV26,
+  VideoV26,
 } from "@/types/openrtb";
 import { Module } from "@/module";
 import type {
@@ -18,7 +19,7 @@ import type {
 } from "@/definitions";
 
 type ContextType = "site" | "app" | "dooh";
-type FormatType = BannerFormat;
+type FormatType = BannerFormat | VideoFormat;
 
 type BannerFormat = {
   type: "banner";
@@ -27,6 +28,11 @@ type BannerFormat = {
     h: number;
   };
   extension?: BannerV26;
+};
+
+type VideoFormat = {
+  type: "video";
+  extension?: Partial<VideoV26>;
 };
 
 interface CustomContexts {
@@ -185,6 +191,15 @@ export class BidRequestV26Module extends Module {
     return this;
   }
 
+  public video(extension: Partial<VideoV26> = {}): this {
+    this.formats.push({
+      type: "video",
+      extension,
+    });
+
+    return this;
+  }
+
   public wseat(wseat: string[]): this {
     this._wseat = wseat;
     return this;
@@ -269,6 +284,10 @@ export class BidRequestV26Module extends Module {
         imps.push(this.generateBannerImpWithoutExtension());
       }
 
+      if (this.hasVideoFormats()) {
+        imps.push(...this.generateVideoImps());
+      }
+
       if (!imps.length) {
         imps.push(this.generateDefaultBannerImp());
       }
@@ -289,6 +308,10 @@ export class BidRequestV26Module extends Module {
             } else {
               return this.generateImp(this.generateBannerImpWithoutExtension());
             }
+          } else if (format.type === "video") {
+            return this.generateImp({
+              video: this.generateVideo(format.extension),
+            });
           }
         }
 
@@ -300,7 +323,7 @@ export class BidRequestV26Module extends Module {
   private getBannerFormatsWithExtension(): BannerFormat[] {
     return this.formats.filter(
       (format) => format.type === "banner" && format.extension
-    );
+    ) as BannerFormat[];
   }
 
   private hasBannerFormatsWithExtension(): boolean {
@@ -312,13 +335,38 @@ export class BidRequestV26Module extends Module {
   private getBannerFormatsWithoutExtension(): BannerFormat[] {
     return this.formats.filter(
       (format) => format.type === "banner" && !format.extension
-    );
+    ) as BannerFormat[];
   }
 
   private hasBannerFormatsWithoutExtension(): boolean {
     return this.formats.some(
       (format) => format.type === "banner" && !format.extension
     );
+  }
+
+  private hasVideoFormats(): boolean {
+    return this.formats.some((format) => format.type === "video");
+  }
+
+  private getVideoFormats(): VideoFormat[] {
+    return this.formats.filter(
+      (format) => format.type === "video"
+    ) as VideoFormat[];
+  }
+
+  private generateVideoImps(): ImpV26[] {
+    return this.getVideoFormats().map((videoFormat) => {
+      return this.generateImp({
+        video: this.generateVideo(videoFormat.extension),
+      });
+    });
+  }
+
+  private generateVideo(extension?: Partial<VideoV26>): VideoV26 {
+    return {
+      mimes: ["video/mp4"],
+      ...extension,
+    };
   }
 
   private generateDefaultBannerImp(): ImpV26 {

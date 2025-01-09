@@ -704,4 +704,84 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     expect(result.id).toEqual('bid-request-id');
   });
+
+  it('動画フォーマットを指定すると動画入札リクエストが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper
+    });
+
+    const result = sut.video().minimal();
+
+    expect(result.imp[0]).toHaveProperty('video');
+  });
+
+  it('動画フォーマットを指定したうえで動画の情報を追加で指定すると、指定した動画情報が含まれる', () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper
+    });
+
+    const result = sut.video({
+      mimes: ['video/mp4'],
+      minduration: 5,
+      maxduration: 30
+    }).minimal();
+
+    expect(result.imp[0].video?.mimes).toEqual(['video/mp4']);
+    expect(result.imp[0].video?.minduration).toBe(5);
+    expect(result.imp[0].video?.maxduration).toBe(30);
+  });
+
+  it('動画フォーマットを指定したうえでインプレッションを複数生成すると、全てのインプレッションに指定した動画が含まれる', () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper
+    });
+
+    const result = sut.imp(2).video().minimal();
+
+    expect(result.imp[0]).toHaveProperty('video');
+    expect(result.imp[1]).toHaveProperty('video');
+  }); 
+
+  it('バナーフォーマットと動画フォーマットを指定した場合、二つのインプレッションオブジェクトが生成される', () => {
+    const helper = new Helper();
+    vi.spyOn(helper, 'selectRandomArrayItem').mockReturnValue({
+      type: 'video',
+      mimes: ['video/mp4'],
+      minduration: 5,
+      maxduration: 30
+    });
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper
+    });
+
+    const result = sut.banner().video().minimal();
+
+    expect(result.imp[0]).toHaveProperty('banner');
+    expect(result.imp[1]).toHaveProperty('video');
+  });
+
+  it('インプレッション数を指定したうえでバナーフォーマットと動画フォーマットを指定すると、全てのインプレッションにおいてランダムでフォーマットが設定される', () => {
+    const helper = new Helper();
+    vi.spyOn(helper, 'selectRandomArrayItem').mockReturnValue({
+      type: 'video',
+      mimes: ['video/mp4'],
+      minduration: 5,
+      maxduration: 30
+    });
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper
+    });
+
+    const result = sut.imp(1).banner().video().minimal();
+
+    expect(result.imp[0]).toHaveProperty('video');
+  });
 });

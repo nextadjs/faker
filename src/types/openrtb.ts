@@ -11,5 +11,6 @@ export type {
   App as AppV26,
   DOOH as DOOHV26,
   Banner as BannerV26,
-  Bid as BidV26
+  Bid as BidV26,
+  Video as VideoV26,
 } from "iab-openrtb/v26";
