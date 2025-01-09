@@ -1,7 +1,7 @@
 import type { ModuleConfig, OpenRTBModules } from "@/types";
 import { OpenRTBV26ModuleFactory } from "./v26";
 
-export class OpenRTBVModuleFactory {
+export class OpenRTBModuleFactory {
   constructor(private readonly config: ModuleConfig) {}
 
   create(): OpenRTBModules {

@@ -1,14 +1,12 @@
 import { data } from "./data";
 import { Helper } from "./helper";
 import { CreativeModuleFactory } from "./modules/creative";
-import { OpenRTBVModuleFactory } from "./modules/openrtb";
-import type { CreativeModules, ModuleConfig, OpenRTBV26Modules } from "./types";
+import { OpenRTBModuleFactory } from "./modules/openrtb";
+import type { CreativeModules, ModuleConfig, OpenRTBModules } from "./types";
 
 export class Faker {
   private readonly config: ModuleConfig;
-  public readonly openrtb: {
-    v26: OpenRTBV26Modules;
-  };
+  public readonly openrtb: OpenRTBModules;
   public readonly creative: CreativeModules;
 
   constructor() {
@@ -17,7 +15,7 @@ export class Faker {
       helper: new Helper(),
     };
 
-    this.openrtb = new OpenRTBVModuleFactory(this.config).create();
+    this.openrtb = new OpenRTBModuleFactory(this.config).create();
     this.creative = new CreativeModuleFactory(this.config).create();
   }
 
