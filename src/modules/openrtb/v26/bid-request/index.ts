@@ -1,10 +1,12 @@
 import type {
   AppV26,
+  AssetV12,
   BannerV26,
   BidRequestV26,
   DeviceV26,
   DOOHV26,
   ImpV26,
+  NativeV26,
   RegsV26,
   SiteV26,
   SourceV26,
@@ -19,7 +21,7 @@ import type {
 } from "@/definitions";
 
 type ContextType = "site" | "app" | "dooh";
-type FormatType = BannerFormat | VideoFormat;
+type FormatType = BannerFormat | VideoFormat | NativeFormat;
 
 type BannerFormat = {
   type: "banner";
@@ -33,6 +35,12 @@ type BannerFormat = {
 type VideoFormat = {
   type: "video";
   extension?: Partial<VideoV26>;
+};
+
+type NativeFormat = {
+  type: "native";
+  assets: AssetV12[];
+  extension?: Partial<NativeV26>;
 };
 
 interface CustomContexts {
@@ -200,6 +208,27 @@ export class BidRequestV26Module extends Module {
     return this;
   }
 
+  public native(
+    assetsOrExtension: AssetV12[] | Partial<NativeV26> = [],
+    extension?: Partial<NativeV26>
+  ): this {
+    if (Array.isArray(assetsOrExtension)) {
+      this.formats.push({
+        type: "native",
+        assets: assetsOrExtension,
+        extension,
+      });
+    } else {
+      this.formats.push({
+        type: "native",
+        assets: [],
+        extension: assetsOrExtension,
+      });
+    }
+
+    return this;
+  }
+
   public wseat(wseat: string[]): this {
     this._wseat = wseat;
     return this;
@@ -288,6 +317,10 @@ export class BidRequestV26Module extends Module {
         imps.push(...this.generateVideoImps());
       }
 
+      if (this.hasNativeFormats()) {
+        imps.push(...this.generateNativeImps());
+      }
+
       if (!imps.length) {
         imps.push(this.generateDefaultBannerImp());
       }
@@ -311,6 +344,10 @@ export class BidRequestV26Module extends Module {
           } else if (format.type === "video") {
             return this.generateImp({
               video: this.generateVideo(format.extension),
+            });
+          } else if (format.type === "native") {
+            return this.generateImp({
+              native: this.generateNative(format),
             });
           }
         }
@@ -354,6 +391,16 @@ export class BidRequestV26Module extends Module {
     ) as VideoFormat[];
   }
 
+  private hasNativeFormats(): boolean {
+    return this.formats.some((format) => format.type === "native");
+  }
+
+  private getNativeFormats(): NativeFormat[] {
+    return this.formats.filter(
+      (format) => format.type === "native"
+    ) as NativeFormat[];
+  }
+
   private generateVideoImps(): ImpV26[] {
     return this.getVideoFormats().map((videoFormat) => {
       return this.generateImp({
@@ -366,6 +413,24 @@ export class BidRequestV26Module extends Module {
     return {
       mimes: ["video/mp4"],
       ...extension,
+    };
+  }
+
+  private generateNativeImps(): ImpV26[] {
+    return this.getNativeFormats().map((nativeFormat) => {
+      return this.generateImp({
+        native: this.generateNative(nativeFormat),
+      });
+    });
+  }
+
+  private generateNative(nativeFormat: NativeFormat): NativeV26 {
+    return {
+      request: JSON.stringify({
+        ver: "1.2",
+        assets: nativeFormat.assets,
+      }),
+      ...nativeFormat.extension,
     };
   }
 

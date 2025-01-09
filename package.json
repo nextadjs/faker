@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "iab-adcom": "^0.1.10",
-    "iab-native": "^0.2.0",
+    "iab-native": "^0.3.0",
     "iab-openrtb": "^0.3.9",
-    "uuid": "^11.0.4"
+    "uuid": "^11.0.5"
   }
 }

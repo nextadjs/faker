@@ -13,4 +13,9 @@ export type {
   Banner as BannerV26,
   Bid as BidV26,
   Video as VideoV26,
+  Native as NativeV26,
 } from "iab-openrtb/v26";
+export type {
+  TitleRequest as TitleRequestV12,
+  Asset as AssetV12,
+} from 'iab-native/v12';
