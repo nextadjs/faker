@@ -1,4 +1,5 @@
 import { Module } from "@/module";
+import { DisplayModule } from "@/modules/creative/display";
 import type { BidResponseV26, BidV26 } from "@/types/openrtb";
 import { NoBidReasonCode } from "iab-openrtb/v26";
 
@@ -118,6 +119,11 @@ export class BidResponseV26Module extends Module {
   }
 
   private generateAdMarkup(format: BannerFormat): string {
-    return `<div style="width:${format.w}px;height:${format.h}px">banner ad</div>`;
+    const displayCreative = new DisplayModule({
+      definitions: this.definitions,
+      helper: this.helper,
+    });
+
+    return displayCreative.size(format.w, format.h);
   }
 }

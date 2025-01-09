@@ -80,7 +80,7 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
     expect(bids2.length).toBe(2);
   });
 
-  it('各入札の入札IDが一意を持つ', () => {
+  it("各入札の入札IDが一意を持つ", () => {
     const helper = new Helper();
     const sut = new BidResponseV26Module({
       definitions: data,
@@ -93,34 +93,34 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
     expect(bids[0].id !== bids[1].id).toBe(true);
   });
 
-  it('指定したインプレッションIDを入札が持つ', () => {
+  it("指定したインプレッションIDを入札が持つ", () => {
     const helper = new Helper();
     const sut = new BidResponseV26Module({
       definitions: data,
       helper: helper,
     });
 
-    const result = sut.impId('1').minimal();
+    const result = sut.impId("1").minimal();
 
     const bids = result.seatbid![0].bid;
-    expect(bids[0].impid).toBe('1');
+    expect(bids[0].impid).toBe("1");
   });
 
-  it('指定したインプレッションIDのどれかを入札が持つ', () => {
+  it("指定したインプレッションIDのどれかを入札が持つ", () => {
     const helper = new Helper();
-    vi.spyOn(helper, 'selectRandomArrayItem').mockReturnValue('2');
+    vi.spyOn(helper, "selectRandomArrayItem").mockReturnValue("2");
     const sut = new BidResponseV26Module({
       definitions: data,
       helper: helper,
     });
 
-    const result = sut.impId(['1', '2']).minimal();
+    const result = sut.impId(["1", "2"]).minimal();
 
     const bids = result.seatbid![0].bid;
-    expect(bids[0].impid).toBe('2');
+    expect(bids[0].impid).toBe("2");
   });
 
-  it('入札不参加レスポンスを生成する', () => {
+  it("入札不参加レスポンスを生成する", () => {
     const helper = new Helper();
     vi.spyOn(helper, "generateUUID").mockReturnValue("1");
     const sut = new BidResponseV26Module({
@@ -134,7 +134,7 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
     expect(result.nbr).toEqual(0);
   });
 
-  it('NBR理由コードを指定する', () => {
+  it("NBR理由コードを指定する", () => {
     const helper = new Helper();
     vi.spyOn(helper, "generateUUID").mockReturnValue("1");
     const sut = new BidResponseV26Module({
@@ -209,9 +209,9 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
       helper: helper,
     });
 
-    const result = sut.banner({ iurl: 'https://example.com/' }).minimal();
+    const result = sut.banner({ iurl: "https://example.com/" }).minimal();
 
-    expect(result.seatbid![0].bid[0]?.iurl).toBe('https://example.com/');
+    expect(result.seatbid![0].bid[0]?.iurl).toBe("https://example.com/");
   });
 
   it("バナーフォーマットのサイズを複数指定した場合はランダムで選択される", () => {
@@ -234,12 +234,28 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
   it("バナーフォーマットで指定したサイズに合わせてクリエイティブが生成される", () => {
     const helper = new Helper();
     const sut = new BidResponseV26Module({
-      definitions: data,
+      definitions: {
+        ...data,
+        creative: {
+          ...data.creative,
+          display: [
+            {
+              markup: '<div style="width:728px;height:90px">banner ad</div>',
+              size: {
+                w: 728,
+                h: 90,
+              },
+            },
+          ],
+        },
+      },
       helper: helper,
     });
 
     const result = sut.banner(728, 90).minimal();
 
-    expect(result.seatbid![0].bid[0].adm).toBe('<div style="width:728px;height:90px">banner ad</div>');
+    expect(result.seatbid![0].bid[0].adm).toBe(
+      '<div style="width:728px;height:90px">banner ad</div>'
+    );
   });
 });
