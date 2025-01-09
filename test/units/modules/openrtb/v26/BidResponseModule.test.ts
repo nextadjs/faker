@@ -318,4 +318,35 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
 
     expect(result.ext).toEqual({ key: "value" });
   });
+
+  it('動画フォーマットを指定すると動画入札レスポンスが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: {
+        ...data,
+        creative: {
+          ...data.creative,
+          vast: [
+            {
+              vast: '<VAST version="4.2"></VAST>',
+              version: "4.2",
+              subType: 13,
+              size: {
+                w: 640,
+                h: 480,
+              },
+            },
+          ],
+        },
+      },
+      helper: helper,
+    });
+
+    const result = sut.video().minimal();
+
+    expect(result.seatbid![0].bid[0].mtype).toBe(2);
+    expect(result.seatbid![0].bid[0].adm).toBe('<VAST version="4.2"></VAST>');
+    expect(result.seatbid![0].bid[0].w).toBe(640);
+    expect(result.seatbid![0].bid[0].h).toBe(480);
+  });
 });

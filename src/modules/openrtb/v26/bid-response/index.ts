@@ -1,6 +1,8 @@
 import { Module } from "@/module";
 import { DisplayModule } from "@/modules/creative/display";
+import { VastModule } from "@/modules/creative/vast";
 import type { BidResponseV26, BidV26 } from "@/types/openrtb";
+import { AudioVideoCreativeSubtype } from "iab-adcom";
 import { NoBidReasonCode } from "iab-openrtb/v26";
 
 type BannerFormat = {
@@ -9,11 +11,17 @@ type BannerFormat = {
   extension?: Partial<BidV26>;
 };
 
+type VideoFormat = {
+  subType: AudioVideoCreativeSubtype;
+  extension?: Partial<BidV26>;
+};
+
 export class BidResponseV26Module extends Module {
   private seatBidCount: number = 1;
   private bidCount: number = 1;
   private _impId?: string | string[];
   private bannerFormats: BannerFormat[] = [];
+  private videoFormats: VideoFormat[] = [];
   private _id?: string;
   private _bidid?: string;
   private _cur?: string;
@@ -81,6 +89,27 @@ export class BidResponseV26Module extends Module {
     return this;
   }
 
+  public video(
+    subTypeOrExtension:
+      | AudioVideoCreativeSubtype
+      | Partial<BidV26> = AudioVideoCreativeSubtype.VAST_4_2,
+    extension: Partial<BidV26> = {}
+  ): this {
+    if (typeof subTypeOrExtension === "number") {
+      this.videoFormats.push({
+        subType: subTypeOrExtension,
+        extension: extension,
+      });
+    } else {
+      this.videoFormats.push({
+        subType: AudioVideoCreativeSubtype.VAST_4_2,
+        extension: subTypeOrExtension,
+      });
+    }
+
+    return this;
+  }
+
   public nbr(
     noBidReasonCode: NoBidReasonCode = NoBidReasonCode.UNKNOWN_ERROR
   ): BidResponseV26 {
@@ -120,6 +149,14 @@ export class BidResponseV26Module extends Module {
   }
 
   private generateBid(): BidV26 {
+    if (this.videoFormats.length > 0) {
+      return this.generateVideoBid();
+    } else {
+      return this.generateBannerBid();
+    }
+  }
+
+  private generateBannerBid(): BidV26 {
     const bannerFormat = this.getBannerFormat();
 
     const bid: BidV26 = {
@@ -128,7 +165,7 @@ export class BidResponseV26Module extends Module {
       price: this.helper.generateRandomDecimal(0, 10),
       w: bannerFormat.w,
       h: bannerFormat.h,
-      adm: this.generateAdMarkup(bannerFormat),
+      adm: this.generateDisplayMarkup(bannerFormat),
       mtype: 1,
     };
 
@@ -139,22 +176,59 @@ export class BidResponseV26Module extends Module {
     return bid;
   }
 
+  private generateVideoBid(): BidV26 {
+    const videoFormat = this.getVideoFormat();
+
+    const bid: BidV26 = {
+      id: this.helper.generateUUID(),
+      impid: this.getImpId(),
+      price: this.helper.generateRandomDecimal(0, 10),
+      adm: this.generateVastMarkup(videoFormat),
+      w: 640,
+      h: 480,
+      mtype: 2,
+    };
+
+    if (videoFormat.extension) {
+      Object.assign(bid, videoFormat.extension);
+    }
+
+    return bid;
+  }
+
+  private getVideoFormat(): VideoFormat {
+    return this.helper.selectRandomArrayItem<VideoFormat>(this.videoFormats);
+  }
+
   private getBannerFormat(): BannerFormat {
-    if (this.bannerFormats.length > 0) {
+    if (this.bannerFormats.length === 0) {
+      return {
+        w: 300,
+        h: 250,
+      };
+    } else {
       return this.helper.selectRandomArrayItem<BannerFormat>(
         this.bannerFormats
       );
     }
-    return { w: 300, h: 250 };
   }
 
-  private generateAdMarkup(format: BannerFormat): string {
+  private generateDisplayMarkup(format: BannerFormat): string {
     const displayCreative = new DisplayModule({
       definitions: this.definitions,
       helper: this.helper,
     });
 
     return displayCreative.size(format.w, format.h);
+  }
+
+  private generateVastMarkup(format: VideoFormat): string {
+    const vastCreative = new VastModule({
+      definitions: this.definitions,
+      helper: this.helper,
+    });
+
+    return vastCreative.subType(format.subType);
   }
 
   private enrich(bidResponse: BidResponseV26): BidResponseV26 {
