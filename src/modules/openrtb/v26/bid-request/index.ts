@@ -238,8 +238,8 @@ export class BidRequestV26Module extends Module {
     return this;
   }
 
-  public cur(cur: string[]): this {
-    this._cur = cur;
+  public cur(cur: string[] | string): this {
+    this._cur = Array.isArray(cur) ? cur : [cur];
     return this;
   }
 
