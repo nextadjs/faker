@@ -11,6 +11,9 @@ importers:
       iab-adcom:
         specifier: ^0.1.10
         version: 0.1.10
+      iab-native:
+        specifier: ^0.2.0
+        version: 0.2.0
       iab-openrtb:
         specifier: ^0.3.9
         version: 0.3.9
@@ -612,6 +615,10 @@ packages:
 
   iab-adcom@0.1.10:
     resolution: {integrity: sha512-JqNWeljycUed6JD4Ji1RtbdDLLE1drfh73VnWR4cxD4UyMAzzvHfmbpuWW/uUrTMIfzHAYYcW5ANBGB+UDa4Zw==}
+    engines: {node: '>=14.0.0'}
+
+  iab-native@0.2.0:
+    resolution: {integrity: sha512-j9cqWTxOri8nZBo637gVwxULySRng3pKb1G7b/DkhvGqfiUOpIOGxJmbnr+hpjUoyJTBTPnBAQcldXruUF6XiQ==}
     engines: {node: '>=14.0.0'}
 
   iab-openrtb@0.3.9:
@@ -1396,6 +1403,8 @@ snapshots:
       path-scurry: 1.11.1
 
   iab-adcom@0.1.10: {}
+
+  iab-native@0.2.0: {}
 
   iab-openrtb@0.3.9: {}
 

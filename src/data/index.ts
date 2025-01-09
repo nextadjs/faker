@@ -5,6 +5,7 @@ import display from "./creative/display";
 import app from "./adcom/context/app";
 import dooh from "./adcom/context/dooh";
 import vast from "./creative/vast";
+import title from "./creative/native/title";
 
 export const data: Definition = {
   openrtb: {
@@ -23,5 +24,11 @@ export const data: Definition = {
   creative: {
     display: display,
     vast: vast,
+    native: {
+      title: title,
+      image: [],
+      video: [],
+      data: [],
+    }
   },
 };
