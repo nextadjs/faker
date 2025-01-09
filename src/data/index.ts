@@ -4,6 +4,7 @@ import seat from "./openrtb/bid-response/seat";
 import display from "./creative/display";
 import app from "./adcom/context/app";
 import dooh from "./adcom/context/dooh";
+import vast from "./creative/vast";
 
 export const data: Definition = {
   openrtb: {
@@ -21,5 +22,6 @@ export const data: Definition = {
   },
   creative: {
     display: display,
+    vast: vast,
   },
 };
