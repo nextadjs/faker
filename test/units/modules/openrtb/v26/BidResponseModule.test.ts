@@ -39,20 +39,6 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
     expect(seatBid.bid[0].price).toBe(2.22);
   });
 
-  it("バナー広告が入札に含まれる", () => {
-    const helper = new Helper();
-    const sut = new BidResponseV26Module({
-      definitions: data,
-      helper: helper,
-    });
-
-    const result = sut.minimal();
-
-    const seatBid = result.seatbid![0];
-    expect(seatBid.bid[0].adm).toBe("<div>banner ad</div>");
-    expect(seatBid.bid[0].mtype).toBe(1);
-  });
-
   it("入札シート数を指定する", () => {
     const helper = new Helper();
     const sut = new BidResponseV26Module({
@@ -160,5 +146,100 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
 
     expect(result.id).toBe("1");
     expect(result.nbr).toEqual(2);
+  });
+
+  it("バナーフォーマットを指定すると300x250のバナー入札レスポンスが生成される", () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.banner().minimal();
+
+    expect(result.seatbid![0]?.bid[0]?.w).toBe(300);
+    expect(result.seatbid![0]?.bid[0]?.h).toBe(250);
+  });
+
+  it("バナーフォーマットを指定したうえで入札を複数生成すると、全ての入札に指定したバナーが含まれる", () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.bid(2).banner().minimal();
+
+    expect(result.seatbid![0].bid[0].w).toBe(300);
+    expect(result.seatbid![0].bid[0].h).toBe(250);
+    expect(result.seatbid![0].bid[1].w).toBe(300);
+    expect(result.seatbid![0].bid[1].h).toBe(250);
+  });
+
+  it("バナーフォーマットにサイズを含めると指定のサイズのバナー入札レスポンスが生成される", () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.banner(728, 90).minimal();
+
+    expect(result.seatbid![0].bid[0].w).toBe(728);
+    expect(result.seatbid![0].bid[0].h).toBe(90);
+  });
+
+  it("フォーマットを指定しないとデフォルトで300x250のバナーフォーマットを含んだ入札レスポンスが生成される", () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.minimal();
+
+    expect(result.seatbid![0].bid[0].w).toBe(300);
+    expect(result.seatbid![0].bid[0].h).toBe(250);
+  });
+
+  it("バナーフォーマットの拡張パラメーターを指定する", () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.banner({ iurl: 'https://example.com/' }).minimal();
+
+    expect(result.seatbid![0].bid[0]?.iurl).toBe('https://example.com/');
+  });
+
+  it("バナーフォーマットのサイズを複数指定した場合はランダムで選択される", () => {
+    const helper = new Helper();
+    vi.spyOn(helper, "selectRandomArrayItem").mockReturnValue({
+      w: 728,
+      h: 90,
+    });
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.banner(728, 90).banner(300, 250).minimal();
+
+    expect(result.seatbid![0].bid[0].w).toBe(728);
+    expect(result.seatbid![0].bid[0].h).toBe(90);
+  });
+
+  it("バナーフォーマットで指定したサイズに合わせてクリエイティブが生成される", () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.banner(728, 90).minimal();
+
+    expect(result.seatbid![0].bid[0].adm).toBe('<div style="width:728px;height:90px">banner ad</div>');
   });
 });
