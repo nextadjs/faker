@@ -686,7 +686,6 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     const result = sut.banner(300, 600).banner(300, 50).banner({ pos: 2}).minimal();
 
-    console.log(result.imp);
     expect(result.imp[1].banner?.format![0]?.w).toBe(300);
     expect(result.imp[1].banner?.format![0]?.h).toBe(600);
     expect(result.imp[1].banner?.format![1]?.w).toBe(300);
