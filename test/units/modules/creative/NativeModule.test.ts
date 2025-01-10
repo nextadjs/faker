@@ -36,6 +36,56 @@ describe("Native Module Behavior", () => {
     });
   });
 
+  it("アイコンを生成する", () => {
+    vi.spyOn(helper, "selectRandomArrayItem").mockReturnValue({
+      url: "http://example.com/icon.png",
+    });
+
+    const result = sut.icon();
+
+    expect(result.url).toBe("http://example.com/icon.png");
+  });
+
+  it("メイン画像を生成する", () => {
+    vi.spyOn(helper, "selectRandomArrayItem").mockReturnValue({
+      url: "http://example.com/main.png",
+    });
+
+    const result = sut.mainImage();
+
+    expect(result.url).toBe("http://example.com/main.png");
+  });
+
+  it("ビデオを生成する", () => {
+    vi.spyOn(helper, "selectRandomArrayItem").mockReturnValue({
+      vasttag: "<VAST></VAST>",
+    });
+
+    const result = sut.video();
+
+    expect(result.vasttag).toBe("<VAST></VAST>");
+  });
+
+  it("データを生成する", () => {
+    vi.spyOn(helper, "selectRandomArrayItem").mockReturnValue({
+      value: "data",
+    });
+
+    const result = sut.data();
+
+    expect(result.value).toBe("data");
+  });
+
+  it("画像を生成する", () => {
+    vi.spyOn(helper, "selectRandomArrayItem").mockReturnValue({
+      url: "http://example.com/image.png",
+    });
+
+    const result = sut.image(3);
+
+    expect(result.url).toBe("http://example.com/image.png");
+  });
+
   it("リクエストに対してレスポンスを生成する", () => {
     sut = new NativeModule({
       helper: helper,
