@@ -349,4 +349,35 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
     expect(result.seatbid![0].bid[0].w).toBe(640);
     expect(result.seatbid![0].bid[0].h).toBe(480);
   });
+
+  it('ネイティブフォーマットを指定するとネイティブ入札レスポンスが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: {
+        ...data,
+        creative: {
+          ...data.creative,
+          native: {
+            ...data.creative.native,
+            title: [
+              {
+                text: "title",
+              },
+            ],
+            link: [
+              {
+                url: "http://example.com",
+              },
+            ],
+          }
+        },
+      },
+      helper: helper,
+    });
+
+    const result = sut.native().minimal();
+
+    expect(result.seatbid![0].bid[0].mtype).toBe(3);
+    expect(result.seatbid![0].bid[0].adm).toEqual('{\"ver\":\"1.2\",\"link\":{\"url\":\"http://example.com\"},\"assets\":[{\"id\":1,\"required\":1,\"title\":{\"len\":5,\"text\":\"title\"}}]}');
+  });
 });

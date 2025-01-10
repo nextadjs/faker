@@ -50,7 +50,7 @@ interface CustomContexts {
 }
 
 export class BidRequestV26Module extends Module {
-  private impressionCount: number = 0;
+  private impressionCount: number = -1;
   private _customBidRequest: Partial<BidRequestV26> = {};
   private _context: ContextType = "site";
   private _site: SiteV26 = {};
@@ -302,7 +302,7 @@ export class BidRequestV26Module extends Module {
   }
 
   private generateImps(): ImpV26[] {
-    if (this.impressionCount === 0) {
+    if (this.impressionCount === -1) {
       let imps: ImpV26[] = [];
 
       if (this.hasBannerFormatsWithExtension()) {

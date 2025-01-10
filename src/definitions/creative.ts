@@ -1,10 +1,5 @@
+import type { DataResponseV12, ImageResponseV12, LinkResponseV12, TitleResponseV12, VideoResponseV12 } from "@/types/openrtb";
 import type { AudioVideoCreativeSubtype } from "iab-adcom";
-import type {
-  TitleResponse,
-  ImageResponse,
-  VideoResponse,
-  DataResponse,
-} from "iab-native";
 
 export type CreativeDefinition = {
   display: DisplayDefinition[];
@@ -35,9 +30,11 @@ export type NativeDefinition = {
   image: NativeImageDefinition[];
   video: NativeVideoDefinition[];
   data: NativeDataDefinition[];
+  link: NativeLinkDefinition[];
 };
 
-export type NativeTitleDefinition = TitleResponse;
-export type NativeImageDefinition = ImageResponse;
-export type NativeVideoDefinition = VideoResponse;
-export type NativeDataDefinition = DataResponse;
+export type NativeTitleDefinition = TitleResponseV12;
+export type NativeImageDefinition = ImageResponseV12;
+export type NativeVideoDefinition = VideoResponseV12;
+export type NativeDataDefinition = DataResponseV12;
+export type NativeLinkDefinition = LinkResponseV12;

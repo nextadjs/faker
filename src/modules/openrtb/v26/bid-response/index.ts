@@ -1,7 +1,8 @@
 import { Module } from "@/module";
 import { DisplayModule } from "@/modules/creative/display";
+import { NativeModule } from "@/modules/creative/native";
 import { VastModule } from "@/modules/creative/vast";
-import type { BidResponseV26, BidV26 } from "@/types/openrtb";
+import type { AssetV12, BidResponseV26, BidV26 } from "@/types/openrtb";
 import { AudioVideoCreativeSubtype } from "iab-adcom";
 import { NoBidReasonCode } from "iab-openrtb/v26";
 
@@ -16,12 +17,18 @@ type VideoFormat = {
   extension?: Partial<BidV26>;
 };
 
+type NativeFormat = {
+  assets: AssetV12[];
+  extension?: Partial<BidV26>;
+};
+
 export class BidResponseV26Module extends Module {
   private seatBidCount: number = 1;
-  private bidCount: number = 1;
+  private bidCount: number = -1;
   private _impId?: string | string[];
   private bannerFormats: BannerFormat[] = [];
   private videoFormats: VideoFormat[] = [];
+  private nativeFormats: NativeFormat[] = [];
   private _id?: string;
   private _bidid?: string;
   private _cur?: string;
@@ -110,6 +117,17 @@ export class BidResponseV26Module extends Module {
     return this;
   }
 
+  public native(
+    assets: AssetV12[] = [{ id: 1, required: 1, title: { len: 90 } }],
+    extension?: Partial<BidV26>
+  ): this {
+    this.nativeFormats.push({
+      assets: assets,
+      extension: extension,
+    });
+    return this;
+  }
+
   public nbr(
     noBidReasonCode: NoBidReasonCode = NoBidReasonCode.UNKNOWN_ERROR
   ): BidResponseV26 {
@@ -124,9 +142,7 @@ export class BidResponseV26Module extends Module {
       id: this.helper.generateUUID(),
       seatbid: [...Array(this.seatBidCount)].map((_, __) => {
         return {
-          bid: [...Array(this.bidCount)].map((_) => {
-            return this.generateBid();
-          }),
+          bid: this.generateBids(),
           seat: this.helper.selectRandomArrayItem<string>(
             this.definitions.openrtb.bidResponse.seat
           ),
@@ -148,17 +164,82 @@ export class BidResponseV26Module extends Module {
     }
   }
 
-  private generateBid(): BidV26 {
-    if (this.videoFormats.length > 0) {
-      return this.generateVideoBid();
+  private generateBids(): BidV26[] {
+    if (this.bidCount === -1) {
+      const bids: BidV26[] = [];
+
+      if (this.bannerFormats.length) {
+        bids.push(...this.generateBannerBids());
+      }
+
+      if (this.videoFormats.length) {
+        bids.push(...this.generateVideoBids());
+      }
+
+      if (this.nativeFormats.length) {
+        bids.push(...this.generateNativeBids());
+      }
+
+      if (bids.length === 0) {
+        bids.push(this.generateBannerBid(this.getBannerFormat()));
+      }
+
+      return bids;
     } else {
-      return this.generateBannerBid();
+      return [...Array(this.bidCount)].map((_) => {
+        return this.generateBid();
+      });
     }
   }
 
-  private generateBannerBid(): BidV26 {
-    const bannerFormat = this.getBannerFormat();
+  private generateBid(): BidV26 {
+    const types = [];
 
+    if (this.bannerFormats.length > 0) {
+      types.push(1);
+    }
+
+    if (this.videoFormats.length > 0) {
+      types.push(2);
+    }
+
+    if (this.nativeFormats.length > 0) {
+      types.push(3);
+    }
+
+    const type = this.helper.selectRandomArrayItem<number>(types);
+
+    switch (type) {
+      case 1:
+        return this.generateBannerBid(this.getBannerFormat());
+      case 2:
+        return this.generateVideoBid(this.getVideoFormat());
+      case 3:
+        return this.generateNativeBid(this.getNativeFormat());
+      default:
+        return this.generateBannerBid(this.getBannerFormat());
+    }
+  }
+
+  private generateBannerBids(): BidV26[] {
+    return this.bannerFormats.map((format) => {
+      return this.generateBannerBid(format);
+    });
+  }
+
+  private generateVideoBids(): BidV26[] {
+    return this.videoFormats.map((format) => {
+      return this.generateVideoBid(format);
+    });
+  }
+
+  private generateNativeBids(): BidV26[] {
+    return this.nativeFormats.map((format) => {
+      return this.generateNativeBid(format);
+    });
+  }
+
+  private generateBannerBid(bannerFormat: BannerFormat): BidV26 {
     const bid: BidV26 = {
       id: this.helper.generateUUID(),
       impid: this.getImpId(),
@@ -176,9 +257,7 @@ export class BidResponseV26Module extends Module {
     return bid;
   }
 
-  private generateVideoBid(): BidV26 {
-    const videoFormat = this.getVideoFormat();
-
+  private generateVideoBid(videoFormat: VideoFormat): BidV26 {
     const bid: BidV26 = {
       id: this.helper.generateUUID(),
       impid: this.getImpId(),
@@ -194,6 +273,26 @@ export class BidResponseV26Module extends Module {
     }
 
     return bid;
+  }
+
+  private generateNativeBid(nativeFormat: NativeFormat): BidV26 {
+    const bid: BidV26 = {
+      id: this.helper.generateUUID(),
+      impid: this.getImpId(),
+      price: this.helper.generateRandomDecimal(0, 10),
+      adm: this.generateNativeMarkup(nativeFormat),
+      mtype: 3,
+    };
+
+    if (nativeFormat.extension) {
+      Object.assign(bid, nativeFormat.extension);
+    }
+
+    return bid;
+  }
+
+  private getNativeFormat(): NativeFormat {
+    return this.helper.selectRandomArrayItem<NativeFormat>(this.nativeFormats);
   }
 
   private getVideoFormat(): VideoFormat {
@@ -229,6 +328,15 @@ export class BidResponseV26Module extends Module {
     });
 
     return vastCreative.subType(format.subType);
+  }
+
+  private generateNativeMarkup(format: NativeFormat): string {
+    const nativeCreative = new NativeModule({
+      definitions: this.definitions,
+      helper: this.helper,
+    });
+
+    return JSON.stringify(nativeCreative.req(format.assets));
   }
 
   private enrich(bidResponse: BidResponseV26): BidResponseV26 {

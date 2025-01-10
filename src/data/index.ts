@@ -6,6 +6,7 @@ import app from "./adcom/context/app";
 import dooh from "./adcom/context/dooh";
 import vast from "./creative/vast";
 import title from "./creative/native/title";
+import link from "./creative/native/link";
 
 export const data: Definition = {
   openrtb: {
@@ -29,6 +30,7 @@ export const data: Definition = {
       image: [],
       video: [],
       data: [],
+      link: link,
     }
   },
 };

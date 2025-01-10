@@ -18,4 +18,11 @@ export type {
 export type {
   TitleRequest as TitleRequestV12,
   Asset as AssetV12,
+  AssetResponse as AssetResponseV12,
+  NativeResponse as NativeResponseV12,
+  LinkResponse as LinkResponseV12,
+  TitleResponse as TitleResponseV12,
+  ImageResponse as ImageResponseV12,
+  VideoResponse as VideoResponseV12,
+  DataResponse as DataResponseV12,
 } from 'iab-native/v12';
