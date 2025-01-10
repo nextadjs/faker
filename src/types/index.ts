@@ -1,5 +1,6 @@
 import type { Definition } from "@/definitions";
 import type { Helper } from "@/helper";
+import type { ContextModule } from "@/modules/adcom/context";
 import type { DisplayModule } from "@/modules/creative/display";
 import type { NativeModule } from "@/modules/creative/native";
 import type { VastModule } from "@/modules/creative/vast";
@@ -19,6 +20,10 @@ export interface CreativeModules {
   display: DisplayModule;
   vast: VastModule;
   native: NativeModule;
+}
+
+export interface AdCOMModules {
+  context: ContextModule;
 }
 
 export interface OpenRTBV26Modules {
