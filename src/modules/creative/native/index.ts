@@ -9,6 +9,7 @@ import type {
   TitleResponseV12,
   VideoResponseV12,
 } from "@/types/openrtb";
+import type { ImageAssetType } from "iab-native";
 
 export class NativeModule extends Module {
   public title(): TitleResponseV12 {
@@ -17,10 +18,20 @@ export class NativeModule extends Module {
     );
   }
 
-  public image(): ImageResponseV12 {
+  public image(imageAssetType: ImageAssetType): ImageResponseV12 {
     return this.helper.selectRandomArrayItem(
-      this.definitions.creative.native.image
+      this.definitions.creative.native.image.filter(
+        (image) => image.type === imageAssetType
+      )
     );
+  }
+
+  public mainImage(): ImageResponseV12 {
+    return this.image(3);
+  }
+
+  public icon(): ImageResponseV12 {
+    return this.image(1);
   }
 
   public video(): VideoResponseV12 {
