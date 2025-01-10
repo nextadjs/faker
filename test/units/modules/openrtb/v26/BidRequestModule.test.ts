@@ -910,4 +910,72 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result.imp[1]).toHaveProperty("video");
     expect(result.imp[2]).toHaveProperty("native");
   });
+
+  it('レクタングルサイズを指定すると"300x250"のバナーフォーマットが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+    const result = sut.rectangle().minimal();
+
+    expect(result.imp[0].banner?.format![0]).toEqual({ w: 300, h: 250 });
+  });
+
+  it('ワイドスカイスクレイパーサイズを指定すると"160x600"のバナーフォーマットが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+    const result = sut.skyscraper().minimal();
+
+    expect(result.imp[0].banner?.format![0]).toEqual({ w: 160, h: 600 });
+  });
+
+  it('ラージモバイルサイズを指定すると"320x100"のバナーフォーマットが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+    const result = sut.largeMobile().minimal();
+
+    expect(result.imp[0].banner?.format![0]).toEqual({ w: 320, h: 100 });
+  });
+
+  it('リーダーボードサイズを指定すると"728x90"のバナーフォーマットが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+    const result = sut.leaderboard().minimal();
+
+    expect(result.imp[0].banner?.format![0]).toEqual({ w: 728, h: 90 });
+  });
+
+  it('モバイルバナーサイズを指定すると"320x50"のバナーフォーマットが生成される', () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.mobileBanner().minimal();
+
+    expect(result.imp[0].banner?.format![0]).toEqual({ w: 320, h: 50 });
+  });
+
+  it("テストモードを有効にするとテストモードの入札リクエストが生成される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      definitions: data,
+      helper: helper,
+    });
+
+    const result = sut.enableTestMode().minimal();
+
+    expect(result.test).toBe(1);
+  });
 });

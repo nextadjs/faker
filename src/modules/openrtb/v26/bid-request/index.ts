@@ -233,6 +233,12 @@ export class BidRequestV26Module extends Module {
     this._wseat = wseat;
     return this;
   }
+
+  public enableTestMode(): this {
+    this._test = 1;
+    return this;
+  }
+
   public bseat(bseat: string[]): this {
     this._bseat = bseat;
     return this;
@@ -281,6 +287,38 @@ export class BidRequestV26Module extends Module {
   public test(test: 0 | 1): this {
     this._test = test;
     return this;
+  }
+
+  public rectangle(): this {
+    this.banner(300, 250);
+    return this;
+  }
+
+  public leaderboard(): this {
+    this.banner(728, 90);
+    return this;
+  }
+
+  public skyscraper(): this {
+    this.banner(160, 600);
+    return this;
+  }
+
+  public largeMobile(): this {
+    this.banner(320, 100);
+    return this;
+  }
+
+  public mobileBanner(): this {
+    this.banner(320, 50);
+    return this;
+  }
+
+  public create(): BidRequestV26 {
+    // TODO: AdCOMでIP, UA系のフェイク情報が生成できるようになり、メソッドを追加したらここで追加発火をする
+    const bidRequest = this.minimal();
+
+    return bidRequest;
   }
 
   public minimal(): BidRequestV26 {
