@@ -378,7 +378,7 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
     const result = sut.native().minimal();
 
     expect(result.seatbid![0].bid[0].mtype).toBe(3);
-    expect(result.seatbid![0].bid[0].adm).toEqual('{\"ver\":\"1.2\",\"link\":{\"url\":\"http://example.com\"},\"assets\":[{\"id\":1,\"required\":1,\"title\":{\"len\":5,\"text\":\"title\"}}]}');
+    expect(result.seatbid![0].bid[0].adm).toEqual('{\"ver\":\"1.2\",\"link\":{\"url\":\"http://example.com\"},\"assets\":[{\"id\":1,\"required\":1,\"title\":{\"text\":\"title\"}}]}');
   });
 
   it('入札数を指定せずにバナー・ネイティブ・動画フォーマットを指定すると全てのフォーマット分だけ入札が生成される', () => {

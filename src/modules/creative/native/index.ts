@@ -2,15 +2,37 @@ import { Module } from "@/module";
 import type {
   AssetResponseV12,
   AssetV12,
+  DataResponseV12,
+  ImageResponseV12,
   LinkResponseV12,
   NativeResponseV12,
+  TitleResponseV12,
+  VideoResponseV12,
 } from "@/types/openrtb";
 
 export class NativeModule extends Module {
-  public title(): string {
+  public title(): TitleResponseV12 {
     return this.helper.selectRandomArrayItem(
       this.definitions.creative.native.title
-    ).text;
+    );
+  }
+
+  public image(): ImageResponseV12 {
+    return this.helper.selectRandomArrayItem(
+      this.definitions.creative.native.image
+    );
+  }
+
+  public video(): VideoResponseV12 {
+    return this.helper.selectRandomArrayItem(
+      this.definitions.creative.native.video
+    );
+  }
+
+  public data(): DataResponseV12 {
+    return this.helper.selectRandomArrayItem(
+      this.definitions.creative.native.data
+    );
   }
 
   public link(): LinkResponseV12 {
@@ -30,10 +52,7 @@ export class NativeModule extends Module {
 
       if (asset.title) {
         const title = this.title();
-        response.title = {
-          len: title.length,
-          text: this.title(),
-        };
+        response.title = title;
       }
 
       return response;

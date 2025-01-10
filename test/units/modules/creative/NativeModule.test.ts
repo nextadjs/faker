@@ -21,7 +21,7 @@ describe("Native Module Behavior", () => {
 
     const result = sut.title();
 
-    expect(result).toBe("title");
+    expect(result.text).toBe("title");
   });
 
   it("リンクを生成する", () => {
@@ -88,7 +88,6 @@ describe("Native Module Behavior", () => {
           id: 1,
           required: 1,
           title: {
-            len: 5,
             text: "title",
           },
         },
