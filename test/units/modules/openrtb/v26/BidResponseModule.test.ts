@@ -380,4 +380,48 @@ describe("OpenRTB version 2.6 Bid Response Module Behavior", () => {
     expect(result.seatbid![0].bid[0].mtype).toBe(3);
     expect(result.seatbid![0].bid[0].adm).toEqual('{\"ver\":\"1.2\",\"link\":{\"url\":\"http://example.com\"},\"assets\":[{\"id\":1,\"required\":1,\"title\":{\"len\":5,\"text\":\"title\"}}]}');
   });
+
+  it('入札数を指定せずにバナー・ネイティブ・動画フォーマットを指定すると全てのフォーマット分だけ入札が生成される', () => {
+    const helper = new Helper();
+    const sut = new BidResponseV26Module({
+      definitions: {
+        ...data,
+        creative: {
+          ...data.creative,
+          vast: [
+            {
+              vast: '<VAST version="4.2"></VAST>',
+              version: "4.2",
+              subType: 13,
+              size: {
+                w: 640,
+                h: 480,
+              },
+            },
+          ],
+          native: {
+            ...data.creative.native,
+            title: [
+              {
+                text: "title",
+              },
+            ],
+            link: [
+              {
+                url: "http://example.com",
+              },
+            ],
+          }
+        },
+      },
+      helper: helper,
+    });
+
+    const result = sut.banner().native().video().minimal();
+
+    expect(result.seatbid![0].bid.length).toBe(3);
+    expect(result.seatbid![0].bid[0].mtype).toBe(1);
+    expect(result.seatbid![0].bid[1].mtype).toBe(2);
+    expect(result.seatbid![0].bid[2].mtype).toBe(3);
+  });
 });
