@@ -1020,7 +1020,27 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
   it("Regsの内容を指定しない場合はランダムで偽のregs情報が設定される", () => {});
 
-  it("USD通貨のショートカットメソッドを指定するとUSDが入札リクエストに含まれる", () => {});
+  it("USD通貨のショートカットメソッドを指定するとUSDが入札リクエストに含まれる", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      helper: helper,
+      definitions: data,
+    });
 
-  it("JPY通貨のショートカットメソッドを指定するとJPYが入札リクエストに含まれれる", () => {});
+    const result = sut.usd().minimal();
+
+    expect(result.cur).toEqual(['USD']);
+  });
+
+  it("JPY通貨のショートカットメソッドを指定するとJPYが入札リクエストに含まれれる", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      helper: helper,
+      definitions: data,
+    });
+
+    const result = sut.jpy().minimal();
+
+    expect(result.cur).toEqual(['JPY']);
+  });
 });

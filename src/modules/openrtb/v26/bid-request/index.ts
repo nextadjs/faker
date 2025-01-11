@@ -142,11 +142,11 @@ export class BidRequestV26Module extends Module {
   ): this {
     this._context = context;
 
-    if (context === 'site') {
+    if (context === "site") {
       return this.site(extension as SiteV26);
-    } else if (context === 'app') {
+    } else if (context === "app") {
       return this.app(extension as AppV26);
-    } else if (context === 'dooh') {
+    } else if (context === "dooh") {
       return this.dooh(extension as DOOHV26);
     }
 
@@ -207,7 +207,7 @@ export class BidRequestV26Module extends Module {
     const dooh = this.adComContext.dooh();
 
     return {
-      publisher: dooh.pub
+      publisher: dooh.pub,
     };
   }
 
@@ -377,17 +377,27 @@ export class BidRequestV26Module extends Module {
   }
 
   public cur(cur: string[] | string): this {
-    this._cur = Array.isArray(cur) ? cur : [cur];
+    if (!this._cur) {
+      this._cur = Array.isArray(cur) ? cur : [cur];
+    } else {
+      if (Array.isArray(cur)) {
+        this._cur.push(...cur);
+      } else {
+        this._cur.push(cur);
+      }
+    }
+
     return this;
   }
 
   public usd(): this {
-    this._cur?.push('USD');
+    this.cur("USD");
+
     return this;
   }
 
   public jpy(): this {
-    this._cur?.push('JPY');
+    this.cur("JPY");
     return this;
   }
 
