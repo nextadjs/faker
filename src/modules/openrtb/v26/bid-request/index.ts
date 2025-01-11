@@ -14,11 +14,9 @@ import type {
   VideoV26,
 } from "@/types/openrtb";
 import { Module } from "@/module";
-import type {
-  AppEntryDefinition,
-  DoohEntryDefinition,
-  SiteEntryDefinition,
-} from "@/definitions";
+import type { ModuleConfig } from "@/types";
+import { ContextModule } from "@/modules/adcom/context";
+import { AgentType, OperatingSystem } from "iab-adcom";
 
 type ContextType = "site" | "app" | "dooh";
 type FormatType = BannerFormat | VideoFormat | NativeFormat;
@@ -49,7 +47,40 @@ interface CustomContexts {
   dooh: DOOHV26;
 }
 
+export const operatingSystemMap: Record<OperatingSystem, string> = {
+  [OperatingSystem.OTHER]: "Other",
+  [OperatingSystem.THREE_DS]: "3DS",
+  [OperatingSystem.ANDROID]: "Android",
+  [OperatingSystem.APPLE_TV]: "Apple TV",
+  [OperatingSystem.ASHA]: "Asha",
+  [OperatingSystem.BADA]: "Bada",
+  [OperatingSystem.BLACKBERRY]: "BlackBerry",
+  [OperatingSystem.BREW]: "BREW",
+  [OperatingSystem.CHROME_OS]: "ChromeOS",
+  [OperatingSystem.DARWIN]: "Darwin",
+  [OperatingSystem.FIRE_OS]: "FireOS",
+  [OperatingSystem.FIREFOX_OS]: "FirefoxOS",
+  [OperatingSystem.HELEN_OS]: "HelenOS",
+  [OperatingSystem.IOS]: "iOS",
+  [OperatingSystem.LINUX]: "Linux",
+  [OperatingSystem.MAC_OS]: "MacOS",
+  [OperatingSystem.MEEGO]: "MeeGo",
+  [OperatingSystem.MORPH_OS]: "MorphOS",
+  [OperatingSystem.NET_BSD]: "NetBSD",
+  [OperatingSystem.NUCLEUS_PLUS]: "NucleusPLUS",
+  [OperatingSystem.PS_VITA]: "PS Vita",
+  [OperatingSystem.PS3]: "PS3",
+  [OperatingSystem.PS4]: "PS4",
+  [OperatingSystem.PSP]: "PSP",
+  [OperatingSystem.SYMBIAN]: "Symbian",
+  [OperatingSystem.TIZEN]: "Tizen",
+  [OperatingSystem.WATCH_OS]: "WatchOS",
+  [OperatingSystem.WEB_OS]: "WebOS",
+  [OperatingSystem.WINDOWS]: "Windows",
+};
+
 export class BidRequestV26Module extends Module {
+  private adComContext: ContextModule;
   private impressionCount: number = -1;
   private _customBidRequest: Partial<BidRequestV26> = {};
   private _context: ContextType = "site";
@@ -77,6 +108,11 @@ export class BidRequestV26Module extends Module {
   private _bapp?: string[];
   private formats: FormatType[] = [];
   private _id?: string;
+
+  public constructor(config: ModuleConfig) {
+    super(config);
+    this.adComContext = new ContextModule(config);
+  }
 
   public id(id: string): this {
     this._id = id;
@@ -106,14 +142,12 @@ export class BidRequestV26Module extends Module {
   ): this {
     this._context = context;
 
-    if (extension) {
-      const contextMap: Record<keyof CustomContexts, (ext: any) => void> = {
-        site: (ext: SiteV26) => (this._site = ext),
-        app: (ext: AppV26) => (this._app = ext),
-        dooh: (ext: DOOHV26) => (this._dooh = ext),
-      };
-
-      contextMap[context](extension);
+    if (context === 'site') {
+      return this.site(extension as SiteV26);
+    } else if (context === 'app') {
+      return this.app(extension as AppV26);
+    } else if (context === 'dooh') {
+      return this.dooh(extension as DOOHV26);
     }
 
     return this;
@@ -125,25 +159,114 @@ export class BidRequestV26Module extends Module {
   }
 
   public site(site?: SiteV26): this {
-    return this.context("site", site || {});
+    this._site = site ? site : this.getFakeSite();
+    return this;
+  }
+
+  private getFakeSite(): SiteV26 {
+    const site = this.adComContext.site();
+
+    return {
+      domain: site.domain,
+      cattax: site.cattax,
+      cat: site.cat,
+      pagecat: site.cat,
+      page: site.page,
+      ref: site.ref,
+      publisher: site.pub,
+      kwarray: site.kwarray,
+      keywords: site.keywords,
+    };
   }
 
   public app(app?: AppV26): this {
-    return this.context("app", app || {});
+    this._app = app ? app : this.getFakeApp();
+    console.log(this._app);
+    return this;
+  }
+
+  private getFakeApp(): AppV26 {
+    const app = this.adComContext.app();
+
+    return {
+      domain: app.domain,
+      bundle: app.bundle,
+      storeurl: app.storeurl,
+      ver: app.ver,
+      cat: app.cat,
+      kwarray: app.kwarray,
+    };
   }
 
   public dooh(dooh?: DOOHV26): this {
-    return this.context("dooh", dooh || {});
+    this._dooh = dooh ? dooh : this.getFakeDooh();
+    return this;
   }
 
-  public device(device: DeviceV26): this {
-    this._device = device;
+  private getFakeDooh(): DOOHV26 {
+    const dooh = this.adComContext.dooh();
+
+    return {
+      publisher: dooh.pub
+    };
+  }
+
+  public device(device?: DeviceV26): this {
+    this._device = device || this.getFakeDevice();
+
     return this;
+  }
+
+  private getFakeDevice(): DeviceV26 {
+    const device = this.adComContext.device();
+
+    return {
+      ip: device.ip,
+      ipv6: device.ipv6,
+      dnt: device.dnt ? 1 : 0,
+      devicetype: device.type,
+      make: device.make,
+      model: device.model,
+      os: operatingSystemMap[
+        (device.os as OperatingSystem) || OperatingSystem.OTHER
+      ],
+      osv: device.osv,
+      hwv: device.hwv,
+      w: device.w,
+      h: device.h,
+      js: device.js ? 1 : 0,
+      ppi: device.ppi,
+      pxratio: device.pxratio,
+      language: device.lang,
+      langb: device.langb,
+      carrier: device.carrier,
+    };
   }
 
   public user(user: UserV26): this {
-    this._user = user;
+    this._user = user || this.getFakeUser();
     return this;
+  }
+
+  private getFakeUser(): UserV26 {
+    const user = this.adComContext.user();
+
+    return {
+      id: user.id,
+      buyeruid: user.buyeruid,
+      keywords: user.keywords,
+      kwarray: user.kwarray,
+      consent: user.consent,
+      eids: (user.eids || []).map((eid) => ({
+        source: eid.source || "",
+        uids: (eid.uids || []).map((uid) => ({
+          id: uid.id || "",
+          atype: uid.atype || AgentType.BROWSER_OR_DEVICE,
+          ext: uid.ext,
+        })),
+      })),
+      geo: user.geo,
+    };
   }
 
   public source(source: SourceV26): this {
@@ -152,8 +275,17 @@ export class BidRequestV26Module extends Module {
   }
 
   public regs(regs: RegsV26): this {
-    this._regs = regs;
+    this._regs = regs || this.getFakeRegs();
     return this;
+  }
+
+  private getFakeRegs(): RegsV26 {
+    const regs = this.adComContext.regs();
+
+    return {
+      coppa: regs.coppa,
+      gdpr: regs.gdpr,
+    };
   }
 
   public ext(ext: Record<string, unknown>): this {
@@ -249,6 +381,16 @@ export class BidRequestV26Module extends Module {
     return this;
   }
 
+  public usd(): this {
+    this._cur?.push('USD');
+    return this;
+  }
+
+  public jpy(): this {
+    this._cur?.push('JPY');
+    return this;
+  }
+
   public acat(acat: string[]): this {
     this._acat = acat;
     return this;
@@ -314,6 +456,31 @@ export class BidRequestV26Module extends Module {
     return this;
   }
 
+  public ip(): this {
+    this._device = {
+      ...this._device,
+      ip: this.adComContext.deviceFull().ip,
+    };
+    return this;
+  }
+
+  public ipV6(): this {
+    this._device = {
+      ...this._device,
+      ipv6: this.adComContext.deviceFull().ipv6,
+    };
+    return this;
+  }
+
+  public ua(): this {
+    this._device = {
+      ...this._device,
+      ua: this.adComContext.deviceFull().ua,
+    };
+
+    return this;
+  }
+
   public create(): BidRequestV26 {
     // TODO: AdCOMでIP, UA系のフェイク情報が生成できるようになり、メソッドを追加したらここで追加発火をする
     const bidRequest = this.minimal();
@@ -322,21 +489,19 @@ export class BidRequestV26Module extends Module {
   }
 
   public minimal(): BidRequestV26 {
-    const bidRequest: BidRequestV26 = {
+    let bidRequest: BidRequestV26 = {
       id: this.helper.generateUUID(),
       imp: this.generateImps(),
       ...this._customBidRequest,
     };
 
-    if (this._context === "site") {
-      bidRequest.site = this.generateSite();
-    } else if (this._context === "app") {
-      bidRequest.app = this.generateApp();
-    } else if (this._context === "dooh") {
-      bidRequest.dooh = this.generateDooh();
+    bidRequest = this.enrich(bidRequest);
+
+    if (!bidRequest.site || !bidRequest.app || !bidRequest.dooh) {
+      this.site();
     }
 
-    return this.enrich(bidRequest);
+    return bidRequest;
   }
 
   private generateImps(): ImpV26[] {
@@ -524,42 +689,6 @@ export class BidRequestV26Module extends Module {
     return imp;
   }
 
-  private generateSite(): SiteV26 {
-    const site = this.helper.selectRandomArrayItem<SiteEntryDefinition>(
-      this.definitions.adcom.context.site
-    );
-
-    return {
-      domain: site.domain,
-      page: site.page,
-      ...this._site,
-    };
-  }
-
-  private generateApp(): AppV26 {
-    const app = this.helper.selectRandomArrayItem<AppEntryDefinition>(
-      this.definitions.adcom.context.app
-    );
-
-    return {
-      domain: app.domain,
-      ...this._app,
-    };
-  }
-
-  private generateDooh(): DOOHV26 {
-    const dooh = this.helper.selectRandomArrayItem<DoohEntryDefinition>(
-      this.definitions.adcom.context.dooh
-    );
-
-    return {
-      venuetypetax: dooh.venuetypetax,
-      venuetype: dooh.venuetype,
-      domain: dooh.domain,
-      ...this._dooh,
-    };
-  }
-
   private enrich(bidRequest: BidRequestV26): BidRequestV26 {
     if (this._ext) {
       bidRequest.ext = this._ext;
@@ -635,6 +764,18 @@ export class BidRequestV26Module extends Module {
 
     if (this._id) {
       bidRequest.id = this._id;
+    }
+
+    if (this._site) {
+      bidRequest.site = this._site;
+    }
+
+    if (this._dooh) {
+      bidRequest.dooh = this._dooh;
+    }
+
+    if (this._app) {
+      bidRequest.app = this._app;
     }
 
     return bidRequest;

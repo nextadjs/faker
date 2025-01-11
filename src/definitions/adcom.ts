@@ -37,21 +37,9 @@ export type AdCOMDefinition = {
   };
 };
 
-export type SiteEntryDefinition = Site & {
-  domain: string;
-  page: string;
-};
-
-export type AppEntryDefinition = App & {
-  domain: string;
-};
-
-export type DoohEntryDefinition = Dooh & {
-  venuetype: string[];
-  venuetypetax: DOOHVenueTaxonomy;
-  domain: string;
-};
-
+export type SiteEntryDefinition = Site;
+export type AppEntryDefinition = App;
+export type DoohEntryDefinition = Dooh;
 export type ContentEntryDefinition = Content;
 export type UserEntryDefinition = User;
 export type ExtendedIdentifierEntryDefinition = ExtendedIdentifier;

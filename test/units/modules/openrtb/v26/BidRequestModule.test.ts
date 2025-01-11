@@ -181,9 +181,9 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
             ...data.adcom.context,
             dooh: [
               {
-                venuetypetax: 0,
-                venuetype: ["transit"],
-                domain: "example.com",
+                pub: {
+                  domain: 'publisher.com'
+                }
               },
             ],
           },
@@ -194,9 +194,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     const result = sut.context("dooh").minimal();
 
-    expect(result.dooh?.domain).toBe("example.com");
-    expect(result.dooh?.venuetype).toEqual(["transit"]);
-    expect(result.dooh?.venuetypetax).toBe(0);
+    expect(result.dooh?.publisher?.domain).toBe("publisher.com");
   });
 
   it("DOOHコンテキストを指定するショートカットメソッドが通常のコンテキスト指定と同じ動作をする", () => {
@@ -211,7 +209,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
     expect(result).toHaveProperty("dooh");
   });
 
-  it("サイトコンテキスト・アプリコンテキスト・DOOHコンテキストを同時に指定した場合、最後に指定したコンテキストが優先される", () => {
+  it("サイトコンテキスト・アプリコンテキスト・DOOHコンテキストを同時に指定した場合、全てのコンテキストが入札リクエストに含まれる", () => {
     const helper = new Helper();
     const sut = new BidRequestV26Module({
       definitions: data,
@@ -220,8 +218,8 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     const result = sut.dooh().app().site().minimal();
 
-    expect(result).not.toHaveProperty("app");
-    expect(result).not.toHaveProperty("dooh");
+    expect(result).toHaveProperty("app");
+    expect(result).toHaveProperty("dooh");
     expect(result).toHaveProperty("site");
   });
 
@@ -978,4 +976,51 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     expect(result.test).toBe(1);
   });
+
+  it("サイトの内容を指定しない場合はランダムで偽のサイト情報が設定される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      helper: helper,
+      definitions: {
+        ...data,
+        adcom: {
+          ...data.adcom,
+          context: {
+            ...data.adcom.context,
+            site: [
+              {
+                id: "fake-site-id",
+                name: "Fake Site",
+                domain: "fake-site.com",
+                cat: ["fake", "site"],
+                pagecat: ["fake", "page"],
+                page: "fake-page",
+                ref: "https://fake-ref.com",
+                search: "fake-search",
+                keywords: "fake,site",
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    const result = sut.site().minimal();
+
+    expect(result.site?.domain).toBe('fake-site.com');
+  });
+
+  it("アプリの内容を指定しない場合はランダムで偽のアプリ情報が設定される", () => {});
+
+  it("DOOHの内容を指定しない場合はランダムで偽のアプリ情報が設定される", () => {});
+
+  it("デバイスの内容を指定しない場合はランダムで偽のデバイス情報が設定される", () => {});
+
+  it("ユーザーの内容を指定しない場合はランダムで偽のユーザー情報が設定される", () => {});
+
+  it("Regsの内容を指定しない場合はランダムで偽のregs情報が設定される", () => {});
+
+  it("USD通貨のショートカットメソッドを指定するとUSDが入札リクエストに含まれる", () => {});
+
+  it("JPY通貨のショートカットメソッドを指定するとJPYが入札リクエストに含まれれる", () => {});
 });

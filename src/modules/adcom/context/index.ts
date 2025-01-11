@@ -1,3 +1,4 @@
+import type { SiteEntryDefinition } from "@/definitions";
 import { Module } from "@/module";
 import type {
   App,
@@ -18,7 +19,7 @@ import type {
 
 export class ContextModule extends Module {
   public site(): Site {
-    return this.helper.selectRandomArrayItem(
+    return this.helper.selectRandomArrayItem<SiteEntryDefinition>(
       this.definitions.adcom.context.site
     );
   }
