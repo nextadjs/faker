@@ -2,7 +2,7 @@ import { data } from "@/data";
 import type { Definition } from "@/definitions";
 import { Helper } from "@/helper";
 import { ContextModule } from "@/modules/adcom/context";
-import { AgentType, DOOHVenueTaxonomy, OperatingSystem } from "iab-adcom";
+import { AgentType, DOOHVenueTaxonomy, DOOHVenueType, OperatingSystem } from "iab-adcom";
 
 describe("Content Module Behavior", () => {
   let helper: Helper;
@@ -42,9 +42,10 @@ describe("Content Module Behavior", () => {
           ],
           dooh: [
             {
-              venuetype: ["fake-venue-type"],
-              venuetypetax: DOOHVenueTaxonomy.ADCOM,
-              domain: "fake-dooh.com",
+              venue: DOOHVenueType.AIRBORNE,
+              pub: {
+                domain: 'example.com'
+              }
             },
           ],
           content: [
