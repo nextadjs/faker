@@ -33,6 +33,7 @@ export type AdCOMDefinition = {
     publisher: PublisherEntryDefinition[];
     brandVersion: BrandVerEntryDefinition[];
     regs: RegsEntryDefinition[];
+    deviceFull: DeviceFullEntryDefinition[];
   };
 };
 
@@ -56,6 +57,7 @@ export type UserEntryDefinition = User;
 export type ExtendedIdentifierEntryDefinition = ExtendedIdentifier;
 export type ExtendedIdentifierUIDEntryDefinition = ExtendedIdentifierUID;
 export type DeviceEntryDefinition = Device;
+export type DeviceFullEntryDefinition = Required<Device>;
 export type UserAgentEntryDefinition = UserAgent;
 export type GeoEntryDefinition = Geo;
 export type DataEntryDefinition = Data;

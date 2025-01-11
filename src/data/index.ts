@@ -21,6 +21,7 @@ import publisher from "./adcom/context/publisher";
 import brandVersion from "./adcom/context/brandVersion";
 import regs from "./adcom/context/regs";
 import dataAdCOM from "./adcom/context/data";
+import deviceFull from "./adcom/context/deviceFull";
 
 export const data: Definition = {
   openrtb: {
@@ -45,6 +46,7 @@ export const data: Definition = {
       publisher: publisher,
       brandVersion: brandVersion,
       regs: regs,
+      deviceFull: deviceFull,
     },
   },
   creative: {

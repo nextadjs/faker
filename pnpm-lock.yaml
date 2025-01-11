@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       iab-adcom:
-        specifier: ^0.1.12
-        version: 0.1.12
+        specifier: ^0.1.13
+        version: 0.1.13
       iab-native:
         specifier: ^0.3.0
         version: 0.3.0
       iab-openrtb:
-        specifier: ^0.3.9
-        version: 0.3.9
+        specifier: ^0.3.10
+        version: 0.3.10
       uuid:
         specifier: ^11.0.5
         version: 11.0.5
@@ -613,16 +613,16 @@ packages:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
 
-  iab-adcom@0.1.12:
-    resolution: {integrity: sha512-t+VaqjVrzdW4IMn+j3YI9DbELZUmE/2DfjB8M0NQ4H/kinbZnVCweGCgpCg9Qi3zacTbHkVomkn55Lwhbf71Tg==}
+  iab-adcom@0.1.13:
+    resolution: {integrity: sha512-v6FK1fwU7UWx5EjbUOkc4LvcUkH08u+2ZyHvGWkAbwq9Utv8+iOD7QfoGF30B6UhuP23wKspwTsAXLfakjnJYg==}
     engines: {node: '>=14.0.0'}
 
   iab-native@0.3.0:
     resolution: {integrity: sha512-9jkXreJV2AteBGTRiMy2TPRNXSvgbd3loeR0UsTsWUIn1AdM+JI/KVUpz0oGV6jedN9r8FfiVYvJT1TGGHo0tA==}
     engines: {node: '>=14.0.0'}
 
-  iab-openrtb@0.3.9:
-    resolution: {integrity: sha512-77K4otBNvzWj8WjmK4YM3934TlIYl6nKa2/99mzOOT9m4ZlwngfXu5OazWaO6SSrLiLX7GHQz2a/PafI5ZmjzQ==}
+  iab-openrtb@0.3.10:
+    resolution: {integrity: sha512-DBMW+l/vwQU/ZojO/AaVox5Bx8MSIAscMObLy6WbYZ0UEiRTlOQQ0ZnaMjOXxx6E7fnEOWO4VYEkt9AkKo4zDg==}
     engines: {node: '>=14.0.0'}
 
   is-fullwidth-code-point@3.0.0:
@@ -1402,11 +1402,11 @@ snapshots:
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
-  iab-adcom@0.1.12: {}
+  iab-adcom@0.1.13: {}
 
   iab-native@0.3.0: {}
 
-  iab-openrtb@0.3.9: {}
+  iab-openrtb@0.3.10: {}
 
   is-fullwidth-code-point@3.0.0: {}
 

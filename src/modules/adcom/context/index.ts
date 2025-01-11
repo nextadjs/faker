@@ -65,6 +65,12 @@ export class ContextModule extends Module {
     );
   }
 
+  public deviceFull(): Required<Device> {
+    return this.helper.selectRandomArrayItem<Required<Device>>(
+      this.definitions.adcom.context.deviceFull
+    );
+  }
+
   public userAgent(): UserAgent {
     return this.helper.selectRandomArrayItem(
       this.definitions.adcom.context.userAgent
