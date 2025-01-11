@@ -182,8 +182,8 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
             dooh: [
               {
                 pub: {
-                  domain: 'publisher.com'
-                }
+                  domain: "publisher.com",
+                },
               },
             ],
           },
@@ -1007,18 +1007,135 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     const result = sut.site().minimal();
 
-    expect(result.site?.domain).toBe('fake-site.com');
+    expect(result.site?.domain).toBe("fake-site.com");
   });
 
-  it("アプリの内容を指定しない場合はランダムで偽のアプリ情報が設定される", () => {});
+  it("アプリの内容を指定しない場合はランダムで偽のアプリ情報が設定される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      helper: helper,
+      definitions: {
+        ...data,
+        adcom: {
+          ...data.adcom,
+          context: {
+            ...data.adcom.context,
+            app: [
+              {
+                domain: "fake-app.com",
+              },
+            ],
+          },
+        },
+      },
+    });
 
-  it("DOOHの内容を指定しない場合はランダムで偽のアプリ情報が設定される", () => {});
+    const result = sut.app().minimal();
 
-  it("デバイスの内容を指定しない場合はランダムで偽のデバイス情報が設定される", () => {});
+    expect(result.app?.domain).toBe("fake-app.com");
+  });
 
-  it("ユーザーの内容を指定しない場合はランダムで偽のユーザー情報が設定される", () => {});
+  it("DOOHの内容を指定しない場合はランダムで偽のアプリ情報が設定される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      helper: helper,
+      definitions: {
+        ...data,
+        adcom: {
+          ...data.adcom,
+          context: {
+            ...data.adcom.context,
+            dooh: [
+              {
+                pub: {
+                  domain: "example.com",
+                },
+              },
+            ],
+          },
+        },
+      },
+    });
 
-  it("Regsの内容を指定しない場合はランダムで偽のregs情報が設定される", () => {});
+    const result = sut.dooh().minimal();
+
+    expect(result.dooh?.publisher?.domain).toBe("example.com");
+  });
+
+  it("デバイスの内容を指定しない場合はランダムで偽のデバイス情報が設定される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      helper: helper,
+      definitions: {
+        ...data,
+        adcom: {
+          ...data.adcom,
+          context: {
+            ...data.adcom.context,
+            device: [
+              {
+                ip: "127.0.0.1",
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    const result = sut.device().minimal();
+
+    expect(result.device?.ip).toBe("127.0.0.1");
+  });
+
+  it("ユーザーの内容を指定しない場合はランダムで偽のユーザー情報が設定される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      helper: helper,
+      definitions: {
+        ...data,
+        adcom: {
+          ...data.adcom,
+          context: {
+            ...data.adcom.context,
+            user: [
+              {
+                id: "user-id",
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    const result = sut.user().minimal();
+
+    expect(result.user?.id).toBe("user-id");
+  });
+
+  it("Regsの内容を指定しない場合はランダムで偽のregs情報が設定される", () => {
+    const helper = new Helper();
+    const sut = new BidRequestV26Module({
+      helper: helper,
+      definitions: {
+        ...data,
+        adcom: {
+          ...data.adcom,
+          context: {
+            ...data.adcom.context,
+            regs: [
+              {
+                coppa: 1,
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    const result = sut.regs().minimal();
+
+    expect(result.regs?.coppa).toBe(1);
+  });
 
   it("USD通貨のショートカットメソッドを指定するとUSDが入札リクエストに含まれる", () => {
     const helper = new Helper();
@@ -1029,7 +1146,7 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     const result = sut.usd().minimal();
 
-    expect(result.cur).toEqual(['USD']);
+    expect(result.cur).toEqual(["USD"]);
   });
 
   it("JPY通貨のショートカットメソッドを指定するとJPYが入札リクエストに含まれれる", () => {
@@ -1041,6 +1158,6 @@ describe("OpenRTB version 2.6 Bid Request Module Behavior", () => {
 
     const result = sut.jpy().minimal();
 
-    expect(result.cur).toEqual(['JPY']);
+    expect(result.cur).toEqual(["JPY"]);
   });
 });

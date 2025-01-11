@@ -243,7 +243,7 @@ export class BidRequestV26Module extends Module {
     };
   }
 
-  public user(user: UserV26): this {
+  public user(user?: UserV26): this {
     this._user = user || this.getFakeUser();
     return this;
   }
@@ -274,7 +274,7 @@ export class BidRequestV26Module extends Module {
     return this;
   }
 
-  public regs(regs: RegsV26): this {
+  public regs(regs?: RegsV26): this {
     this._regs = regs || this.getFakeRegs();
     return this;
   }
