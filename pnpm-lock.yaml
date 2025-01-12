@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       iab-adcom:
-        specifier: ^0.1.13
-        version: 0.1.13
+        specifier: ^0.2.0
+        version: 0.2.0
       iab-native:
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.5.0
+        version: 0.5.0
       iab-openrtb:
-        specifier: ^0.3.10
-        version: 0.3.10
+        specifier: ^0.4.0
+        version: 0.4.0
       uuid:
         specifier: ^11.0.5
         version: 11.0.5
@@ -613,16 +613,16 @@ packages:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
 
-  iab-adcom@0.1.13:
-    resolution: {integrity: sha512-v6FK1fwU7UWx5EjbUOkc4LvcUkH08u+2ZyHvGWkAbwq9Utv8+iOD7QfoGF30B6UhuP23wKspwTsAXLfakjnJYg==}
+  iab-adcom@0.2.0:
+    resolution: {integrity: sha512-T5CnmWYwLKd92+8ioLophC9q8KgRp1h2LueO/LVcPLy7FSMgdN8VjQeiMHCQWLT8S4OD89MEc0/EwLKfWpGf5g==}
     engines: {node: '>=14.0.0'}
 
-  iab-native@0.3.0:
-    resolution: {integrity: sha512-9jkXreJV2AteBGTRiMy2TPRNXSvgbd3loeR0UsTsWUIn1AdM+JI/KVUpz0oGV6jedN9r8FfiVYvJT1TGGHo0tA==}
+  iab-native@0.5.0:
+    resolution: {integrity: sha512-yC+oL8oF267jwtt/TzQWkNvtwVG1thFLBy2RYB3gHkuPruepPXHXszDM7OmM80b4MDZHgkkSFksPAGcXzg7Znw==}
     engines: {node: '>=14.0.0'}
 
-  iab-openrtb@0.3.10:
-    resolution: {integrity: sha512-DBMW+l/vwQU/ZojO/AaVox5Bx8MSIAscMObLy6WbYZ0UEiRTlOQQ0ZnaMjOXxx6E7fnEOWO4VYEkt9AkKo4zDg==}
+  iab-openrtb@0.4.0:
+    resolution: {integrity: sha512-Jvw8BZ8JqSI/52Lv+9EDYlgwKAwVFsxdYcjCw4K7hOuWGZs/0DvBc/1hwsmxsynv38HD6BRSDrKqEcTOU9jyDQ==}
     engines: {node: '>=14.0.0'}
 
   is-fullwidth-code-point@3.0.0:
@@ -740,9 +740,9 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
-  readdirp@4.0.2:
-    resolution: {integrity: sha512-yDMz9g+VaZkqBYS/ozoBJwaBhTbZo3UNYQHNRw1D3UFQB8oHB4uS/tAODO+ZLjGWmUbKnIlOWO+aaIiAxrUWHA==}
-    engines: {node: '>= 14.16.0'}
+  readdirp@4.1.1:
+    resolution: {integrity: sha512-h80JrZu/MHUZCyHu5ciuoI0+WxsCxzxJTILn6Fs8rxSnFPh+UVHYfeIxK1nVGugMqkfC4vJcBOYbkfkwYK0+gw==}
+    engines: {node: '>= 14.18.0'}
 
   resolve-from@5.0.0:
     resolution: {integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==}
@@ -1289,7 +1289,7 @@ snapshots:
 
   chokidar@4.0.3:
     dependencies:
-      readdirp: 4.0.2
+      readdirp: 4.1.1
 
   color-convert@2.0.1:
     dependencies:
@@ -1402,11 +1402,11 @@ snapshots:
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
-  iab-adcom@0.1.13: {}
+  iab-adcom@0.2.0: {}
 
-  iab-native@0.3.0: {}
+  iab-native@0.5.0: {}
 
-  iab-openrtb@0.3.10: {}
+  iab-openrtb@0.4.0: {}
 
   is-fullwidth-code-point@3.0.0: {}
 
@@ -1487,7 +1487,7 @@ snapshots:
 
   punycode@2.3.1: {}
 
-  readdirp@4.0.2: {}
+  readdirp@4.1.1: {}
 
   resolve-from@5.0.0: {}
 
