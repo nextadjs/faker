@@ -18,8 +18,13 @@ export class BidRequestV26Module extends Module {
     this.builder = new BidRequestBuilderV26();
   }
 
-  public imp(imp?: ImpV26): this {
+  public imp(imp?: Partial<ImpV26>): this {
     this.builder.addImp(imp);
+    return this;
+  }
+
+  public withCommonImp(imp: Partial<ImpV26>): this {
+    this.builder.withCommonImp(imp);
     return this;
   }
 

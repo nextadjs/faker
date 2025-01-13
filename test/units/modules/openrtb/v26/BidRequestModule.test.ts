@@ -32,6 +32,27 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
       expect(result.imp.length).toEqual(3);
     });
 
+    it("withCommonImpメソッドですべてのimpオブジェクトに対して共通の値が設定される", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut
+        .imp({
+          bidfloor: 1,
+        })
+        .imp()
+        .withCommonImp({
+          bidfloorcur: "USD",
+        })
+        .make();
+
+      expect(result.imp[0].bidfloor).toBe(1);
+      expect(result.imp[0].bidfloorcur).toBe("USD");
+      expect(result.imp[1].bidfloorcur).toBe("USD");
+    });
+
     describe("広告フォーマット", () => {
       describe("バナーフォーマット", () => {
         it("bannerメソッドを呼び出すとバナーフォーマットのimpオブジェクトが一つ含まれる", () => {
@@ -203,7 +224,7 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
 
           const result = sut
             .native({
-              ver: '1.2',
+              ver: "1.2",
               assets: [
                 {
                   id: 1,
@@ -221,7 +242,7 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
             definitions: data,
           });
 
-          const result = sut.native({assets: []}).imp().make();
+          const result = sut.native({ assets: [] }).imp().make();
 
           expect(result.imp.length).toBe(2);
           expect(result.imp[0]).toHaveProperty("native");
