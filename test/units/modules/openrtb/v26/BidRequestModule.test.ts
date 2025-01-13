@@ -107,7 +107,7 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
           expect(result.imp[1]).not.toHaveProperty("banner");
         });
 
-        it("bannerのサイズを単一で指定する場合に、第3引数にオプションを渡すと追加でオプションが設定される", () => {
+        it("bannerのサイズを単一で指定する場合に、第3引数にオプションを渡すと追加でオプションがimp.bannerに設定される", () => {
           const sut = new BidRequestV26Module({
             helper: helper,
             definitions: data,
@@ -124,7 +124,7 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
           expect(result.imp[0].banner?.pos).toBe(1);
         });
 
-        it("bannerのサイズを複数で指定する場合、第2引数にオプションを渡すと追加でオプションが設定される", () => {
+        it("bannerのサイズを複数で指定する場合、第2引数にオプションを渡すと追加でオプションがimp.bannerに設定される", () => {
           const sut = new BidRequestV26Module({
             helper: helper,
             definitions: data,
@@ -151,7 +151,7 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
       });
 
       describe("ビデオフォーマット", () => {
-        it("videoメソッドを呼び出すとバナーフォーマットのimpオブジェクトが一つ含まれる", () => {
+        it("videoメソッドを呼び出すと動画フォーマットのimpオブジェクトが一つ含まれる", () => {
           const sut = new BidRequestV26Module({
             helper: helper,
             definitions: data,
