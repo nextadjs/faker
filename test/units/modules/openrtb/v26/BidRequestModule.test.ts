@@ -384,7 +384,7 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
       it("windowsメソッドを呼び出すとデバイスにwindowsの値が設定される", () => {
         vi.spyOn(helper, "selectRandomArrayItem").mockReturnValue("10.0");
         const sut = new BidRequestV26Module({
-          helper: helper,    
+          helper: helper,
           definitions: data,
         });
 
@@ -397,9 +397,9 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
   });
 
   describe("コンテキストの振る舞い", () => {
-    it('webメソッドを呼び出すとwebの入札リクエストが設定される', () => {
+    it("webメソッドを呼び出すとwebの入札リクエストが設定される", () => {
       const sut = new BidRequestV26Module({
-        helper: helper,    
+        helper: helper,
         definitions: {
           ...data,
           adcom: {
@@ -419,14 +419,14 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
 
       const result = sut.web().make();
 
-      expect(result).toHaveProperty('site');
-      expect(result.site?.domain).toBe('test.com');
-      expect(result.site?.page).toBe('https://test.com/page');
+      expect(result).toHaveProperty("site");
+      expect(result.site?.domain).toBe("test.com");
+      expect(result.site?.page).toBe("https://test.com/page");
     });
 
-    it('appメソッドを呼び出すとappの入札リクエストが設定される', () => {
+    it("appメソッドを呼び出すとappの入札リクエストが設定される", () => {
       const sut = new BidRequestV26Module({
-        helper: helper,    
+        helper: helper,
         definitions: {
           ...data,
           adcom: {
@@ -436,7 +436,7 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
               app: [
                 {
                   domain: "com.test",
-                  cat: ['IAB1-1']
+                  cat: ["IAB1-1"],
                 },
               ],
             },
@@ -446,14 +446,14 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
 
       const result = sut.app().make();
 
-      expect(result).toHaveProperty('app');
-      expect(result.app?.domain).toBe('com.test');
-      expect(result.app?.cat).toEqual(['IAB1-1']);
+      expect(result).toHaveProperty("app");
+      expect(result.app?.domain).toBe("com.test");
+      expect(result.app?.cat).toEqual(["IAB1-1"]);
     });
 
-    it('doohメソッドを呼び出すとdoohの入札リクエストが設定される', () => {
+    it("doohメソッドを呼び出すとdoohの入札リクエストが設定される", () => {
       const sut = new BidRequestV26Module({
-        helper: helper,    
+        helper: helper,
         definitions: {
           ...data,
           adcom: {
@@ -463,8 +463,8 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
               dooh: [
                 {
                   pub: {
-                    domain: 'test.com'
-                  }
+                    domain: "test.com",
+                  },
                 },
               ],
             },
@@ -474,25 +474,47 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
 
       const result = sut.dooh().make();
 
-      expect(result).toHaveProperty('dooh');
-      expect(result.dooh?.publisher?.domain).toBe('test.com');
+      expect(result).toHaveProperty("dooh");
+      expect(result.dooh?.publisher?.domain).toBe("test.com");
     });
 
-    it('コンテキスト系のメソッドを複数呼び出すと複数コンテキスト系のリクエストになる', () => {
+    it("コンテキスト系のメソッドを複数呼び出すと複数コンテキスト系のリクエストになる", () => {
       const sut = new BidRequestV26Module({
-        helper: helper,    
+        helper: helper,
         definitions: data,
       });
 
       const result = sut.dooh().web().app().make();
 
-      expect(result).toHaveProperty('dooh');
-      expect(result).toHaveProperty('site');
-      expect(result).toHaveProperty('app');
+      expect(result).toHaveProperty("dooh");
+      expect(result).toHaveProperty("site");
+      expect(result).toHaveProperty("app");
     });
   });
 
-  describe("入札関連の振る舞い", () => {});
+  describe("入札関連の振る舞い", () => {
+    it("firstPriceメソッドでオークションタイプがファーストプライス方式になる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.firstPrice().make();
+
+      expect(result.at).toBe(1);
+    });
+
+    it("secondPriceメソッドオークションタイプがセカンドプライス方式になる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.secondePrice().make();
+
+      expect(result.at).toBe(2);
+    });
+  });
 
   describe("地域の振る舞い", () => {});
 

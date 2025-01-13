@@ -231,6 +231,18 @@ export class BidRequestV26Module extends Module {
     return this;
   }
 
+  public firstPrice(): this {
+    this.builder.withAuctionType(1);
+
+    return this;
+  }
+
+  public secondePrice(): this {
+    this.builder.withAuctionType(2);
+
+    return this;
+  }
+
   public minimal(): BidRequestV26 {
     return this.builder.build();
   }
