@@ -174,7 +174,10 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
             })
             .make();
 
-          expect(result.imp[0].video?.mimes).toEqual(["video/mp4", "video/ogg"]);
+          expect(result.imp[0].video?.mimes).toEqual([
+            "video/mp4",
+            "video/ogg",
+          ]);
         });
 
         it("videoメソッドとimpメソッドを呼び出すと、ビデオを含んだimpオブジェクトと、フォーマットを含まないimpオブジェクトが含まれる", () => {
@@ -192,8 +195,38 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
       });
 
       describe("ネイティブフォーマと", () => {
-        it("nativeメソッドを呼び出すとバナーフォーマットのimpオブジェクトが一つ含まれる", () => {});
-        it("nativeメソッドとimpメソッドを呼び出すと、ネイティブを含んだimpオブジェクトと、フォーマットを含まないimpオブジェクトが含まれる", () => {});
+        it("nativeメソッドを呼び出すとネイティブフォーマットのimpオブジェクトが一つ含まれる", () => {
+          const sut = new BidRequestV26Module({
+            helper: helper,
+            definitions: data,
+          });
+
+          const result = sut
+            .native({
+              ver: '1.2',
+              assets: [
+                {
+                  id: 1,
+                },
+              ],
+            })
+            .make();
+
+          expect(result.imp[0]).toHaveProperty("native");
+        });
+
+        it("nativeメソッドとimpメソッドを呼び出すと、ネイティブを含んだimpオブジェクトと、フォーマットを含まないimpオブジェクトが含まれる", () => {
+          const sut = new BidRequestV26Module({
+            helper: helper,
+            definitions: data,
+          });
+
+          const result = sut.native({assets: []}).imp().make();
+
+          expect(result.imp.length).toBe(2);
+          expect(result.imp[0]).toHaveProperty("native");
+          expect(result.imp[1]).not.toHaveProperty("native");
+        });
       });
     });
 

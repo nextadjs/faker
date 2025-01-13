@@ -5,8 +5,10 @@ import type {
   BannerV26,
   BidRequestV26,
   ImpV26,
+  NativeV26,
   VideoV26,
 } from "@/types/openrtb";
+import type { Asset, NativeRequest } from "iab-native";
 
 export class BidRequestV26Module extends Module {
   private builder: BidRequestBuilderV26;
@@ -57,6 +59,17 @@ export class BidRequestV26Module extends Module {
     this.builder.addImp({
       video: {
         mimes: ["video/mp4"],
+        ...options,
+      },
+    });
+
+    return this;
+  }
+
+  public native(request: NativeRequest, options?: Partial<NativeV26>): this {
+    this.builder.addImp({
+      native: {
+        request: JSON.stringify(request),
         ...options,
       },
     });
