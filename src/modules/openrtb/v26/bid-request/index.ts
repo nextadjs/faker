@@ -1,5 +1,6 @@
 import { BidRequestBuilderV26 } from "@/libraries/builder";
 import { Module } from "@/module";
+import { ContextModule } from "@/modules/adcom/context";
 import type { ModuleConfig } from "@/types";
 import type {
   BannerV26,
@@ -13,10 +14,12 @@ import type { NativeRequest } from "iab-native";
 
 export class BidRequestV26Module extends Module {
   private builder: BidRequestBuilderV26;
+  private adComContext: ContextModule;
 
   public constructor(config: ModuleConfig) {
     super(config);
     this.builder = new BidRequestBuilderV26();
+    this.adComContext = new ContextModule(config);
   }
 
   public imp(imp?: Partial<ImpV26>): this {
@@ -26,6 +29,49 @@ export class BidRequestV26Module extends Module {
 
   public withCommonImp(imp: Partial<ImpV26>): this {
     this.builder.withCommonImp(imp);
+    return this;
+  }
+
+  public web(): this {
+    const adComFakeSite = this.adComContext.site();
+
+    this.builder.withSite({
+      domain: adComFakeSite.domain,
+      cattax: adComFakeSite.cattax,
+      cat: adComFakeSite.cat,
+      pagecat: adComFakeSite.cat,
+      page: adComFakeSite.page,
+      ref: adComFakeSite.ref,
+      publisher: adComFakeSite.pub,
+      kwarray: adComFakeSite.kwarray,
+      keywords: adComFakeSite.keywords,
+    });
+
+    return this;
+  }
+
+  public app(): this {
+    const app = this.adComContext.app();
+
+    this.builder.withApp({
+      domain: app.domain,
+      bundle: app.bundle,
+      storeurl: app.storeurl,
+      ver: app.ver,
+      cat: app.cat,
+      kwarray: app.kwarray,
+    });
+
+    return this;
+  }
+
+  public dooh(): this {
+    const dooh = this.adComContext.dooh();
+
+    this.builder.withDOOH({
+      publisher: dooh.pub
+    });
+
     return this;
   }
 

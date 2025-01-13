@@ -343,7 +343,7 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
 
     describe("OS", () => {
       it("androidメソッドを呼び出すとデバイスにandroidの値が設定される", () => {
-        vi.spyOn(helper, 'generateRandomDecimal').mockReturnValue(13.5);
+        vi.spyOn(helper, "generateRandomDecimal").mockReturnValue(13.5);
         const sut = new BidRequestV26Module({
           helper: helper,
           definitions: data,
@@ -352,11 +352,11 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
         const result = sut.android().make();
 
         expect(result.device?.os).toBe("Android");
-        expect(result.device?.osv).toBe('13.5');
+        expect(result.device?.osv).toBe("13.5");
       });
 
       it("iosメソッドを呼び出すとデバイスにiosの値が設定される", () => {
-        vi.spyOn(helper, 'generateRandomDecimal').mockReturnValue(14.5);
+        vi.spyOn(helper, "generateRandomDecimal").mockReturnValue(14.5);
         const sut = new BidRequestV26Module({
           helper: helper,
           definitions: data,
@@ -365,11 +365,11 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
         const result = sut.ios().make();
 
         expect(result.device?.os).toBe("iOS");
-        expect(result.device?.osv).toBe('14.5');
+        expect(result.device?.osv).toBe("14.5");
       });
 
       it("macosメソッドを呼び出すとデバイスにmacosの値が設定される", () => {
-        vi.spyOn(helper, 'generateRandomDecimal').mockReturnValue(13.5);
+        vi.spyOn(helper, "generateRandomDecimal").mockReturnValue(13.5);
         const sut = new BidRequestV26Module({
           helper: helper,
           definitions: data,
@@ -378,25 +378,119 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
         const result = sut.macos().make();
 
         expect(result.device?.os).toBe("macOS");
-        expect(result.device?.osv).toBe('13.5');
+        expect(result.device?.osv).toBe("13.5");
       });
 
       it("windowsメソッドを呼び出すとデバイスにwindowsの値が設定される", () => {
-        vi.spyOn(helper, 'selectRandomArrayItem').mockReturnValue('10.0');
+        vi.spyOn(helper, "selectRandomArrayItem").mockReturnValue("10.0");
         const sut = new BidRequestV26Module({
-          helper: helper,
+          helper: helper,    
           definitions: data,
         });
 
         const result = sut.windows().make();
 
         expect(result.device?.os).toBe("Windows");
-        expect(result.device?.osv).toBe('10.0');
+        expect(result.device?.osv).toBe("10.0");
       });
     });
   });
 
-  describe("コンテキストの振る舞い", () => {});
+  describe("コンテキストの振る舞い", () => {
+    it('webメソッドを呼び出すとwebの入札リクエストが設定される', () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,    
+        definitions: {
+          ...data,
+          adcom: {
+            ...data.adcom,
+            context: {
+              ...data.adcom.context,
+              site: [
+                {
+                  domain: "test.com",
+                  page: "https://test.com/page",
+                },
+              ],
+            },
+          },
+        },
+      });
+
+      const result = sut.web().make();
+
+      expect(result).toHaveProperty('site');
+      expect(result.site?.domain).toBe('test.com');
+      expect(result.site?.page).toBe('https://test.com/page');
+    });
+
+    it('appメソッドを呼び出すとappの入札リクエストが設定される', () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,    
+        definitions: {
+          ...data,
+          adcom: {
+            ...data.adcom,
+            context: {
+              ...data.adcom.context,
+              app: [
+                {
+                  domain: "com.test",
+                  cat: ['IAB1-1']
+                },
+              ],
+            },
+          },
+        },
+      });
+
+      const result = sut.app().make();
+
+      expect(result).toHaveProperty('app');
+      expect(result.app?.domain).toBe('com.test');
+      expect(result.app?.cat).toEqual(['IAB1-1']);
+    });
+
+    it('doohメソッドを呼び出すとdoohの入札リクエストが設定される', () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,    
+        definitions: {
+          ...data,
+          adcom: {
+            ...data.adcom,
+            context: {
+              ...data.adcom.context,
+              dooh: [
+                {
+                  pub: {
+                    domain: 'test.com'
+                  }
+                },
+              ],
+            },
+          },
+        },
+      });
+
+      const result = sut.dooh().make();
+
+      expect(result).toHaveProperty('dooh');
+      expect(result.dooh?.publisher?.domain).toBe('test.com');
+    });
+
+    it('コンテキスト系のメソッドを複数呼び出すと複数コンテキスト系のリクエストになる', () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,    
+        definitions: data,
+      });
+
+      const result = sut.dooh().web().app().make();
+
+      expect(result).toHaveProperty('dooh');
+      expect(result).toHaveProperty('site');
+      expect(result).toHaveProperty('app');
+    });
+  });
 
   describe("入札関連の振る舞い", () => {});
 
