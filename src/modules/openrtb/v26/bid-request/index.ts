@@ -139,8 +139,11 @@ export class BidRequestV26Module extends Module {
   }
 
   public android(): this {
+    const androidVersion = this.helper.generateRandomDecimal(4, 13, 1);
+
     this.builder.withDevice({
       os: "Android",
+      osv: androidVersion.toString(),
     });
 
     return this;
@@ -149,22 +152,34 @@ export class BidRequestV26Module extends Module {
   public ios(): this {
     this.builder.withDevice({
       os: "iOS",
+      osv: this.helper.generateRandomDecimal(7, 15, 1).toString(),
     });
 
     return this;
   }
 
   public macos(): this {
+    const macVersion = this.helper.generateRandomDecimal(10, 14, 1);
     this.builder.withDevice({
       os: "macOS",
+      osv: macVersion.toString(),
     });
 
     return this;
   }
 
   public windows(): this {
+    const windowsVersions = [
+      "6.1", // Windows 7
+      "6.2", // Windows 8
+      "6.3", // Windows 8.1
+      "10.0", // Windows 10
+      "11.0", // Windows 11
+    ];
+
     this.builder.withDevice({
       os: "Windows",
+      osv: this.helper.selectRandomArrayItem<string>(windowsVersions),
     });
 
     return this;

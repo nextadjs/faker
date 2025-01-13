@@ -293,10 +293,12 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
           helper: helper,
           definitions: data,
         });
-  
+
         const result = sut.chrome().make();
-  
-        expect(result.device?.ua).toBe("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+
+        expect(result.device?.ua).toBe(
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        );
       });
 
       it("safariメソッドを呼び出すとuaにsafari向けの値が設定される", () => {
@@ -304,10 +306,12 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
           helper: helper,
           definitions: data,
         });
-  
+
         const result = sut.safari().make();
-  
-        expect(result.device?.ua).toBe("ozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15");
+
+        expect(result.device?.ua).toBe(
+          "ozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15"
+        );
       });
 
       it("firefoxメソッドを呼び出すとuaにfirefox向けの値が設定される", () => {
@@ -315,10 +319,12 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
           helper: helper,
           definitions: data,
         });
-  
+
         const result = sut.firefox().make();
-  
-        expect(result.device?.ua).toBe("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0");
+
+        expect(result.device?.ua).toBe(
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0"
+        );
       });
 
       it("edgeメソッドを呼び出すとuaにedge向けの値が設定される", () => {
@@ -326,56 +332,66 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
           helper: helper,
           definitions: data,
         });
-  
+
         const result = sut.edge().make();
-  
-        expect(result.device?.ua).toBe("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0");
+
+        expect(result.device?.ua).toBe(
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0"
+        );
       });
     });
 
     describe("OS", () => {
       it("androidメソッドを呼び出すとデバイスにandroidの値が設定される", () => {
+        vi.spyOn(helper, 'generateRandomDecimal').mockReturnValue(13.5);
         const sut = new BidRequestV26Module({
           helper: helper,
           definitions: data,
         });
-  
+
         const result = sut.android().make();
-  
-        expect(result.device?.os).toBe('Android');
+
+        expect(result.device?.os).toBe("Android");
+        expect(result.device?.osv).toBe('13.5');
       });
 
       it("iosメソッドを呼び出すとデバイスにiosの値が設定される", () => {
+        vi.spyOn(helper, 'generateRandomDecimal').mockReturnValue(14.5);
         const sut = new BidRequestV26Module({
           helper: helper,
           definitions: data,
         });
-  
+
         const result = sut.ios().make();
-  
-        expect(result.device?.os).toBe('iOS');
+
+        expect(result.device?.os).toBe("iOS");
+        expect(result.device?.osv).toBe('14.5');
       });
 
       it("macosメソッドを呼び出すとデバイスにmacosの値が設定される", () => {
+        vi.spyOn(helper, 'generateRandomDecimal').mockReturnValue(13.5);
         const sut = new BidRequestV26Module({
           helper: helper,
           definitions: data,
         });
-  
+
         const result = sut.macos().make();
-  
-        expect(result.device?.os).toBe('MacOS');
+
+        expect(result.device?.os).toBe("macOS");
+        expect(result.device?.osv).toBe('13.5');
       });
 
       it("windowsメソッドを呼び出すとデバイスにwindowsの値が設定される", () => {
+        vi.spyOn(helper, 'selectRandomArrayItem').mockReturnValue('10.0');
         const sut = new BidRequestV26Module({
           helper: helper,
           definitions: data,
         });
-  
+
         const result = sut.windows().make();
-  
-        expect(result.device?.os).toBe('Windows');
+
+        expect(result.device?.os).toBe("Windows");
+        expect(result.device?.osv).toBe('10.0');
       });
     });
   });
