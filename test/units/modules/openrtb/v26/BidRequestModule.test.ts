@@ -250,10 +250,6 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
         });
       });
     });
-
-    describe("Begin系", () => {
-      it("");
-    });
   });
 
   describe("デバイス/環境の振る舞い", () => {});
