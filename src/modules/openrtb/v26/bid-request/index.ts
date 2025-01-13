@@ -156,7 +156,7 @@ export class BidRequestV26Module extends Module {
 
   public macos(): this {
     this.builder.withDevice({
-      os: "MacOS",
+      os: "macOS",
     });
 
     return this;
