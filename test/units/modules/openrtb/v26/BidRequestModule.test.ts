@@ -151,9 +151,44 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
       });
 
       describe("ビデオフォーマット", () => {
-        it("videoメソッドを呼び出すとバナーフォーマットのimpオブジェクトが一つ含まれる", () => {});
+        it("videoメソッドを呼び出すとバナーフォーマットのimpオブジェクトが一つ含まれる", () => {
+          const sut = new BidRequestV26Module({
+            helper: helper,
+            definitions: data,
+          });
 
-        it("videoメソッドとimpメソッドを呼び出すと、ビデオを含んだimpオブジェクトと、フォーマットを含まないimpオブジェクトが含まれる", () => {});
+          const result = sut.video().make();
+
+          expect(result.imp[0]).toHaveProperty("video");
+        });
+
+        it("videoにオプションを渡すと追加でオプションがimp.videoに含まれる", () => {
+          const sut = new BidRequestV26Module({
+            helper: helper,
+            definitions: data,
+          });
+
+          const result = sut
+            .video({
+              mimes: ["video/mp4", "video/ogg"],
+            })
+            .make();
+
+          expect(result.imp[0].video?.mimes).toEqual(["video/mp4", "video/ogg"]);
+        });
+
+        it("videoメソッドとimpメソッドを呼び出すと、ビデオを含んだimpオブジェクトと、フォーマットを含まないimpオブジェクトが含まれる", () => {
+          const sut = new BidRequestV26Module({
+            helper: helper,
+            definitions: data,
+          });
+
+          const result = sut.video().imp().make();
+
+          expect(result.imp.length).toBe(2);
+          expect(result.imp[0]).toHaveProperty("video");
+          expect(result.imp[1]).not.toHaveProperty("video");
+        });
       });
 
       describe("ネイティブフォーマと", () => {

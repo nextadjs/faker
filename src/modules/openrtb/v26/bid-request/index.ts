@@ -1,7 +1,12 @@
 import { BidRequestBuilderV26 } from "@/libraries/builder";
 import { Module } from "@/module";
 import type { ModuleConfig } from "@/types";
-import type { BannerV26, BidRequestV26, ImpV26 } from "@/types/openrtb";
+import type {
+  BannerV26,
+  BidRequestV26,
+  ImpV26,
+  VideoV26,
+} from "@/types/openrtb";
 
 export class BidRequestV26Module extends Module {
   private builder: BidRequestBuilderV26;
@@ -44,6 +49,17 @@ export class BidRequestV26Module extends Module {
         },
       });
     }
+
+    return this;
+  }
+
+  public video(options?: Partial<VideoV26>): this {
+    this.builder.addImp({
+      video: {
+        mimes: ["video/mp4"],
+        ...options,
+      },
+    });
 
     return this;
   }
