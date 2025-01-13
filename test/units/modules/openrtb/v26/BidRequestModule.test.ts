@@ -1,6 +1,7 @@
 import { data } from "@/data";
 import { Helper } from "@/helper";
 import { BidRequestV26Module } from "@/modules/openrtb/v26/bid-request";
+import { DeviceType } from "iab-adcom";
 
 describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
   let helper: Helper;
@@ -252,7 +253,134 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
     });
   });
 
-  describe("デバイス/環境の振る舞い", () => {});
+  describe("デバイスの振る舞い", () => {
+    it("モバイルメソッドを呼び出すとデバイスがモバイル向けの値に設定される", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.mobile().make();
+
+      expect(result.device?.devicetype).toBe(DeviceType.MOBILE_TABLET);
+    });
+
+    it("デスクトップメソッドを呼び出すデバイスがデバイス向けの値に設定される", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.desktop().make();
+
+      expect(result.device?.devicetype).toBe(DeviceType.PERSONAL_COMPUTER);
+    });
+
+    it("タブレットメソッドを呼び出すデバイスがデバイス向けの値に設定される", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.tablet().make();
+
+      expect(result.device?.devicetype).toBe(DeviceType.TABLET);
+    });
+
+    describe("ブラウザ", () => {
+      it("chromeメソッドを呼び出すとuaにchrome向けの値が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper: helper,
+          definitions: data,
+        });
+  
+        const result = sut.chrome().make();
+  
+        expect(result.device?.ua).toBe("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+      });
+
+      it("safariメソッドを呼び出すとuaにsafari向けの値が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper: helper,
+          definitions: data,
+        });
+  
+        const result = sut.safari().make();
+  
+        expect(result.device?.ua).toBe("ozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15");
+      });
+
+      it("firefoxメソッドを呼び出すとuaにfirefox向けの値が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper: helper,
+          definitions: data,
+        });
+  
+        const result = sut.firefox().make();
+  
+        expect(result.device?.ua).toBe("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0");
+      });
+
+      it("edgeメソッドを呼び出すとuaにedge向けの値が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper: helper,
+          definitions: data,
+        });
+  
+        const result = sut.edge().make();
+  
+        expect(result.device?.ua).toBe("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0");
+      });
+    });
+
+    describe("OS", () => {
+      it("androidメソッドを呼び出すとデバイスにandroidの値が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper: helper,
+          definitions: data,
+        });
+  
+        const result = sut.android().make();
+  
+        expect(result.device?.os).toBe('Android');
+      });
+
+      it("iosメソッドを呼び出すとデバイスにiosの値が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper: helper,
+          definitions: data,
+        });
+  
+        const result = sut.ios().make();
+  
+        expect(result.device?.os).toBe('iOS');
+      });
+
+      it("macosメソッドを呼び出すとデバイスにmacosの値が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper: helper,
+          definitions: data,
+        });
+  
+        const result = sut.macos().make();
+  
+        expect(result.device?.os).toBe('MacOS');
+      });
+
+      it("windowsメソッドを呼び出すとデバイスにwindowsの値が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper: helper,
+          definitions: data,
+        });
+  
+        const result = sut.windows().make();
+  
+        expect(result.device?.os).toBe('Windows');
+      });
+    });
+  });
+
+  describe("コンテキストの振る舞い", () => {});
 
   describe("入札関連の振る舞い", () => {});
 

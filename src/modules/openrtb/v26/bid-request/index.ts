@@ -8,7 +8,8 @@ import type {
   NativeV26,
   VideoV26,
 } from "@/types/openrtb";
-import type { Asset, NativeRequest } from "iab-native";
+import { DeviceType } from "iab-adcom";
+import type { NativeRequest } from "iab-native";
 
 export class BidRequestV26Module extends Module {
   private builder: BidRequestBuilderV26;
@@ -77,6 +78,93 @@ export class BidRequestV26Module extends Module {
         request: JSON.stringify(request),
         ...options,
       },
+    });
+
+    return this;
+  }
+
+  public mobile(): this {
+    this.builder.withDevice({
+      devicetype: DeviceType.MOBILE_TABLET,
+    });
+    return this;
+  }
+
+  public desktop(): this {
+    this.builder.withDevice({
+      devicetype: DeviceType.PERSONAL_COMPUTER,
+    });
+
+    return this;
+  }
+
+  public tablet(): this {
+    this.builder.withDevice({
+      devicetype: DeviceType.TABLET,
+    });
+
+    return this;
+  }
+
+  public chrome(): this {
+    this.builder.withDevice({
+      ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    });
+
+    return this;
+  }
+
+  public safari(): this {
+    this.builder.withDevice({
+      ua: "ozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",
+    });
+
+    return this;
+  }
+
+  public firefox(): this {
+    this.builder.withDevice({
+      ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0",
+    });
+
+    return this;
+  }
+
+  public edge(): this {
+    this.builder.withDevice({
+      ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0",
+    });
+
+    return this;
+  }
+
+  public android(): this {
+    this.builder.withDevice({
+      os: "Android",
+    });
+
+    return this;
+  }
+
+  public ios(): this {
+    this.builder.withDevice({
+      os: "iOS",
+    });
+
+    return this;
+  }
+
+  public macos(): this {
+    this.builder.withDevice({
+      os: "MacOS",
+    });
+
+    return this;
+  }
+
+  public windows(): this {
+    this.builder.withDevice({
+      os: "Windows",
     });
 
     return this;
