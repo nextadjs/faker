@@ -438,12 +438,8 @@ export class BidRequestV26Module extends Module {
     return this;
   }
 
-  public withTimeout(tmax?: number): this {
-    if (tmax) {
-      this.builder.withTimeout(tmax);
-    } else {
-      this.builder.withTimeout(this.helper.generateRandomNumber(100, 10000));
-    }
+  public withTimeout(tmax: number): this {
+    this.builder.withTimeout(tmax);
 
     return this;
   }
