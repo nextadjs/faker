@@ -939,32 +939,6 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
         expect(result.regs?.coppa).toBe(0);
         expect(result.regs?.gdpr).toBe(0);
       });
-
-      it("特定の規制情報を指定しない場合はランダムのregs情報が入札のregsに設定される", () => {
-        const sut = new BidRequestV26Module({
-          helper,
-          definitions: {
-            ...data,
-            adcom: {
-              ...data.adcom,
-              context: {
-                ...data.adcom.context,
-                regs: [
-                  {
-                    coppa: 1,
-                    gdpr: 1,
-                  },
-                ],
-              },
-            },
-          },
-        });
-
-        const result = sut.withRegulations().make();
-
-        expect(result.regs?.coppa).toBe(1);
-        expect(result.regs?.gdpr).toBe(1);
-      });
     });
 
     describe("withGeo", () => {

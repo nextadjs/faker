@@ -504,17 +504,8 @@ export class BidRequestV26Module extends Module {
     return this;
   }
 
-  public withRegulations(regs?: RegsV26): this {
-    if (regs) {
-      this.builder.withRegulations(regs);
-    } else {
-      const regs = this.adComContext.regs();
-
-      this.builder.withRegulations({
-        coppa: regs.coppa,
-        gdpr: regs.gdpr,
-      });
-    }
+  public withRegulations(regs: RegsV26): this {
+    this.builder.withRegulations(regs);
 
     return this;
   }
