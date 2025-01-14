@@ -1,13 +1,15 @@
+import { ImageAssetType } from "iab-native";
+
 export default [
   {
     url: "https://example.com/image1.jpg",
-    type: 1,
+    type: ImageAssetType.ICON,
     w: 100,
     h: 300,
   },
   {
     url: "https://example/main.jpg",
-    type: 3,
+    type: ImageAssetType.MAIN,
     w: 300,
     h: 250,
   },

@@ -1,6 +1,8 @@
+import { DataAssetType } from "iab-native";
+
 export default [
   {
-    type: 1,
+    type: DataAssetType.SPONSORED,
     value: "Sponsored",
   },
 ];

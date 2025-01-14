@@ -22,10 +22,13 @@ import brandVersion from "./adcom/context/brandVersion";
 import regs from "./adcom/context/regs";
 import dataAdCOM from "./adcom/context/data";
 import deviceFull from "./adcom/context/deviceFull";
+import bidV26 from "./openrtb/v26/bid";
 
 export const data: Definition = {
   openrtb: {
-    v26: {},
+    v26: {
+      bid: bidV26
+    },
     bidResponse: {
       seat: seat,
     },

@@ -1,6 +1,8 @@
+import { DeviceType } from "iab-adcom";
+
 export default [
   {
-    type: 1,
+    type: DeviceType.PHONE,
     ua: "Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1",
     sua: {
       browsers: [
@@ -38,13 +40,7 @@ export default [
     mccmncsim: "44020",
     contype: 2,
     geofetch: 1,
-    geo: {
-      lat: 35.6812362,
-      lon: 139.7671248,
-      type: 1,
-      lastfix: 1642000000,
-      country: "JPN",
-    },
+    geo: {},
     ext: {
       vendor_specific_data: "example_value",
     },
