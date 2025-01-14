@@ -69,9 +69,89 @@ export class BidRequestV26Module extends Module {
     const dooh = this.adComContext.dooh();
 
     this.builder.withDOOH({
-      publisher: dooh.pub
+      publisher: dooh.pub,
     });
 
+    return this;
+  }
+
+  public usa(): this {
+    this.builder.withGeo({
+      country: "US",
+      utcoffset: -5, // EST
+    });
+    return this;
+  }
+
+  public japan(): this {
+    this.builder.withGeo({
+      country: "JP",
+      utcoffset: 9, // JST
+    });
+    return this;
+  }
+
+  public uk(): this {
+    this.builder.withGeo({
+      country: "GB",
+      utcoffset: 0, // GMT/UTC
+    });
+    return this;
+  }
+
+  public germany(): this {
+    this.builder.withGeo({
+      country: "DE",
+      utcoffset: 1, // CET
+    });
+    return this;
+  }
+
+  public france(): this {
+    this.builder.withGeo({
+      country: "FR",
+      utcoffset: 1, // CET
+    });
+    return this;
+  }
+
+  public australia(): this {
+    this.builder.withGeo({
+      country: "AU",
+      utcoffset: 10, // AEST
+    });
+    return this;
+  }
+
+  public china(): this {
+    this.builder.withGeo({
+      country: "CN",
+      utcoffset: 8, // CST
+    });
+    return this;
+  }
+
+  public canada(): this {
+    this.builder.withGeo({
+      country: "CA",
+      utcoffset: -5, // EST (Toronto)
+    });
+    return this;
+  }
+
+  public india(): this {
+    this.builder.withGeo({
+      country: "IN",
+      utcoffset: 5.5, // IST
+    });
+    return this;
+  }
+
+  public brazil(): this {
+    this.builder.withGeo({
+      country: "BR",
+      utcoffset: -3, // BRT
+    });
     return this;
   }
 
@@ -242,7 +322,7 @@ export class BidRequestV26Module extends Module {
 
     return this;
   }
-
+  
   public minimal(): BidRequestV26 {
     return this.builder.build();
   }

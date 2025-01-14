@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@nextad/builder':
-        specifier: ^0.1.3
-        version: 0.1.3
+        specifier: ^0.1.4
+        version: 0.1.4
       iab-adcom:
         specifier: ^0.2.1
         version: 0.2.1
@@ -349,8 +349,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@nextad/builder@0.1.3':
-    resolution: {integrity: sha512-MFdR+9tXa7LiXi+QRBe5QpAw035ZwIOHLgtkbE2xnuqtflbi2aJuWmXfUe2MrxpE0D2RP2zcY+KUFtAhVUFE+Q==}
+  '@nextad/builder@0.1.4':
+    resolution: {integrity: sha512-tRDxslya4jkH5Z/oRo0lJJnmwctmhgMPtX+g99fkvUS3xRtlggv1EitSsu5Rb4Kw57AMltZBVxeG0jcvRdhB4A==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -1154,7 +1154,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@nextad/builder@0.1.3':
+  '@nextad/builder@0.1.4':
     dependencies:
       iab-openrtb: 0.3.10
       uuid: 11.0.5

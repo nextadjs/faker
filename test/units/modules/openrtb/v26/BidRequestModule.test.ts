@@ -516,7 +516,127 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
     });
   });
 
-  describe("地域の振る舞い", () => {});
+  describe("地域の振る舞い", () => {
+    it("usaメソッドでusaからのリクエストを示す値が含まれる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.usa().make();
+
+      expect(result.device?.geo?.country).toBe("US");
+      expect(result.device?.geo?.utcoffset).toBe(-5);
+    });
+
+    it("japanメソッドで日本からのリクエストを示す値が含まれる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.japan().make();
+
+      expect(result.device?.geo?.country).toBe("JP");
+      expect(result.device?.geo?.utcoffset).toBe(9);
+    });
+
+    it("ukメソッドでイギリスからのリクエストを示す値が含まれる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.uk().make();
+
+      expect(result.device?.geo?.country).toBe("GB");
+      expect(result.device?.geo?.utcoffset).toBe(0);
+    });
+
+    it("germanyメソッドでドイツからのリクエストを示す値が含まれる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.germany().make();
+
+      expect(result.device?.geo?.country).toBe("DE");
+      expect(result.device?.geo?.utcoffset).toBe(1);
+    });
+
+    it("franceメソッドでフランスからのリクエストを示す値が含まれる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.france().make();
+
+      expect(result.device?.geo?.country).toBe("FR");
+      expect(result.device?.geo?.utcoffset).toBe(1);
+    });
+
+    it("australiaメソッドでオーストラリアからのリクエストを示す値が含まれる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.australia().make();
+
+      expect(result.device?.geo?.country).toBe("AU");
+      expect(result.device?.geo?.utcoffset).toBe(10);
+    });
+
+    it("chinaメソッドで中国からのリクエストを示す値が含まれる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.china().make();
+
+      expect(result.device?.geo?.country).toBe("CN");
+      expect(result.device?.geo?.utcoffset).toBe(8);
+    });
+
+    it("canadaメソッドでカナダからのリクエストを示す値が含まれる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.canada().make();
+
+      expect(result.device?.geo?.country).toBe("CA");
+      expect(result.device?.geo?.utcoffset).toBe(-5);
+    });
+
+    it("indiaメソッドでインドからのリクエストを示す値が含まれる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.india().make();
+
+      expect(result.device?.geo?.country).toBe("IN");
+      expect(result.device?.geo?.utcoffset).toBe(5.5);
+    });
+
+    it("brazilメソッドでブラジルからのリクエストを示す値が含まれる", () => {
+      const sut = new BidRequestV26Module({
+        helper: helper,
+        definitions: data,
+      });
+
+      const result = sut.brazil().make();
+
+      expect(result.device?.geo?.country).toBe("BR");
+      expect(result.device?.geo?.utcoffset).toBe(-3);
+    });
+  });
 
   describe("トップレベルパラメーター直接変更の振る舞い", () => {});
 });
