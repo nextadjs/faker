@@ -54,7 +54,7 @@ export class NativeModule extends Module {
     };
   }
 
-  public reqAssets(assets: AssetV12[]): AssetResponseV12[] {
+  public requestAssets(assets: AssetV12[]): AssetResponseV12[] {
     return assets.map((asset) => {
       const response: AssetResponseV12 = {
         id: asset.id,
@@ -73,10 +73,16 @@ export class NativeModule extends Module {
   public req(
     assets: AssetV12[] = [{ id: 1, title: { len: 90 } }]
   ): NativeResponseV12 {
+    return this.request(assets);
+  }
+
+  public request(
+    assets: AssetV12[] = [{ id: 1, title: { len: 90 } }]
+  ): NativeResponseV12 {
     return {
       ver: "1.2",
       link: this.link(),
-      assets: this.reqAssets(assets),
+      assets: this.requestAssets(assets),
     };
   }
 }
