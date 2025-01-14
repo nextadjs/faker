@@ -12,8 +12,8 @@ importers:
         specifier: ^0.1.4
         version: 0.1.4
       iab-adcom:
-        specifier: ^0.2.1
-        version: 0.2.1
+        specifier: ^0.2.4
+        version: 0.2.4
       iab-native:
         specifier: ^0.5.0
         version: 0.5.0
@@ -619,8 +619,8 @@ packages:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
 
-  iab-adcom@0.2.1:
-    resolution: {integrity: sha512-DaavN/+wrs4zY4aUadce65ahaT98RwUQicUjjl8/633VAkGS7cibes6AY/VaSFx32WkHd3VP6gjyuGAdOE+wJw==}
+  iab-adcom@0.2.4:
+    resolution: {integrity: sha512-mB/JmWHzd09bBs1lJJI/1V6SPF2hLepvQuEuTad0kitKDkK587BF9RG71I8FwlIXNfdP6l2SJM1NSjVi97tUEg==}
     engines: {node: '>=14.0.0'}
 
   iab-native@0.5.0:
@@ -1417,7 +1417,7 @@ snapshots:
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
-  iab-adcom@0.2.1: {}
+  iab-adcom@0.2.4: {}
 
   iab-native@0.5.0: {}
 

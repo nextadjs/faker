@@ -6,6 +6,7 @@ import type { NativeModule } from "@/modules/creative/native";
 import type { VastModule } from "@/modules/creative/vast";
 import type { BidRequestV26Module } from "@/modules/openrtb/v26/bid-request";
 import type { BidResponseV26Module } from "@/modules/openrtb/v26/bid-response";
+import { OperatingSystem } from "iab-adcom";
 
 export interface ModuleConfig {
   definitions: Definition;
@@ -30,3 +31,5 @@ export interface OpenRTBV26Modules {
   bidRequest: BidRequestV26Module;
   bidResponse: BidResponseV26Module;
 }
+
+

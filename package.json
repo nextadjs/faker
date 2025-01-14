@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@nextad/builder": "^0.1.4",
-    "iab-adcom": "^0.2.1",
+    "iab-adcom": "^0.2.4",
     "iab-native": "^0.5.0",
     "iab-openrtb": "^0.4.0",
     "uuid": "^11.0.5"

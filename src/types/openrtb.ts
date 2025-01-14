@@ -14,6 +14,7 @@ export type {
   Bid as BidV26,
   Video as VideoV26,
   Native as NativeV26,
+  Geo as GeoV26
 } from "iab-openrtb/v26";
 export type {
   TitleRequest as TitleRequestV12,

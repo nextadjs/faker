@@ -1,7 +1,7 @@
 import { data } from "@/data";
 import { Helper } from "@/helper";
 import { BidRequestV26Module } from "@/modules/openrtb/v26/bid-request";
-import { DeviceType } from "iab-adcom";
+import { DeviceType, OperatingSystem } from "iab-adcom";
 
 describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
   let helper: Helper;
@@ -638,5 +638,400 @@ describe("OpenRTB v2.6 Bid Request Module Behavior", () => {
     });
   });
 
-  describe("トップレベルパラメーター直接変更の振る舞い", () => {});
+  describe("トップレベルパラメーター直接変更の振る舞い", () => {
+    describe("withSite", () => {
+      it("特定のサイト情報を指定する場合は入札のsiteに指定した情報が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper: helper,
+          definitions: data,
+        });
+
+        const result = sut
+          .withSite({
+            domain: "example.com",
+          })
+          .make();
+
+        expect(result.site?.domain).toBe("example.com");
+      });
+
+      it("特定のサイト情報を指定しない場合はランダムのsite情報が入札のsiteに設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper: helper,
+          definitions: {
+            ...data,
+            adcom: {
+              ...data.adcom,
+              context: {
+                ...data.adcom.context,
+                site: [
+                  {
+                    domain: "site.com",
+                  },
+                ],
+              },
+            },
+          },
+        });
+
+        const result = sut.withSite().make();
+
+        expect(result.site?.domain).toBe("site.com");
+      });
+    });
+
+    describe("withApp", () => {
+      it("特定のアプリ情報を指定する場合は入札のappに指定した情報が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: data,
+        });
+
+        const result = sut
+          .withApp({
+            domain: "example.app.com",
+          })
+          .make();
+
+        expect(result.app?.domain).toBe("example.app.com");
+      });
+
+      it("特定のアプリ情報を指定しない場合はランダムのapp情報が入札のappに設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: {
+            ...data,
+            adcom: {
+              ...data.adcom,
+              context: {
+                ...data.adcom.context,
+                app: [
+                  {
+                    domain: "app.com",
+                    bundle: "com.example.app",
+                    storeurl: "https://store.example.com",
+                    ver: "1.0.0",
+                    cat: ["IAB1"],
+                    kwarray: ["keyword1"],
+                  },
+                ],
+              },
+            },
+          },
+        });
+
+        const result = sut.withApp().make();
+
+        expect(result.app?.domain).toBe("app.com");
+        expect(result.app?.bundle).toBe("com.example.app");
+        expect(result.app?.storeurl).toBe("https://store.example.com");
+        expect(result.app?.ver).toBe("1.0.0");
+        expect(result.app?.cat).toEqual(["IAB1"]);
+        expect(result.app?.kwarray).toEqual(["keyword1"]);
+      });
+    });
+
+    describe("withDOOH", () => {
+      it("特定のDOOH情報を指定する場合は入札のdoohに指定した情報が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: data,
+        });
+
+        const result = sut
+          .withDOOH({
+            publisher: {
+              domain: "publisher.com",
+            },
+          })
+          .make();
+
+        expect(result.dooh?.publisher?.domain).toBe("publisher.com");
+      });
+
+      it("特定のDOOH情報を指定しない場合はランダムのdooh情報が入札のdoohに設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: {
+            ...data,
+            adcom: {
+              ...data.adcom,
+              context: {
+                ...data.adcom.context,
+                dooh: [
+                  {
+                    pub: {
+                      domain: "publisher.com",
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        });
+
+        const result = sut.withDOOH().make();
+
+        expect(result.dooh?.publisher?.domain).toBe("publisher.com");
+      });
+    });
+
+    describe("withDevice", () => {
+      it("特定のデバイス情報を指定する場合は入札のdeviceに指定した情報が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: data,
+        });
+
+        const result = sut
+          .withDevice({
+            ip: "10.0.0.1",
+            make: "Samsung",
+          })
+          .make();
+
+        expect(result.device?.ip).toBe("10.0.0.1");
+        expect(result.device?.make).toBe("Samsung");
+      });
+
+      it("特定のデバイス情報を指定しない場合はランダムのdevice情報が入札のdeviceに設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: {
+            ...data,
+            adcom: {
+              ...data.adcom,
+              context: {
+                ...data.adcom.context,
+                device: [
+                  {
+                    ip: "192.168.1.1",
+                    ipv6: "2001:db8::1",
+                    type: 1,
+                    make: "Apple",
+                    model: "iPhone",
+                    os: OperatingSystem.IOS,
+                    osv: "15.0",
+                    hwv: "1.0",
+                    w: 375,
+                    h: 812,
+                    ppi: 458,
+                    pxratio: 2,
+                    lang: "en",
+                    langb: "en-US",
+                    carrier: "carrier1",
+                  },
+                ],
+              },
+            },
+          },
+        });
+
+        const result = sut.withDevice().make();
+
+        expect(result.device?.ip).toBe("192.168.1.1");
+        expect(result.device?.ipv6).toBe("2001:db8::1");
+        expect(result.device?.devicetype).toBe(1);
+        expect(result.device?.make).toBe("Apple");
+        expect(result.device?.model).toBe("iPhone");
+        expect(result.device?.os).toBe("iOS");
+        expect(result.device?.osv).toBe("15.0");
+        expect(result.device?.hwv).toBe("1.0");
+        expect(result.device?.w).toBe(375);
+        expect(result.device?.h).toBe(812);
+        expect(result.device?.ppi).toBe(458);
+        expect(result.device?.pxratio).toBe(2);
+        expect(result.device?.language).toBe("en");
+        expect(result.device?.langb).toBe("en-US");
+        expect(result.device?.carrier).toBe("carrier1");
+      });
+    });
+
+    describe("withUser", () => {
+      it("特定のユーザー情報を指定する場合は入札のuserに指定した情報が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: data,
+        });
+
+        const result = sut
+          .withUser({
+            id: "custom-user",
+            buyeruid: "custom-buyer",
+          })
+          .make();
+
+        expect(result.user?.id).toBe("custom-user");
+        expect(result.user?.buyeruid).toBe("custom-buyer");
+      });
+
+      it("特定のユーザー情報を指定しない場合はランダムのuser情報が入札のuserに設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: {
+            ...data,
+            adcom: {
+              ...data.adcom,
+              context: {
+                ...data.adcom.context,
+                user: [
+                  {
+                    id: "user1",
+                    buyeruid: "buyer1",
+                    keywords: "keyword1,keyword2",
+                    kwarray: ["keyword1", "keyword2"],
+                    consent: "consent1",
+                    eids: [
+                      {
+                        source: "source1",
+                        uids: [
+                          {
+                            id: "id1",
+                            atype: 1,
+                            ext: { key: "value" },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        });
+
+        const result = sut.withUser().make();
+
+        expect(result.user?.id).toBe("user1");
+        expect(result.user?.buyeruid).toBe("buyer1");
+        expect(result.user?.keywords).toBe("keyword1,keyword2");
+        expect(result.user?.kwarray).toEqual(["keyword1", "keyword2"]);
+        expect(result.user?.consent).toBe("consent1");
+        expect(result.user?.eids).toEqual([
+          {
+            source: "source1",
+            uids: [
+              {
+                id: "id1",
+                atype: 1,
+                ext: { key: "value" },
+              },
+            ],
+          },
+        ]);
+      });
+    });
+
+    describe("withRegulations", () => {
+      it("特定の規制情報を指定する場合は入札のregsに指定した情報が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: data,
+        });
+
+        const result = sut
+          .withRegulations({
+            coppa: 0,
+            gdpr: 0,
+          })
+          .make();
+
+        expect(result.regs?.coppa).toBe(0);
+        expect(result.regs?.gdpr).toBe(0);
+      });
+
+      it("特定の規制情報を指定しない場合はランダムのregs情報が入札のregsに設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: {
+            ...data,
+            adcom: {
+              ...data.adcom,
+              context: {
+                ...data.adcom.context,
+                regs: [
+                  {
+                    coppa: 1,
+                    gdpr: 1,
+                  },
+                ],
+              },
+            },
+          },
+        });
+
+        const result = sut.withRegulations().make();
+
+        expect(result.regs?.coppa).toBe(1);
+        expect(result.regs?.gdpr).toBe(1);
+      });
+    });
+
+    describe("withGeo", () => {
+      it("特定の位置情報を指定する場合は入札のgeoに指定した情報が設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: data,
+        });
+
+        const result = sut
+          .withGeo({
+            lat: 34.6937,
+            lon: 135.5023,
+            city: "Osaka",
+          })
+          .make();
+
+        expect(result.device?.geo?.lat).toBe(34.6937);
+        expect(result.device?.geo?.lon).toBe(135.5023);
+        expect(result.device?.geo?.city).toBe("Osaka");
+      });
+
+      it("特定の位置情報を指定しない場合はランダムのgeo情報が入札のgeoに設定される", () => {
+        const sut = new BidRequestV26Module({
+          helper,
+          definitions: {
+            ...data,
+            adcom: {
+              ...data.adcom,
+              context: {
+                ...data.adcom.context,
+                geo: [
+                  {
+                    lat: 35.6895,
+                    lon: 139.6917,
+                    type: 1,
+                    accur: 1,
+                    lastfix: 1,
+                    ipserv: 1,
+                    country: "JPN",
+                    region: "Tokyo",
+                    metro: "Tokyo",
+                    city: "Tokyo",
+                    zip: "100-0001",
+                    utcoffset: 540,
+                  },
+                ],
+              },
+            },
+          },
+        });
+
+        const result = sut.withGeo().make();
+
+        expect(result.device?.geo?.lat).toBe(35.6895);
+        expect(result.device?.geo?.lon).toBe(139.6917);
+        expect(result.device?.geo?.type).toBe(1);
+        expect(result.device?.geo?.accuracy).toBe(1);
+        expect(result.device?.geo?.lastfix).toBe(1);
+        expect(result.device?.geo?.ipservice).toBe(1);
+        expect(result.device?.geo?.country).toBe("JPN");
+        expect(result.device?.geo?.region).toBe("Tokyo");
+        expect(result.device?.geo?.metro).toBe("Tokyo");
+        expect(result.device?.geo?.city).toBe("Tokyo");
+        expect(result.device?.geo?.zip).toBe("100-0001");
+        expect(result.device?.geo?.utcoffset).toBe(540);
+      });
+    });
+  });
 });

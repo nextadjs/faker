@@ -1,5 +1,8 @@
 import { uuidv4 } from "./libraries/uuid";
-import { generateRandomArrayItem, generateRandomDecimal } from "./utils/generator";
+import {
+  generateRandomArrayItem,
+  generateRandomDecimal,
+} from "./utils/generator";
 
 export class Helper {
   public generateUUID(): string {
@@ -8,6 +11,10 @@ export class Helper {
 
   public selectRandomArrayItem<T>(array: T[]): T {
     return generateRandomArrayItem<T>(array);
+  }
+
+  public generateRandomNumber(min: number, max: number): number {
+    return this.generateRandomNumber(min, max);
   }
 
   public generateRandomDecimal(
