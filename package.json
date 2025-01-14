@@ -30,9 +30,9 @@
   },
   "dependencies": {
     "@nextad/builder": "^0.1.4",
-    "iab-adcom": "^0.2.4",
-    "iab-native": "^0.5.0",
-    "iab-openrtb": "^0.4.0",
+    "iab-adcom": "^0.2.6",
+    "iab-native": "^0.5.2",
+    "iab-openrtb": "^0.4.1",
     "uuid": "^11.0.5"
   },
   "files": [
