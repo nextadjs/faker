@@ -48,18 +48,6 @@ export class ContextModule extends Module {
     );
   }
 
-  public eid(): ExtendedIdentifier {
-    return this.helper.selectRandomArrayItem(
-      this.definitions.adcom.context.eid
-    );
-  }
-
-  public euid(): ExtendedIdentifierUID {
-    return this.helper.selectRandomArrayItem(
-      this.definitions.adcom.context.euid
-    );
-  }
-
   public device(): Device {
     return this.helper.selectRandomArrayItem(
       this.definitions.adcom.context.device
@@ -72,39 +60,9 @@ export class ContextModule extends Module {
     );
   }
 
-  public userAgent(): UserAgent {
-    return this.helper.selectRandomArrayItem(
-      this.definitions.adcom.context.userAgent
-    );
-  }
-
   public geo(): Geo {
     return this.helper.selectRandomArrayItem(
       this.definitions.adcom.context.geo
-    );
-  }
-
-  public data(): Data {
-    return this.helper.selectRandomArrayItem(
-      this.definitions.adcom.context.data
-    );
-  }
-
-  public publisher(): Publisher {
-    return this.helper.selectRandomArrayItem(
-      this.definitions.adcom.context.publisher
-    );
-  }
-
-  public brandVersion(): BrandVersion {
-    return this.helper.selectRandomArrayItem(
-      this.definitions.adcom.context.brandVersion
-    );
-  }
-
-  public regs(): Regs {
-    return this.helper.selectRandomArrayItem(
-      this.definitions.adcom.context.regs
     );
   }
 }

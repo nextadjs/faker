@@ -24,15 +24,8 @@ export type AdCOMDefinition = {
     dooh: DoohEntryDefinition[];
     content: ContentEntryDefinition[];
     user: UserEntryDefinition[];
-    eid: ExtendedIdentifierEntryDefinition[];
-    euid: ExtendedIdentifierUIDEntryDefinition[];
     device: DeviceEntryDefinition[];
-    userAgent: UserAgentEntryDefinition[];
     geo: GeoEntryDefinition[];
-    data: DataEntryDefinition[];
-    publisher: PublisherEntryDefinition[];
-    brandVersion: BrandVerEntryDefinition[];
-    regs: RegsEntryDefinition[];
     deviceFull: DeviceFullEntryDefinition[];
   };
 };

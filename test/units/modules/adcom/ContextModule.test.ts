@@ -2,7 +2,12 @@ import { data } from "@/data";
 import type { Definition } from "@/definitions";
 import { Helper } from "@/helper";
 import { ContextModule } from "@/modules/adcom/context";
-import { AgentType, DOOHVenueTaxonomy, DOOHVenueType, OperatingSystem } from "iab-adcom";
+import {
+  AgentType,
+  DOOHVenueTaxonomy,
+  DOOHVenueType,
+  OperatingSystem,
+} from "iab-adcom";
 
 describe("Content Module Behavior", () => {
   let helper: Helper;
@@ -44,8 +49,8 @@ describe("Content Module Behavior", () => {
             {
               venue: DOOHVenueType.AIRBORNE,
               pub: {
-                domain: 'example.com'
-              }
+                domain: "example.com",
+              },
             },
           ],
           content: [
@@ -69,23 +74,6 @@ describe("Content Module Behavior", () => {
               gender: "M",
               keywords: "fake,user",
               consent: "fake-consent",
-            },
-          ],
-          eid: [
-            {
-              source: "fake-source",
-              uids: [
-                {
-                  id: "fake-uid",
-                  atype: AgentType.BROWSER_OR_DEVICE,
-                },
-              ],
-            },
-          ],
-          euid: [
-            {
-              id: "fake-euid",
-              atype: AgentType.BROWSER_OR_DEVICE,
             },
           ],
           device: [
@@ -170,53 +158,6 @@ describe("Content Module Behavior", () => {
               zip: "150-0002",
             },
           ],
-          data: [
-            {
-              id: "fake-data-id",
-              name: "Fake Data",
-              segment: [
-                {
-                  id: "fake-segment-id",
-                  name: "Fake Segment",
-                  value: "fake-value",
-                },
-              ],
-            },
-          ],
-          publisher: [
-            {
-              id: "fake-publisher-id",
-              name: "Fake Publisher",
-              domain: "fake-publisher.com",
-              cat: ["fake", "publisher"],
-            },
-          ],
-          brandVersion: [
-            {
-              brand: "Chrome",
-              version: ["1.0"],
-            },
-          ],
-          regs: [
-            {
-              coppa: 0,
-              gdpr: 1,
-            },
-          ],
-          userAgent: [
-            {
-              browsers: [
-                {
-                  brand: "Chrome",
-                  version: ["1.0"],
-                },
-              ],
-              platform: {
-                brand: "Android",
-                version: ["1.0"],
-              },
-            },
-          ],
         },
       },
     };
@@ -246,18 +187,6 @@ describe("Content Module Behavior", () => {
     expect(result).toEqual(mockData.adcom.context.user[0]);
   });
 
-  it("拡張識別子を取得する", () => {
-    sut = new ContextModule({ helper, definitions: mockData });
-    const result = sut.eid();
-    expect(result).toEqual(mockData.adcom.context.eid[0]);
-  });
-
-  it("拡張識別子UIDを取得する", () => {
-    sut = new ContextModule({ helper, definitions: mockData });
-    const result = sut.euid();
-    expect(result).toEqual(mockData.adcom.context.euid[0]);
-  });
-
   it("デバイスコンテキストを取得する", () => {
     sut = new ContextModule({ helper, definitions: mockData });
     const result = sut.device();
@@ -270,31 +199,7 @@ describe("Content Module Behavior", () => {
     expect(result).toEqual(mockData.adcom.context.geo[0]);
   });
 
-  it("データコンテキストを取得する", () => {
-    sut = new ContextModule({ helper, definitions: mockData });
-    const result = sut.data();
-    expect(result).toEqual(mockData.adcom.context.data[0]);
-  });
-
-  it("パブリッシャーコンテキストを取得する", () => {
-    sut = new ContextModule({ helper, definitions: mockData });
-    const result = sut.publisher();
-    expect(result).toEqual(mockData.adcom.context.publisher[0]);
-  });
-
-  it("ブランドバージョンを取得する", () => {
-    sut = new ContextModule({ helper, definitions: mockData });
-    const result = sut.brandVersion();
-    expect(result).toEqual(mockData.adcom.context.brandVersion[0]);
-  });
-
-  it("規制コンテキストを取得する", () => {
-    sut = new ContextModule({ helper, definitions: mockData });
-    const result = sut.regs();
-    expect(result).toEqual(mockData.adcom.context.regs[0]);
-  });
-
-  it('全てのパラメーターが含まれるデバイス情報を取得する', () => {
+  it("全てのパラメーターが含まれるデバイス情報を取得する", () => {
     sut = new ContextModule({ helper, definitions: mockData });
     const result = sut.deviceFull();
     expect(result).toEqual(mockData.adcom.context.deviceFull[0]);
