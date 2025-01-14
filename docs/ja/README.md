@@ -1,6 +1,6 @@
 # @nextad/faker
 
-TypeScriptで作成された、OpenRTB/Creative/AdCOMのフェイカーライブラリ。
+OpenRTB/Creative/AdCOMのモックデータを生成するTypeScriptフェイカーライブラリ。
 
 ## 特徴
 
