@@ -1,6 +1,6 @@
 {
   "name": "@nextad/faker",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "TypeScript faker library for OpenRTB/AdCOM/Creative mock data",
   "scripts": {
     "test": "vitest",
@@ -14,7 +14,13 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "keywords": ["faker", "OpenRTB", "AdCOM", "Creative", "VAST"],
+  "keywords": [
+    "faker",
+    "OpenRTB",
+    "AdCOM",
+    "Creative",
+    "VAST"
+  ],
   "author": "Kai Miyamoto",
   "license": "MIT",
   "homepage": "https://github.com/nextadjs/faker.git",
