@@ -14,7 +14,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "keywords": [],
+  "keywords": ["faker", "OpenRTB", "AdCOM", "Creative", "VAST"],
   "author": "Kai Miyamoto",
   "license": "MIT",
   "homepage": "https://github.com/nextadjs/faker.git",
