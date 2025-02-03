@@ -1,12 +1,51 @@
 {
-  "name": "@nextad-faker",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@nextad/faker",
+  "version": "0.6.8",
+  "description": "TypeScript faker library for OpenRTB/AdCOM/Creative mock data",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "build": "tsup"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "keywords": [
+    "faker",
+    "OpenRTB",
+    "AdCOM",
+    "Creative",
+    "VAST"
+  ],
+  "author": "Kai Miyamoto",
+  "license": "MIT",
+  "homepage": "https://github.com/nextadjs/faker.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nextadjs/faker.git"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "tsup": "^8.3.5",
+    "vitest": "^2.1.8",
+    "vitest-mock-extended": "^2.0.2"
+  },
+  "dependencies": {
+    "uuid": "^11.0.5"
+  },
+  "peerDependencies": {
+    "@nextad/openrtb": "^0.1.0",
+    "iab-adcom": "^1.0.0",
+    "iab-native": "^1.0.0",
+    "iab-openrtb": "^1.0.0"
+  },
+  "files": [
+    "./dist",
+    "./LICENSE",
+    "README.md"
+  ]
 }

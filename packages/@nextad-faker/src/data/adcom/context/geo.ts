@@ -1,0 +1,42 @@
+import { LocationType } from "iab-adcom";
+
+export default [
+  {
+    type: LocationType.IP,
+    lat: -33.8688,
+    lon: 151.2093,
+    accur: 1000,
+    country: "AUS",
+    region: "NSW",
+    metro: "Sydney",
+    city: "SYD",
+    zip: "2000",
+    utcoffset: 600,
+  },
+  {
+    type: LocationType.GPS,
+    lat: 51.5074,
+    lon: -0.1278,
+    accur: 8,
+    lastfix: 30,
+    country: "GBR",
+    region: "LND",
+    metro: "London",
+    city: "LON",
+    zip: "SW1A 1AA",
+    utcoffset: 60,
+  },
+  {
+    type: LocationType.GPS,
+    lat: 40.7128,
+    lon: -74.006,
+    accur: 10,
+    lastfix: 60,
+    country: "USA",
+    region: "NY",
+    metro: "NY",
+    city: "NYC",
+    zip: "10001",
+    utcoffset: -240,
+  },
+];

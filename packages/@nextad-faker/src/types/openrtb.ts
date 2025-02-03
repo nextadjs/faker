@@ -1,0 +1,29 @@
+export type {
+  BidRequest as BidRequestV26,
+  BidResponse as BidResponseV26,
+  Site as SiteV26,
+  SeatBid as SeatBidV26,
+  Device as DeviceV26,
+  User as UserV26,
+  Source as SourceV26,
+  Regs as RegsV26,
+  Imp as ImpV26,
+  App as AppV26,
+  DOOH as DOOHV26,
+  Banner as BannerV26,
+  Bid as BidV26,
+  Video as VideoV26,
+  Native as NativeV26,
+  Geo as GeoV26
+} from "iab-openrtb/v26";
+export type {
+  TitleRequest as TitleRequestV12,
+  Asset as AssetV12,
+  AssetResponse as AssetResponseV12,
+  NativeResponse as NativeResponseV12,
+  LinkResponse as LinkResponseV12,
+  TitleResponse as TitleResponseV12,
+  ImageResponse as ImageResponseV12,
+  VideoResponse as VideoResponseV12,
+  DataResponse as DataResponseV12,
+} from 'iab-native/v12';
