@@ -12,7 +12,7 @@ importers:
     dependencies:
       '@nextad/openrtb':
         specifier: ^0.1.0
-        version: 0.1.0(iab-adcom@1.0.0)(iab-openrtb@1.0.0)(zod@3.22.3)
+        version: 0.1.0(iab-adcom@1.0.0)(iab-openrtb@1.0.0)(zod@3.24.2)
       iab-adcom:
         specifier: ^1.0.0
         version: 1.0.0
@@ -41,9 +41,30 @@ importers:
 
   packages/@nextad-rtb-faker:
     dependencies:
+      '@hono/zod-validator':
+        specifier: ^0.4.3
+        version: 0.4.3(hono@4.7.2)(zod@3.24.2)
+      '@nextad/faker':
+        specifier: ^0.6.8
+        version: 0.6.8(@nextad/builder@0.1.8(iab-openrtb@1.0.0))(iab-adcom@1.0.5)(iab-native@1.0.0)(iab-openrtb@1.0.0)
+      '@nextad/openrtb':
+        specifier: ^0.1.0
+        version: 0.1.0(iab-adcom@1.0.5)(iab-openrtb@1.0.0)(zod@3.24.2)
       hono:
         specifier: ^4.7.2
         version: 4.7.2
+      iab-adcom:
+        specifier: ^1.0.5
+        version: 1.0.5
+      iab-native:
+        specifier: ^1.0.0
+        version: 1.0.0
+      iab-openrtb:
+        specifier: ^1.0.0
+        version: 1.0.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.2
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20250109.0
@@ -532,6 +553,12 @@ packages:
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
 
+  '@hono/zod-validator@0.4.3':
+    resolution: {integrity: sha512-xIgMYXDyJ4Hj6ekm9T9Y27s080Nl9NXHcJkOvkXPhubOLj8hZkOL8pDnnXfvCf5xEE8Q4oMFenQUZZREUY2gqQ==}
+    peerDependencies:
+      hono: '>=3.9.0'
+      zod: ^3.19.1
+
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
@@ -661,6 +688,19 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
+
+  '@nextad/builder@0.1.8':
+    resolution: {integrity: sha512-hl9ROdx10QWKWSUEzGLPg18y3dDrAlk1iZtdoLKEopAjcQ6EoqzZkfOxs56EdgQBT2mbV1OayzJaQ8blY26WGA==}
+    peerDependencies:
+      iab-openrtb: ^0.4.3
+
+  '@nextad/faker@0.6.8':
+    resolution: {integrity: sha512-KaaZBcTa3O08eIKXXYImsxzXZPhpTo/wgWM6ytOZ7s4xz94l6SN02EgOnWPTPBitf/A8nuVhzFFc0wTyf/ex0w==}
+    peerDependencies:
+      '@nextad/builder': ^0.1.8
+      iab-adcom: ^0.2.8
+      iab-native: ^0.5.3
+      iab-openrtb: ^0.4.3
 
   '@nextad/openrtb@0.1.0':
     resolution: {integrity: sha512-XitC7lOqI6kpGCzbYu91uJ2TAaODoqGHr3vJ/bNjR5vrL7YkwXhD6ZBHj1kmNDlhuiYdt5+Fx2V0FCki9sRqpw==}
@@ -1006,6 +1046,10 @@ packages:
 
   iab-adcom@1.0.0:
     resolution: {integrity: sha512-4X20M9nZrdSv6vJ0nHJxYZi3Kh2su8Gc1w+n3yPcOdHnAdhJ2yBwXhg3asCoPtPg6uCzqvPAnq/iDiptI+LwUw==}
+    engines: {node: '>=14.0.0'}
+
+  iab-adcom@1.0.5:
+    resolution: {integrity: sha512-AVUiqUYcbnCk9IQ86bPUdP6sGzOs0DuNEXLhflSEnDGr1eGasMy+cEx+7LblW5eZiIMlnxk4t8g+6SUC8vBkNw==}
     engines: {node: '>=14.0.0'}
 
   iab-native@1.0.0:
@@ -1484,6 +1528,9 @@ packages:
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
 
+  zod@3.24.2:
+    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+
 snapshots:
 
   '@cloudflare/kv-asset-handler@0.3.4':
@@ -1738,6 +1785,11 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
+  '@hono/zod-validator@0.4.3(hono@4.7.2)(zod@3.24.2)':
+    dependencies:
+      hono: 4.7.2
+      zod: 3.24.2
+
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:
       '@img/sharp-libvips-darwin-arm64': 1.0.4
@@ -1844,13 +1896,34 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@nextad/openrtb@0.1.0(iab-adcom@1.0.0)(iab-openrtb@1.0.0)(zod@3.22.3)':
+  '@nextad/builder@0.1.8(iab-openrtb@1.0.0)':
+    dependencies:
+      iab-openrtb: 1.0.0
+      uuid: 11.0.5
+
+  '@nextad/faker@0.6.8(@nextad/builder@0.1.8(iab-openrtb@1.0.0))(iab-adcom@1.0.5)(iab-native@1.0.0)(iab-openrtb@1.0.0)':
+    dependencies:
+      '@nextad/builder': 0.1.8(iab-openrtb@1.0.0)
+      iab-adcom: 1.0.5
+      iab-native: 1.0.0
+      iab-openrtb: 1.0.0
+      uuid: 11.0.5
+
+  '@nextad/openrtb@0.1.0(iab-adcom@1.0.0)(iab-openrtb@1.0.0)(zod@3.24.2)':
     dependencies:
       iab-adcom: 1.0.0
       iab-openrtb: 1.0.0
       uuid: 11.0.5
     optionalDependencies:
-      zod: 3.22.3
+      zod: 3.24.2
+
+  '@nextad/openrtb@0.1.0(iab-adcom@1.0.5)(iab-openrtb@1.0.0)(zod@3.24.2)':
+    dependencies:
+      iab-adcom: 1.0.5
+      iab-openrtb: 1.0.0
+      uuid: 11.0.5
+    optionalDependencies:
+      zod: 3.24.2
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -2184,6 +2257,8 @@ snapshots:
   hono@4.7.2: {}
 
   iab-adcom@1.0.0: {}
+
+  iab-adcom@1.0.5: {}
 
   iab-native@1.0.0: {}
 
@@ -2676,3 +2751,5 @@ snapshots:
       stacktracey: 2.1.8
 
   zod@3.22.3: {}
+
+  zod@3.24.2: {}

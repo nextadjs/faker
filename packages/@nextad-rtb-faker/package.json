@@ -1,11 +1,18 @@
 {
-  "name": "@nextad-rtb-faker",
+  "name": "@nextad/rtb-faker",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify"
   },
   "dependencies": {
-    "hono": "^4.7.2"
+    "@hono/zod-validator": "^0.4.3",
+    "@nextad/faker": "^0.6.8",
+    "@nextad/openrtb": "^0.1.0",
+    "hono": "^4.7.2",
+    "iab-adcom": "^1.0.5",
+    "iab-native": "^1.0.0",
+    "iab-openrtb": "^1.0.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250109.0",
