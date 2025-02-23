@@ -6,15 +6,8 @@ import type {
   Site,
   Content,
   User,
-  ExtendedIdentifier,
-  ExtendedIdentifierUID,
   Device,
-  UserAgent,
   Geo,
-  Data,
-  Publisher,
-  BrandVersion,
-  Regs,
 } from "iab-adcom/context";
 
 export class ContextModule extends Module {

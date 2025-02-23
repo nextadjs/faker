@@ -126,7 +126,7 @@ export class BidResponseV26Module extends Module {
         price: this.helper.generateRandomDecimal(1, 10),
         impid: bidOrImpId,
         ...bid,
-      });
+      });   
     }
 
     return this;
