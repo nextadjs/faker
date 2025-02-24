@@ -45,8 +45,8 @@ importers:
         specifier: ^0.4.3
         version: 0.4.3(hono@4.7.2)(zod@3.24.2)
       '@nextad/faker':
-        specifier: ^0.6.8
-        version: 0.6.8(@nextad/builder@0.1.8(iab-openrtb@1.0.0))(iab-adcom@1.0.5)(iab-native@1.0.0)(iab-openrtb@1.0.0)
+        specifier: workspace:*
+        version: link:../@nextad-faker
       '@nextad/openrtb':
         specifier: ^0.1.0
         version: 0.1.0(iab-adcom@1.0.5)(iab-openrtb@1.0.0)(zod@3.24.2)
@@ -67,10 +67,10 @@ importers:
         version: 3.24.2
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ^4.20250109.0
+        specifier: ^4.20250214.0
         version: 4.20250214.0
       wrangler:
-        specifier: ^3.101.0
+        specifier: ^3.109.2
         version: 3.109.2(@cloudflare/workers-types@4.20250214.0)
 
 packages:
@@ -688,19 +688,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
-
-  '@nextad/builder@0.1.8':
-    resolution: {integrity: sha512-hl9ROdx10QWKWSUEzGLPg18y3dDrAlk1iZtdoLKEopAjcQ6EoqzZkfOxs56EdgQBT2mbV1OayzJaQ8blY26WGA==}
-    peerDependencies:
-      iab-openrtb: ^0.4.3
-
-  '@nextad/faker@0.6.8':
-    resolution: {integrity: sha512-KaaZBcTa3O08eIKXXYImsxzXZPhpTo/wgWM6ytOZ7s4xz94l6SN02EgOnWPTPBitf/A8nuVhzFFc0wTyf/ex0w==}
-    peerDependencies:
-      '@nextad/builder': ^0.1.8
-      iab-adcom: ^0.2.8
-      iab-native: ^0.5.3
-      iab-openrtb: ^0.4.3
 
   '@nextad/openrtb@0.1.0':
     resolution: {integrity: sha512-XitC7lOqI6kpGCzbYu91uJ2TAaODoqGHr3vJ/bNjR5vrL7YkwXhD6ZBHj1kmNDlhuiYdt5+Fx2V0FCki9sRqpw==}
@@ -1895,19 +1882,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
-
-  '@nextad/builder@0.1.8(iab-openrtb@1.0.0)':
-    dependencies:
-      iab-openrtb: 1.0.0
-      uuid: 11.0.5
-
-  '@nextad/faker@0.6.8(@nextad/builder@0.1.8(iab-openrtb@1.0.0))(iab-adcom@1.0.5)(iab-native@1.0.0)(iab-openrtb@1.0.0)':
-    dependencies:
-      '@nextad/builder': 0.1.8(iab-openrtb@1.0.0)
-      iab-adcom: 1.0.5
-      iab-native: 1.0.0
-      iab-openrtb: 1.0.0
-      uuid: 11.0.5
 
   '@nextad/openrtb@0.1.0(iab-adcom@1.0.0)(iab-openrtb@1.0.0)(zod@3.24.2)':
     dependencies:

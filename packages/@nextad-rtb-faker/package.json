@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@hono/zod-validator": "^0.4.3",
-    "@nextad/faker": "^0.6.8",
+    "@nextad/faker": "workspace:*",
     "@nextad/openrtb": "^0.1.0",
     "hono": "^4.7.2",
     "iab-adcom": "^1.0.5",
@@ -15,7 +15,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250109.0",
-    "wrangler": "^3.101.0"
+    "@cloudflare/workers-types": "^4.20250214.0",
+    "wrangler": "^3.109.2"
   }
 }
